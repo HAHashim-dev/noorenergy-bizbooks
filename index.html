@@ -692,7 +692,7 @@ function rQTL() {
     const g      = eApp.reduce((a,x)=>a+(x.gst||0),0);
     const ePL    = fE(aFY,q).filter(x => x.status==='Approved'||x.status==='Refund');
     const netExp = ePL.reduce((a,x)=>a+(x.net||0),0);
-    const incB   = fB(aFY,q).filter(x=>x.type==='Credit'&&x.classification==='Income');
+    const incB   = fB(aFY,q).filter(x=>x.type==='Credit'&&(x.classification==='Income'||x.classification==='Client Funds'));
     const netInc = incB.reduce((a,x)=>a+(x.amount-(x.gst||0)),0);
     const netPL  = netInc - netExp;
     const hb     = fB(aFY,q).length > 0;
@@ -912,16 +912,36 @@ function rGST() {
 
 // P&L
 function rPL() {
-  const e = (aQ==='ALL' ? DATA.expenses.filter(x=>x.fy===aFY) : fE(aFY,aQ))
+  const bAll = aQ==='ALL' ? DATA.bank.filter(x=>x.fy===aFY) : fB(aFY,aQ);
+  const eAll = (aQ==='ALL' ? DATA.expenses.filter(x=>x.fy===aFY) : fE(aFY,aQ))
     .filter(x => x.status==='Approved' || x.status==='Refund');
-  const tE = e.reduce((s,x)=>s+(x.net||0),0), s = FYS[aFY];
-  const per = aQ==='ALL' ? `1 Jul ${s} – 30 Jun ${s+1}` : `${QD[aQ].d} ${(aQ==='Q1'||aQ==='Q2')?s:s+1}`;
+
+  // Income — bank credits classified as Income or Client Funds (not Share Capital / Transfer)
+  const bSales = bAll.filter(x=>x.type==='Credit'&&x.classification==='Income');
+  const bCF    = bAll.filter(x=>x.type==='Credit'&&x.classification==='Client Funds');
+  const netSales = bSales.reduce((s,x)=>s+(x.amount-(x.gst||0)),0);
+  const netCF    = bCF.reduce((s,x)=>s+(x.amount-(x.gst||0)),0);
+  const totalInc = netSales + netCF;
+
+  // Expenses
+  const tE = eAll.reduce((s,x)=>s+(x.net||0),0);
   const cats = {};
-  e.forEach(x => { if(!cats[x.cat]) cats[x.cat]=0; cats[x.cat]+=x.net; });
+  eAll.forEach(x => { if(!cats[x.cat]) cats[x.cat]=0; cats[x.cat]+=x.net; });
   const catRows = Object.entries(cats)
     .map(([c,v]) => `<div class="pr i2"><span>${c}</span><span class="mono">${aud(v)}</span></div>`)
     .join('') || `<div class="pr i1"><span class="sm muted">No expenses this period</span><span class="mono muted">$0.00</span></div>`;
+
+  const netPL  = totalInc - tE;
+  const s = FYS[aFY];
+  const per = aQ==='ALL' ? `1 Jul ${s} – 30 Jun ${s+1}` : `${QD[aQ].d} ${(aQ==='Q1'||aQ==='Q2')?s:s+1}`;
   const shareC = DATA.bank.filter(b=>b.fy===aFY&&b.classification==='Share Capital').reduce((a,b)=>a+b.amount,0);
+
+  const incRows = [
+    bSales.length ? `<div class="pr i1"><span>Sales revenue</span><span class="mono">${aud(netSales)}</span></div>` : '',
+    bCF.length   ? `<div class="pr i1"><span>Client funds received (procurement)</span><span class="mono">${aud(netCF)}</span></div>` : '',
+    (!bSales.length && !bCF.length) ? `<div class="pr i1"><span class="sm muted">No revenue this period</span><span class="mono muted">$0.00</span></div>` : '',
+  ].join('');
+
   document.getElementById('plc').innerHTML = `<div class="cb">
     <div style="text-align:center;padding-bottom:16px;border-bottom:2px solid var(--border);margin-bottom:14px">
       <div style="font-family:var(--serif);font-size:24px;font-weight:700;color:var(--coal)">Noor Energy Pty Ltd</div>
@@ -931,19 +951,18 @@ function rPL() {
       <div style="font-size:10.5px;color:var(--am);font-style:italic;margin-top:5px">Not audited · All amounts ex-GST · AUD</div>
     </div>
     <div class="pr sh">Income</div>
-    <div class="pr i1"><span>Sales revenue</span><span class="mono">$0.00</span></div>
-    <div class="pr i1"><span>Other income</span><span class="mono">$0.00</span></div>
-    <div class="pr st"><span>Total income</span><span class="mono"><strong>$0.00</strong></span></div>
+    ${incRows}
+    <div class="pr st"><span>Total income</span><span class="mono"><strong>${aud(totalInc)}</strong></span></div>
     <div class="pr sh" style="margin-top:6px">Operating expenses</div>
     ${catRows}
     <div class="dvd"></div>
     <div class="pr st"><span>Total expenses</span><span class="mono"><strong>${aud(tE)}</strong></span></div>
     <div class="dvd"></div>
-    <div class="pr gt"><span>Net ${tE>0?'loss':'profit'}</span><span class="mono" style="color:${tE>0?'var(--rd)':'var(--gn)'}"><strong>${tE>0?'('+aud(tE)+')':aud(-tE)}</strong></span></div>
+    <div class="pr gt"><span>Net ${netPL>=0?'profit':'loss'}</span><span class="mono" style="color:${netPL>=0?'var(--gn)':'var(--rd)'}"><strong>${netPL>=0?aud(netPL):'('+aud(Math.abs(netPL))+')' }</strong></span></div>
     <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);line-height:1.8">
       <strong style="color:var(--ink)">Notes:</strong>
-      Share capital of ${aud(shareC)} (Hashim Hashim + Mohammed Magzoub) is recorded as equity and not included in income.
-      GST amounts are excluded from all P&amp;L figures. Tax losses may be carried forward to future years.
+      Share capital of ${aud(shareC)} is recorded as equity and not included in income.
+      GST amounts are excluded from all figures. Verify with a registered accountant before lodging.
     </div>
   </div>`;
 }

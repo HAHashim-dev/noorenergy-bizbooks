@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noor Energy — BizBooks</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --coal:#1a1a2e; --navy:#16213e;
+  --tl:#0f9b8e; --tl-lt:#e0f5f3; --tl-dk:#0a7a6f;
+  --rd:#c0392b; --rd-lt:#fdf1f0;
+  --gn:#1a7a5e; --gn-lt:#eaf5f1;
+  --am:#d4750a; --am-lt:#fef5e7;
+  --bl:#2a6ee8; --bl-lt:#eef3fd;
+  --pu:#6d28d9; --pu-lt:#f5f3ff;
+  --ink:#1c1c1c; --muted:#6e7a8a; --border:#e2e7ed; --bg:#f7f8fc; --white:#fff;
+  --sh:0 2px 12px rgba(26,26,46,.07);
+  --sans:'DM Sans',sans-serif; --mono:'DM Mono',monospace; --serif:'DM Serif Display',serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:13.5px;min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+/* HEADER */
+.hdr{background:var(--coal);padding:0 28px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.4)}
+.hdr-brand{font-family:var(--serif);font-size:20px;color:#fff;letter-spacing:-.3px}
+.hdr-brand em{color:var(--tl);font-style:normal}
+.hdr-right{display:flex;align-items:center;gap:16px}
+.hdr-abn{font-size:11px;color:#5a7090;font-family:var(--mono)}
+.save-btn{background:var(--tl);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:11.5px;cursor:pointer;font-family:var(--sans);font-weight:500}
+.save-btn:hover{background:var(--tl-dk)}
+
+/* PERIOD BAR */
+.pbar{background:var(--navy);padding:9px 28px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.05)}
+.plbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:#5a7090;white-space:nowrap}
+.psel{appearance:none;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#dde8f0;padding:5px 28px 5px 10px;border-radius:6px;font-family:var(--mono);font-size:11.5px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' fill='none' stroke='%235a7090' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.psel option{background:#16213e}
+.qpill{padding:3px 12px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--mono);background:var(--tl);color:#fff;margin-left:auto}
+.pdts{font-size:10.5px;color:#5a7090}
+
+/* TABS */
+.tabs{background:var(--white);border-bottom:1px solid var(--border);padding:0 28px;display:flex;overflow-x:auto;gap:0}
+.tab{padding:11px 15px;border:none;background:none;cursor:pointer;font-family:var(--sans);font-size:12.5px;font-weight:500;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:all .15s}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--tl);border-bottom-color:var(--tl);font-weight:600}
+
+/* LAYOUT */
+.wrap{padding:22px 28px;max-width:1200px;margin:0 auto}
+.view{display:none}.view.on{display:block}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.mb{margin-bottom:16px}
+
+/* STAT CARDS */
+.sc{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px 18px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.sc.tl::before{background:var(--tl)}.sc.rd::before{background:var(--rd)}
+.sc.gn::before{background:var(--gn)}.sc.am::before{background:var(--am)}
+.sc.bl::before{background:var(--bl)}.sc.pu::before{background:var(--pu)}
+.sc .lb{font-size:9.5px;text-transform:uppercase;letter-spacing:1px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.sc .vl{font-family:var(--mono);font-size:22px;font-weight:500}
+.sc.tl .vl{color:var(--tl)}.sc.rd .vl{color:var(--rd)}.sc.gn .vl{color:var(--gn)}
+.sc.am .vl{color:var(--am)}.sc.bl .vl{color:var(--bl)}.sc.pu .vl{color:var(--pu)}
+.sc .sb{font-size:10.5px;color:var(--muted);margin-top:3px}
+
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--border);border-radius:10px;box-shadow:var(--sh);margin-bottom:16px}
+.ch{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ch h3{font-size:13px;font-weight:600}
+.cb{padding:18px}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse}
+thead tr{background:var(--bg)}
+th{padding:8px 12px;text-align:left;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:12.5px;vertical-align:middle;line-height:1.4}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#fafbfd}
+tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px solid var(--border)}
+.nr{font-family:var(--mono);text-align:right;white-space:nowrap}
+.thr{text-align:right}
+.rb td{background:rgba(42,110,232,.04)!important}
+.rp td{background:rgba(109,40,217,.04)!important}
+.rg td{background:rgba(26,122,94,.05)!important}
+.ra td{background:rgba(212,117,10,.04)!important}
+
+/* BADGES */
+.b{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.bgn{background:var(--gn-lt);color:var(--gn)}.brd{background:var(--rd-lt);color:var(--rd)}
+.bam{background:var(--am-lt);color:var(--am)}.btl{background:var(--tl-lt);color:var(--tl)}
+.bbl{background:var(--bl-lt);color:var(--bl)}.bpu{background:var(--pu-lt);color:var(--pu)}
+.bgy{background:var(--bg);color:var(--muted);border:1px solid var(--border)}
+
+/* ALERTS */
+.al{display:flex;gap:9px;align-items:flex-start;padding:10px 13px;border-radius:8px;font-size:12px;margin-bottom:13px;line-height:1.55}
+.al-t{background:var(--tl-lt);color:#0a5e56;border:1px solid #9fe0da}
+.al-a{background:var(--am-lt);color:#7a4300;border:1px solid #f4d49a}
+.al-g{background:var(--gn-lt);color:var(--gn);border:1px solid #a3d9c8}
+.al-b{background:var(--bl-lt);color:var(--bl);border:1px solid #b3cefc}
+.al-r{background:var(--rd-lt);color:var(--rd);border:1px solid #f5b8b4}
+
+/* P&L ROWS */
+.pr{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px dashed var(--border)}
+.pr:last-child{border-bottom:none}
+.pr.i1{padding-left:16px}.pr.i2{padding-left:30px}
+.pr.sh{padding:12px 0 3px;border-bottom:none;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
+.pr.st{border-top:1px solid var(--border);border-bottom:none;padding-top:8px;font-weight:600}
+.pr.gt{border-top:2px solid var(--ink);border-bottom:none;padding-top:10px;font-size:15px;font-weight:700;margin-top:3px}
+.dvd{border:none;border-top:1px solid var(--border);margin:10px 0}
+.muted{color:var(--muted)}.sm{font-size:11.5px}.mono{font-family:var(--mono)}
+.src{font-size:9.5px;color:var(--muted);font-family:var(--mono);background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:0 5px;display:inline-block;white-space:nowrap;max-width:180px;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
+
+/* QUARTER TIMELINE */
+.qtl{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--white);margin-bottom:16px;box-shadow:var(--sh)}
+.qtq{flex:1;padding:11px 10px;text-align:center;border-right:1px solid var(--border);cursor:pointer;transition:background .15s}
+.qtq:last-child{border-right:none}
+.qtq:hover{background:var(--tl-lt)}
+.qtq.active{background:var(--tl);color:#fff}
+.qtq .ql{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;opacity:.75}
+.qtq .qd{font-size:10.5px;margin-top:2px;font-family:var(--mono)}
+.qtq .qa{font-size:10px;margin-top:3px;font-weight:600;color:var(--gn)}
+.qtq.active .qa{color:rgba(255,255,255,.9)}
+.qtq .nd{font-size:9.5px;color:var(--muted);margin-top:3px}
+.qtq.active .nd{color:rgba(255,255,255,.5)}
+
+/* FORMS */
+.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:11px}
+.fg label{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.fg input,.fg select,.fg textarea{padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--white);outline:none;transition:border .15s;width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--tl)}
+.fg textarea{resize:vertical;min-height:60px}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:7px;border:1px solid var(--border);cursor:pointer;font-family:var(--sans);font-size:12.5px;font-weight:500;transition:all .15s;background:var(--white);color:var(--ink);white-space:nowrap}
+.btn:hover{background:var(--bg)}
+.btn-tl{background:var(--tl);color:#fff;border-color:var(--tl)}.btn-tl:hover{background:var(--tl-dk)}
+.btn-rd{background:var(--rd);color:#fff;border-color:var(--rd)}.btn-rd:hover{background:#a83224}
+.btn-sm{padding:4px 10px;font-size:11.5px}
+
+/* SUBTABS */
+.stabs{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px;background:var(--bg)}
+.stab{flex:1;padding:9px 12px;border:none;background:none;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:500;color:var(--muted);transition:all .15s;text-align:center}
+.stab:hover{background:var(--white);color:var(--ink)}
+.stab.on{background:var(--white);color:var(--tl);font-weight:600;box-shadow:var(--sh)}
+
+/* EMPTY */
+.empty{text-align:center;padding:32px 16px;color:var(--muted);border:2px dashed var(--border);border-radius:10px;font-size:12.5px}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(26,26,46,.5);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
+.modal-bg.open{display:flex}
+.modal{background:var(--white);border-radius:14px;box-shadow:0 12px 48px rgba(0,0,0,.2);width:92%;max-width:580px;max-height:88vh;overflow-y:auto;animation:mup .2s ease}
+@keyframes mup{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mh{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.mh h3{font-size:15px;font-weight:700}
+.mb2{padding:20px}
+.mf{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:9px}
+.close-x{background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px;padding:2px 6px;border-radius:5px;line-height:1}
+.close-x:hover{background:var(--bg);color:var(--ink)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--coal);color:#fff;padding:10px 18px;border-radius:8px;font-size:12.5px;z-index:999;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* IMPORT/EXPORT */
+.ng{background:var(--navy);border-radius:10px;padding:16px 18px;color:#c8d8e8;margin-bottom:14px}
+.ng h4{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--tl);margin-bottom:10px}
+.ng-r{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px}
+.ng-t{font-family:var(--mono);font-size:10px;background:rgba(15,155,142,.2);color:var(--tl);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.ng-d{font-size:11px;color:#8aa4be;line-height:1.5}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div style="display:flex;align-items:center;gap:16px">
+    <div class="hdr-brand">Noor<em>Energy</em> BizBooks</div>
+    <div class="hdr-abn">ABN 24 678 922 051</div>
+  </div>
+  <div class="hdr-right">
+    <span class="hdr-abn">CBA 06 7873 xxx3737</span>
+    <button class="save-btn" onclick="exportData()">Export JSON</button>
+    <button class="save-btn" style="background:#555" onclick="document.getElementById('import-input').click()">Import JSON</button>
+    <input type="file" id="import-input" accept=".json" style="display:none" onchange="importData(this)">
+  </div>
+</header>
+
+<!-- PERIOD BAR -->
+<div class="pbar">
+  <span class="plbl">Financial Year</span>
+  <select class="psel" id="fy-sel" onchange="onFY()">
+    <option value="FY2425">FY 2024–25</option>
+    <option value="FY2526">FY 2025–26</option>
+    <option value="FY2627">FY 2026–27</option>
+    <option value="FY2728">FY 2027–28</option>
+  </select>
+  <span class="plbl" style="margin-left:6px">GST Quarter</span>
+  <select class="psel" id="q-sel" onchange="onQ()">
+    <option value="Q1">Q1 — Jul, Aug, Sep</option>
+    <option value="Q2">Q2 — Oct, Nov, Dec</option>
+    <option value="Q3">Q3 — Jan, Feb, Mar</option>
+    <option value="Q4">Q4 — Apr, May, Jun</option>
+    <option value="ALL">Full Year</option>
+  </select>
+  <span class="qpill" id="qpill">Q1 FY2024-25</span>
+  <span class="pdts" id="pdts">1 Jul 2024 – 30 Sep 2024</span>
+</div>
+
+<!-- TABS -->
+<nav class="tabs">
+  <button class="tab on"  onclick="go('dash',this)">📊 Dashboard</button>
+  <button class="tab"     onclick="go('bank',this)">🏦 Bank</button>
+  <button class="tab"     onclick="go('exp',this)">🧾 Expenses</button>
+  <button class="tab"     onclick="go('shares',this)">👥 Share Capital</button>
+  <button class="tab"     onclick="go('gst',this)">📋 GST &amp; BAS</button>
+  <button class="tab"     onclick="go('pl',this)">📈 P&amp;L</button>
+  <button class="tab"     onclick="go('add',this)">➕ Add Data</button>
+</nav>
+
+<div class="wrap">
+
+<!-- ══════ DASHBOARD ══════ -->
+<div id="v-dash" class="view on">
+  <div id="da" class="al al-t mb"></div>
+  <div class="qtl" id="qtl"></div>
+  <div class="g4 mb" id="ds"></div>
+  <div class="g2 mb">
+    <div class="card"><div class="ch"><h3>Expenses this period</h3></div><div id="de"></div></div>
+    <div class="card"><div class="ch"><h3>Bank this period</h3></div><div id="db"></div></div>
+  </div>
+  <div class="card"><div class="ch"><h3>GST position this period</h3></div><div class="cb" id="dg"></div></div>
+</div>
+
+<!-- ══════ BANK ══════ -->
+<div id="v-bank" class="view">
+  <div class="ch" style="margin-bottom:14px;background:var(--white);border:1px solid var(--border);border-radius:10px;box-shadow:var(--sh)">
+    <h3 id="btit">Bank transactions</h3>
+    <button class="btn btn-tl btn-sm" onclick="openModal('bank')">+ Add transaction</button>
+  </div>
+  <div class="g3 mb" id="bks"></div>
+  <div class="card"><div id="bkt"></div></div>
+</div>
+
+<!-- ══════ EXPENSES ══════ -->
+<div id="v-exp" class="view">
+  <div class="ch" style="margin-bottom:14px;background:var(--white);border:1px solid var(--border);border-radius:10px;box-shadow:var(--sh)">
+    <h3 id="etit">Expenses &amp; receipts</h3>
+    <button class="btn btn-tl btn-sm" onclick="openModal('expense')">+ Add expense</button>
+  </div>
+  <div class="g3 mb" id="exs"></div>
+  <div class="card"><div id="ext"></div></div>
+</div>
+
+<!-- ══════ SHARE CAPITAL ══════ -->
+<div id="v-shares" class="view">
+  <div class="al al-b mb">Share capital is <strong>not income</strong> — no GST, no income tax. Recorded as equity. Ensure ASIC Form 484 is lodged for all allotments.</div>
+  <div class="g3 mb" id="shs"></div>
+  <div class="card"><div class="ch"><h3 id="shtit">Share capital — all payments</h3></div><div id="sht"></div></div>
+</div>
+
+<!-- ══════ GST & BAS ══════ -->
+<div id="v-gst" class="view">
+  <div class="al al-a mb">Estimates only. Verify with a registered tax agent before lodging. Due dates: Q1=28 Oct · Q2=28 Feb · Q3=28 Apr · Q4=28 Jul.</div>
+  <div class="g3 mb" id="gss"></div>
+  <div class="g2 mb">
+    <div class="card"><div class="ch"><h3>GST credits (1B) — breakdown</h3></div><div class="cb" id="gc"></div></div>
+    <div class="card"><div class="ch"><h3>BAS estimate</h3></div><div class="cb" id="bas"></div></div>
+  </div>
+  <div class="card"><div class="ch"><h3>All quarters — GST summary</h3></div><div id="gsq"></div></div>
+</div>
+
+<!-- ══════ P&L ══════ -->
+<div id="v-pl" class="view">
+  <div class="card" style="max-width:600px;margin:0 auto" id="plc"></div>
+</div>
+
+<!-- ══════ ADD DATA ══════ -->
+<div id="v-add" class="view">
+  <div class="stabs">
+    <button class="stab on" onclick="showST('exp',this)">+ Expense / Receipt</button>
+    <button class="stab"    onclick="showST('bnk',this)">+ Bank Transaction</button>
+    <button class="stab"    onclick="showST('tip',this)">File Naming Guide</button>
+  </div>
+
+  <!-- ADD EXPENSE -->
+  <div id="st-exp">
+    <div class="g2">
+      <div class="card">
+        <div class="ch"><h3>Add expense / receipt</h3></div>
+        <div class="cb">
+          <div class="fr2">
+            <div class="fg"><label>Date</label><input type="date" id="ae-dt"></div>
+            <div class="fg"><label>Financial Year</label>
+              <select id="ae-fy"><option value="FY2425">FY 2024–25</option><option value="FY2526">FY 2025–26</option><option value="FY2627">FY 2026–27</option><option value="FY2728">FY 2027–28</option></select>
+            </div>
+          </div>
+          <div class="fr2">
+            <div class="fg"><label>Supplier</label><input type="text" id="ae-su" placeholder="e.g. NRMA Insurance"></div>
+            <div class="fg"><label>Category</label>
+              <select id="ae-ca">
+                <option>Registration &amp; Licences</option><option>Insurance</option><option>Software &amp; Subscriptions</option>
+                <option>Professional Services</option><option>Marketing &amp; Website</option><option>Postage &amp; Freight</option>
+                <option>Equipment</option><option>Travel</option><option>Office Supplies</option><option>Bank Charges</option><option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg"><label>Description</label><input type="text" id="ae-de" placeholder="What was this for?"></div>
+          <div class="fr3">
+            <div class="fg"><label>Total paid (incl. GST)</label><input type="number" id="ae-to" step="0.01" placeholder="0.00" oninput="cGST()"></div>
+            <div class="fg"><label>GST treatment</label>
+              <select id="ae-go" onchange="cGST()">
+                <option value="10">10% GST included</option>
+                <option value="0">No GST</option>
+                <option value="c">Enter GST manually</option>
+              </select>
+            </div>
+            <div class="fg"><label>GST amount</label><input type="number" id="ae-gs" step="0.01" placeholder="0.00" oninput="cNet()"></div>
+          </div>
+          <div class="fr2">
+            <div class="fg"><label>Net amount (ex-GST)</label><input type="number" id="ae-ne" step="0.01" placeholder="0.00" readonly style="background:var(--bg)"></div>
+            <div class="fg"><label>Source file / reference</label><input type="text" id="ae-sr" placeholder="RECEIPT_FY2425_FEB_NRMA"></div>
+          </div>
+          <div class="fg"><label>Notes</label><input type="text" id="ae-no" placeholder="Optional notes"></div>
+          <button class="btn btn-tl" onclick="addExp()">+ Save Expense</button>
+        </div>
+      </div>
+      <div>
+        <div class="card mb">
+          <div class="ch"><h3>GST Quick Reference</h3></div>
+          <div class="cb sm muted" style="line-height:2">
+            <p><strong style="color:var(--gn)">No GST:</strong> ASIC fees, government charges, overseas payments, bank charges.</p>
+            <p style="margin-top:6px"><strong style="color:var(--tl)">10% GST:</strong> Australian insurance, subscriptions, software, professional services, printing.</p>
+            <p style="margin-top:6px"><strong style="color:var(--am)">Refunds:</strong> Enter a negative total amount.</p>
+            <p style="margin-top:6px"><strong style="color:var(--bl)">NRMA Insurance:</strong> $610.12 total → GST = $55.47 → Net = $554.65.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch"><h3>Recently added expenses</h3></div>
+          <div id="recent-exp"><div class="empty">Nothing added yet this session</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD BANK -->
+  <div id="st-bnk" style="display:none">
+    <div class="g2">
+      <div class="card">
+        <div class="ch"><h3>Add bank transaction</h3></div>
+        <div class="cb">
+          <div class="fr2">
+            <div class="fg"><label>Date</label><input type="date" id="ab-dt"></div>
+            <div class="fg"><label>Financial Year</label>
+              <select id="ab-fy"><option value="FY2425">FY 2024–25</option><option value="FY2526">FY 2025–26</option><option value="FY2627">FY 2026–27</option><option value="FY2728">FY 2027–28</option></select>
+            </div>
+          </div>
+          <div class="fr2">
+            <div class="fg"><label>Type</label>
+              <select id="ab-ty"><option value="Credit">Credit (money in)</option><option value="Debit">Debit (money out)</option></select>
+            </div>
+            <div class="fg"><label>Classification</label>
+              <select id="ab-cl">
+                <option value="Share Capital">Share Capital</option>
+                <option value="Income">Business Income</option>
+                <option value="Expense">Expense Payment</option>
+                <option value="Transfer">Internal Transfer</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg"><label>Description</label><input type="text" id="ab-de" placeholder="Bank transaction description"></div>
+          <div class="fr2">
+            <div class="fg"><label>Amount (AUD)</label><input type="number" id="ab-am" step="0.01" placeholder="0.00"></div>
+            <div class="fg"><label>Shareholder name (if share capital)</label><input type="text" id="ab-sh" placeholder="e.g. Hashim Hashim"></div>
+          </div>
+          <div class="fg"><label>Source / reference</label><input type="text" id="ab-sr" placeholder="BANK_FY2425_MAY_CBA"></div>
+          <button class="btn btn-tl" onclick="addBnk()">+ Save Transaction</button>
+        </div>
+      </div>
+      <div>
+        <div class="card mb">
+          <div class="ch"><h3>Classification guide</h3></div>
+          <div class="cb sm" style="line-height:2">
+            <p><span style="color:var(--bl);font-weight:600">Share Capital</span> — money invested by shareholders. Not taxable, not income. Goes on the balance sheet as equity.</p>
+            <p style="margin-top:6px"><span style="color:var(--tl);font-weight:600">Business Income</span> — payment received from a customer for services or goods.</p>
+            <p style="margin-top:6px"><span style="color:var(--rd);font-weight:600">Expense Payment</span> — money paid out for a business cost.</p>
+            <p style="margin-top:6px"><span class="muted">Internal Transfer</span> — movement between your own accounts.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch"><h3>Recently added transactions</h3></div>
+          <div id="recent-bnk"><div class="empty">Nothing added yet this session</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAMING GUIDE -->
+  <div id="st-tip" style="display:none">
+    <div class="g2">
+      <div>
+        <div class="ng mb">
+          <h4>Recommended file naming convention</h4>
+          <div class="ng-r"><span class="ng-t">BANK_FY2526_SEP_CBA</span><div class="ng-d">Bank statement · FY2025-26 · September · CBA</div></div>
+          <div class="ng-r"><span class="ng-t">RECEIPT_FY2526_OCT_NRMA</span><div class="ng-d">Receipt · FY2025-26 · October · NRMA</div></div>
+          <div class="ng-r"><span class="ng-t">EXPENSE_FY2526_NOV_OFFICE</span><div class="ng-d">Expense claim · November</div></div>
+          <div class="ng-r"><span class="ng-t">INV-IN_FY2526_DEC_SUPPLIER</span><div class="ng-d">Invoice received (you pay) · December</div></div>
+          <div class="ng-r"><span class="ng-t">INV-OUT_FY2526_JAN_CLIENT</span><div class="ng-d">Invoice issued (you get paid) · January</div></div>
+          <div style="margin-top:12px;font-size:11px;color:#6a8aaa;line-height:1.7">
+            <strong style="color:var(--tl)">Month codes:</strong> JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC<br>
+            <strong style="color:var(--tl)">Year codes:</strong> FY2425 · FY2526 · FY2627 · FY2728
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch"><h3>How to upload files to Claude for extraction</h3></div>
+          <div class="cb sm muted" style="line-height:1.9">
+            <p>This BizBooks file stores data locally in your browser and works completely offline.</p>
+            <p style="margin-top:8px">To have Claude AI <strong>read your receipts and bank statements</strong> and extract the data automatically:</p>
+            <ol style="margin:8px 0 0 18px;line-height:2">
+              <li>Open a new Claude.ai chat</li>
+              <li>Upload your files (PDF, JPG, PNG, etc.)</li>
+              <li>Ask Claude: <em>"Extract all financial data from these documents for Noor Energy Pty Ltd and give me the details to enter into BizBooks"</em></li>
+              <li>Copy the extracted amounts, dates, and suppliers into the Add Data forms here</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="ch"><h3>Export &amp; backup your data</h3></div>
+          <div class="cb sm muted" style="line-height:1.9">
+            <p>Your data is saved in your browser's local storage automatically.</p>
+            <p style="margin-top:8px"><strong>To back up:</strong> click <strong>Export JSON</strong> in the top bar. Save the file somewhere safe (OneDrive, etc.).</p>
+            <p style="margin-top:8px"><strong>To restore:</strong> click <strong>Import JSON</strong> and select your backup file.</p>
+            <p style="margin-top:8px"><strong>Important:</strong> If you clear your browser data, local storage is erased. Always keep an exported backup.</p>
+            <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-tl" onclick="exportData()">Export JSON Backup</button>
+              <button class="btn" onclick="document.getElementById('import-input').click()">Import JSON Backup</button>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <div class="ch"><h3>Danger zone</h3></div>
+          <div class="cb">
+            <p class="sm muted" style="margin-bottom:10px">This will delete ALL data you have added manually. Pre-loaded FY2024-25 data will be restored on next reload.</p>
+            <button class="btn btn-rd btn-sm" onclick="clearAllData()">Clear all user data</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<!-- MODAL: Add Expense -->
+<div class="modal-bg" id="modal-expense">
+  <div class="modal">
+    <div class="mh"><h3>Add expense / receipt</h3><button class="close-x" onclick="closeModal('expense')">×</button></div>
+    <div class="mb2">
+      <div class="fr2">
+        <div class="fg"><label>Date</label><input type="date" id="m-ae-dt"></div>
+        <div class="fg"><label>Financial Year</label><select id="m-ae-fy"><option value="FY2425">FY 2024–25</option><option value="FY2526">FY 2025–26</option><option value="FY2627">FY 2026–27</option><option value="FY2728">FY 2027–28</option></select></div>
+      </div>
+      <div class="fr2">
+        <div class="fg"><label>Supplier</label><input type="text" id="m-ae-su" placeholder="Supplier name"></div>
+        <div class="fg"><label>Category</label><select id="m-ae-ca"><option>Registration &amp; Licences</option><option>Insurance</option><option>Software &amp; Subscriptions</option><option>Professional Services</option><option>Marketing &amp; Website</option><option>Postage &amp; Freight</option><option>Equipment</option><option>Travel</option><option>Office Supplies</option><option>Bank Charges</option><option>Other</option></select></div>
+      </div>
+      <div class="fg"><label>Description</label><input type="text" id="m-ae-de" placeholder="What was this expense for?"></div>
+      <div class="fr3">
+        <div class="fg"><label>Total (incl. GST)</label><input type="number" id="m-ae-to" step="0.01" placeholder="0.00" oninput="mcGST()"></div>
+        <div class="fg"><label>GST treatment</label><select id="m-ae-go" onchange="mcGST()"><option value="10">10% GST</option><option value="0">No GST</option><option value="c">Manual</option></select></div>
+        <div class="fg"><label>GST amount</label><input type="number" id="m-ae-gs" step="0.01" placeholder="0.00" oninput="mcNet()"></div>
+      </div>
+      <div class="fr2">
+        <div class="fg"><label>Net (ex-GST)</label><input type="number" id="m-ae-ne" step="0.01" readonly style="background:var(--bg)"></div>
+        <div class="fg"><label>Source file</label><input type="text" id="m-ae-sr" placeholder="RECEIPT_FY..."></div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn" onclick="closeModal('expense')">Cancel</button><button class="btn btn-tl" onclick="mAddExp()">Save Expense</button></div>
+  </div>
+</div>
+
+<!-- MODAL: Add Bank -->
+<div class="modal-bg" id="modal-bank">
+  <div class="modal">
+    <div class="mh"><h3>Add bank transaction</h3><button class="close-x" onclick="closeModal('bank')">×</button></div>
+    <div class="mb2">
+      <div class="fr2">
+        <div class="fg"><label>Date</label><input type="date" id="m-ab-dt"></div>
+        <div class="fg"><label>Financial Year</label><select id="m-ab-fy"><option value="FY2425">FY 2024–25</option><option value="FY2526">FY 2025–26</option><option value="FY2627">FY 2026–27</option><option value="FY2728">FY 2027–28</option></select></div>
+      </div>
+      <div class="fr2">
+        <div class="fg"><label>Type</label><select id="m-ab-ty"><option value="Credit">Credit (money in)</option><option value="Debit">Debit (money out)</option></select></div>
+        <div class="fg"><label>Classification</label><select id="m-ab-cl"><option value="Share Capital">Share Capital</option><option value="Income">Business Income</option><option value="Expense">Expense Payment</option><option value="Transfer">Internal Transfer</option><option value="Other">Other</option></select></div>
+      </div>
+      <div class="fg"><label>Description</label><input type="text" id="m-ab-de" placeholder="Transaction description"></div>
+      <div class="fr2">
+        <div class="fg"><label>Amount (AUD)</label><input type="number" id="m-ab-am" step="0.01" placeholder="0.00"></div>
+        <div class="fg"><label>Shareholder (if share capital)</label><input type="text" id="m-ab-sh" placeholder="e.g. Hashim Hashim"></div>
+      </div>
+      <div class="fg"><label>Source file</label><input type="text" id="m-ab-sr" placeholder="BANK_FY..."></div>
+    </div>
+    <div class="mf"><button class="btn" onclick="closeModal('bank')">Cancel</button><button class="btn btn-tl" onclick="mAddBnk()">Save Transaction</button></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// BASE DATA — FY2424-25 pre-loaded
+// ═══════════════════════════════════════════════════════
+const BASE_EX = [
+  {id:'e1',date:'2024-07-08',fy:'FY2425',desc:'Application to Register New Company — Share Capital',supplier:'ASIC / business.gov.au',cat:'Registration & Licences',total:597,gst:0,net:597,src:'RECEIPT_FY2425_JUL_BUSINESS_REGISTRATION',status:'Approved',notes:''},
+  {id:'e2',date:'2024-07-08',fy:'FY2425',desc:'Business Name "Noor Energy" — 3-Year Registration',supplier:'ASIC / business.gov.au',cat:'Registration & Licences',total:102,gst:0,net:102,src:'RECEIPT_FY2425_JUL_BUSINESS_REGISTRATION',status:'Approved',notes:''},
+  {id:'e3',date:'2024-10-21',fy:'FY2425',desc:'ASIC Refund — Receipt H238303181389',supplier:'ASIC',cat:'Registration & Licences',total:-102,gst:0,net:-102,src:'BANK_FY2425_OCT_ASIC_REFUND',status:'Refund',notes:'Credit received'},
+  {id:'e4',date:'2025-02-13',fy:'FY2425',desc:'Business Insurance — Policy 6807260 (effective 1 Mar 2025)',supplier:'NRMA Insurance',cat:'Insurance',total:610.12,gst:55.47,net:554.65,src:'RECEIPT_FY2425_FEB_INSURANCE_POLICY',status:'Approved',notes:'Receipt #74549585 · Card xx9281'},
+];
+const BASE_BK = [
+  {id:'b1',date:'2024-12-18',fy:'FY2425',desc:'Transfer from NetBank — HH Share',type:'Credit',amount:1000,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:''},
+  {id:'b2',date:'2025-02-06',fy:'FY2425',desc:'Transfer from CommBank app — Transfer',type:'Credit',amount:800,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:''},
+  {id:'b3',date:'2025-02-18',fy:'FY2425',desc:'NRMA ADELAIDE AU — Card xx9281',type:'Debit',amount:610.12,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2425_FEB_INSURANCE_POLICY'},
+  {id:'b4',date:'2025-05-03',fy:'FY2425',desc:'Transfer from CommBank app — Transfer',type:'Credit',amount:2000,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:''},
+  {id:'b5',date:'2025-05-03',fy:'FY2425',desc:'Fast Transfer From MOHAMMED ALBASHIER — Noor Energy',type:'Credit',amount:5000,classification:'Share Capital',shareholder:'Mohammed Magzoub',matched:true,src:''},
+  {id:'b6',date:'2025-05-16',fy:'FY2425',desc:'Transfer from CommBank app — Noor Energy',type:'Credit',amount:1810.12,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:''},
+];
+
+// ═══════════════════════════════════════════════════════
+// LOCALSTORAGE DATA STORE
+// ═══════════════════════════════════════════════════════
+function loadData() {
+  try {
+    const ex = JSON.parse(localStorage.getItem('ne_expenses') || 'null');
+    const bk = JSON.parse(localStorage.getItem('ne_bank') || 'null');
+    return {
+      expenses: ex || [...BASE_EX],
+      bank: bk || [...BASE_BK]
+    };
+  } catch(e) {
+    return { expenses: [...BASE_EX], bank: [...BASE_BK] };
+  }
+}
+function saveData() {
+  localStorage.setItem('ne_expenses', JSON.stringify(DATA.expenses));
+  localStorage.setItem('ne_bank', JSON.stringify(DATA.bank));
+  toast('Data saved');
+}
+let DATA = loadData();
+
+// ═══════════════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════════════
+let aFY = 'FY2425', aQ = 'Q1';
+const QD = {
+  Q1:{m:[7,8,9],  l:'Q1 Jul–Sep', d:'1 Jul – 30 Sep'},
+  Q2:{m:[10,11,12],l:'Q2 Oct–Dec', d:'1 Oct – 31 Dec'},
+  Q3:{m:[1,2,3],  l:'Q3 Jan–Mar', d:'1 Jan – 31 Mar'},
+  Q4:{m:[4,5,6],  l:'Q4 Apr–Jun', d:'1 Apr – 30 Jun'},
+  ALL:{m:[1,2,3,4,5,6,7,8,9,10,11,12],l:'Full Year',d:'1 Jul – 30 Jun'},
+};
+const GD = {Q1:'28 Oct',Q2:'28 Feb',Q3:'28 Apr',Q4:'28 Jul',ALL:'—'};
+const FYL = {FY2425:'FY 2024–25',FY2526:'FY 2025–26',FY2627:'FY 2026–27',FY2728:'FY 2027–28'};
+const FYS = {FY2425:2024,FY2526:2025,FY2627:2026,FY2728:2027};
+
+// ═══════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════
+const aud = n => '$' + Number(n||0).toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fd  = d => { if(!d) return ''; return new Date(d+'T00:00:00').toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'}); };
+const gm  = d => new Date(d+'T00:00:00').getMonth()+1;
+const gy  = d => new Date(d+'T00:00:00').getFullYear();
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,5);
+const today = () => new Date().toISOString().split('T')[0];
+
+function inP(d, fy, q) {
+  const m = gm(d), y = gy(d), s = FYS[fy];
+  if(q === 'ALL') return (m >= 7 && y === s) || (m <= 6 && y === s+1);
+  const ms = QD[q].m;
+  return (q==='Q1'||q==='Q2') ? (ms.includes(m) && y===s) : (ms.includes(m) && y===s+1);
+}
+
+const fE = (fy,q) => DATA.expenses.filter(e => e.fy===fy && inP(e.date,fy,q));
+const fB = (fy,q) => DATA.bank.filter(b => b.fy===fy && inP(b.date,fy,q));
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+// ═══════════════════════════════════════════════════════
+// PERIOD
+// ═══════════════════════════════════════════════════════
+function onFY() { aFY = document.getElementById('fy-sel').value; updB(); rAll(); }
+function onQ()  { aQ  = document.getElementById('q-sel').value;  updB(); rAll(); }
+function updB() {
+  const s = FYS[aFY];
+  document.getElementById('qpill').textContent = (aQ==='ALL'?'Full Year ':QD[aQ].l+' ') + FYL[aFY];
+  document.getElementById('pdts').textContent  = aQ==='ALL'
+    ? `1 Jul ${s} – 30 Jun ${s+1}`
+    : `${QD[aQ].d} ${(aQ==='Q1'||aQ==='Q2') ? s : s+1}`;
+}
+function setQ(q) { aQ=q; document.getElementById('q-sel').value=q; updB(); rAll(); }
+
+// ═══════════════════════════════════════════════════════
+// QUARTER TIMELINE
+// ═══════════════════════════════════════════════════════
+function rQTL() {
+  const s = FYS[aFY];
+  const dm = {Q1:`Jul–Sep ${s}`,Q2:`Oct–Dec ${s}`,Q3:`Jan–Mar ${s+1}`,Q4:`Apr–Jun ${s+1}`};
+  document.getElementById('qtl').innerHTML = ['Q1','Q2','Q3','Q4'].map(q => {
+    const e = fE(aFY,q), g = e.reduce((a,x)=>a+(x.gst||0),0), hb = fB(aFY,q).length > 0;
+    return `<div class="qtq ${aQ===q?'active':''}" onclick="setQ('${q}')">
+      <div class="ql">${q} · ${GD[q]}</div>
+      <div class="qd">${dm[q]}</div>
+      ${e.length||hb ? `<div class="qa">${aud(g)} GST credits</div>` : `<div class="nd">No data yet</div>`}
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER ALL
+// ═══════════════════════════════════════════════════════
+function rAll() { rQTL(); rDash(); rBank(); rExp(); rShares(); rGST(); rPL(); }
+
+// DASHBOARD
+function rDash() {
+  const e = fE(aFY,aQ), b = fB(aFY,aQ);
+  const ap = e.filter(x => x.total > 0 && x.status === 'Approved');
+  const tE = ap.reduce((s,x) => s+x.total, 0);
+  const gC = ap.reduce((s,x) => s+(x.gst||0), 0);
+  const cr = b.filter(x => x.type==='Credit').reduce((s,x) => s+x.amount, 0);
+  const sc = b.filter(x => x.classification==='Share Capital').reduce((s,x) => s+x.amount, 0);
+  const qL = aQ==='ALL' ? 'Full Year' : QD[aQ].l;
+  const hasData = e.length > 0 || b.length > 0;
+
+  document.getElementById('da').className = 'al al-t mb';
+  document.getElementById('da').innerHTML = hasData
+    ? `Showing <strong>${qL} — ${FYL[aFY]}</strong>. GST lodgement due: <strong>${GD[aQ]}</strong>. Data auto-saves in your browser.`
+    : `No data recorded for <strong>${qL} — ${FYL[aFY]}</strong>. Use <strong>Add Data</strong> tab to enter expenses and bank transactions.`;
+
+  document.getElementById('ds').innerHTML = `
+    <div class="sc tl"><div class="lb">Bank credits (in)</div><div class="vl">${aud(cr)}</div><div class="sb">${b.filter(x=>x.type==='Credit').length} transactions</div></div>
+    <div class="sc rd"><div class="lb">Total expenses</div><div class="vl">${aud(tE)}</div><div class="sb">${ap.length} approved items</div></div>
+    <div class="sc gn"><div class="lb">GST credits</div><div class="vl">${aud(gC)}</div><div class="sb">Claimable this period</div></div>
+    <div class="sc bl"><div class="lb">Share capital</div><div class="vl">${aud(sc)}</div><div class="sb">Not taxable income</div></div>`;
+
+  document.getElementById('de').innerHTML = ap.length
+    ? `<table><thead><tr><th>Date</th><th>Supplier</th><th class="thr">GST</th><th class="thr">Total</th></tr></thead>
+       <tbody>${ap.map(x=>`<tr><td>${fd(x.date)}</td><td>${x.supplier}</td><td class="nr">${aud(x.gst||0)}</td><td class="nr">${aud(x.total)}</td></tr>`).join('')}</tbody>
+       <tfoot><tr><td colspan="2">Total</td><td class="nr">${aud(gC)}</td><td class="nr">${aud(tE)}</td></tr></tfoot></table>`
+    : `<div class="empty">No expenses this period</div>`;
+
+  document.getElementById('db').innerHTML = b.length
+    ? `<table><thead><tr><th>Date</th><th>Description</th><th class="thr">Amount</th><th>Type</th></tr></thead>
+       <tbody>${b.map(x=>`<tr><td>${fd(x.date)}</td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${x.desc}</td><td class="nr" style="color:${x.type==='Credit'?'var(--tl)':'var(--rd)'}">${x.type==='Credit'?'+':'−'}${aud(x.amount)}</td><td><span class="b ${x.type==='Credit'?'btl':'brd'}">${x.type}</span></td></tr>`).join('')}</tbody></table>`
+    : `<div class="empty">No bank activity this period</div>`;
+
+  document.getElementById('dg').innerHTML = `
+    <div class="g2">
+      <div>
+        <div class="pr"><span>GST on sales (1A)</span><span class="mono">$0.00</span></div>
+        <div class="pr"><span>GST credits — purchases (1B)</span><span class="mono" style="color:var(--gn)">${aud(gC)}</span></div>
+        <div class="dvd"></div>
+        <div class="pr st"><span>Net GST position</span><span class="mono" style="color:${gC>0?'var(--gn)':'var(--muted)'}">${gC>0?'('+aud(gC)+') REFUND':'$0.00'}</span></div>
+      </div>
+      <div>
+        <div class="al ${gC>0?'al-g':'al-t'}" style="margin-bottom:0">
+          ${gC>0
+            ? `<strong>ATO owes you ${aud(gC)}</strong>. Lodge BAS by <strong>${GD[aQ]}</strong>.`
+            : `No GST credits or taxable sales recorded for this period.`}
+        </div>
+      </div>
+    </div>`;
+}
+
+// BANK
+function rBank() {
+  const b = fB(aFY,aQ);
+  const cr = b.filter(x=>x.type==='Credit').reduce((s,x)=>s+x.amount,0);
+  const db = b.filter(x=>x.type==='Debit').reduce((s,x)=>s+x.amount,0);
+  document.getElementById('bks').innerHTML = `
+    <div class="sc tl"><div class="lb">Credits (in)</div><div class="vl">${aud(cr)}</div><div class="sb">${b.filter(x=>x.type==='Credit').length} items</div></div>
+    <div class="sc rd"><div class="lb">Debits (out)</div><div class="vl">${aud(db)}</div><div class="sb">${b.filter(x=>x.type==='Debit').length} items</div></div>
+    <div class="sc ${cr-db>=0?'gn':'rd'}"><div class="lb">Net</div><div class="vl">${aud(cr-db)}</div><div class="sb">This period</div></div>`;
+  document.getElementById('btit').textContent = `Bank — ${aQ==='ALL'?'Full Year':QD[aQ].l} ${FYL[aFY]}`;
+  document.getElementById('bkt').innerHTML = b.length
+    ? `<table><thead><tr><th>Date</th><th>Description</th><th class="thr">Debit</th><th class="thr">Credit</th><th>Classification</th><th>Shareholder</th><th>Matched</th><th></th></tr></thead>
+       <tbody>${b.sort((a,c)=>a.date.localeCompare(c.date)).map(x=>`
+         <tr class="${x.classification==='Share Capital'?(x.shareholder&&x.shareholder.includes('Mohammed')?'rp':'rb'):(x.type==='Debit'?'rg':'')}">
+           <td>${fd(x.date)}</td>
+           <td>${x.desc}${x.src?`<br><span class="src">${x.src}</span>`:''}</td>
+           <td class="nr" style="color:var(--rd)">${x.type==='Debit'?aud(x.amount):'—'}</td>
+           <td class="nr" style="color:var(--tl)">${x.type==='Credit'?aud(x.amount):'—'}</td>
+           <td><span class="b ${x.classification==='Share Capital'?'bbl':x.classification==='Income'?'btl':'bgy'}">${x.classification}</span></td>
+           <td class="sm muted">${x.shareholder||'—'}</td>
+           <td><span class="b ${x.matched?'bgn':'bam'}">${x.matched?'Matched':'Pending'}</span></td>
+           <td><button class="btn btn-sm" style="color:var(--rd);border-color:var(--rd-lt)" onclick="delBnk('${x.id}')">Del</button></td>
+         </tr>`).join('')}
+       </tbody>
+       <tfoot><tr><td colspan="2">Totals</td><td class="nr" style="color:var(--rd)">${aud(db)}</td><td class="nr" style="color:var(--tl)">${aud(cr)}</td><td colspan="4"></td></tr></tfoot></table>`
+    : `<div class="empty">No bank transactions for this period</div>`;
+}
+
+// EXPENSES
+function rExp() {
+  const e = fE(aFY,aQ);
+  const ap = e.filter(x=>x.status==='Approved'&&x.total>0);
+  const tE = ap.reduce((s,x)=>s+x.total,0);
+  const gT = ap.reduce((s,x)=>s+(x.gst||0),0);
+  const nT = ap.reduce((s,x)=>s+x.net,0);
+  document.getElementById('exs').innerHTML = `
+    <div class="sc rd"><div class="lb">Gross expenses</div><div class="vl">${aud(tE)}</div><div class="sb">${ap.length} items · incl. GST</div></div>
+    <div class="sc gn"><div class="lb">GST credits</div><div class="vl">${aud(gT)}</div><div class="sb">Claimable input tax</div></div>
+    <div class="sc am"><div class="lb">Net (ex-GST)</div><div class="vl">${aud(nT)}</div><div class="sb">Deductible for tax</div></div>`;
+  document.getElementById('etit').textContent = `Expenses — ${aQ==='ALL'?'Full Year':QD[aQ].l} ${FYL[aFY]}`;
+  document.getElementById('ext').innerHTML = e.length
+    ? `<table><thead><tr><th>Date</th><th>Supplier</th><th>Description</th><th>Category</th><th class="thr">Ex-GST</th><th class="thr">GST</th><th class="thr">Total</th><th>Status</th><th>Source</th><th></th></tr></thead>
+       <tbody>${e.sort((a,b)=>a.date.localeCompare(b.date)).map(x=>`
+         <tr class="${x.status==='Refund'?'rg':'ra'}">
+           <td>${fd(x.date)}</td>
+           <td class="sm">${x.supplier}</td>
+           <td>${x.desc}</td>
+           <td class="sm muted">${x.cat}</td>
+           <td class="nr" style="${x.net<0?'color:var(--gn)':''}">${aud(x.net)}</td>
+           <td class="nr">${aud(x.gst||0)}</td>
+           <td class="nr" style="font-weight:600;${x.total<0?'color:var(--gn)':''}">${aud(x.total)}</td>
+           <td><span class="b ${x.status==='Approved'?'bgn':x.status==='Refund'?'btl':'bam'}">${x.status}</span></td>
+           <td><span class="src">${x.src||'—'}</span></td>
+           <td><button class="btn btn-sm" style="color:var(--rd);border-color:var(--rd-lt)" onclick="delExp('${x.id}')">Del</button></td>
+         </tr>`).join('')}
+       </tbody>
+       <tfoot><tr><td colspan="4">Net total</td><td class="nr">${aud(nT)}</td><td class="nr">${aud(gT)}</td><td class="nr">${aud(tE)}</td><td colspan="3"></td></tr></tfoot></table>`
+    : `<div class="empty">No expenses for this period. Use <strong>Add Data</strong> to record expenses.</div>`;
+}
+
+// SHARES
+function rShares() {
+  const s = DATA.bank.filter(b => b.fy===aFY && b.classification==='Share Capital');
+  const h = s.filter(b => b.shareholder && b.shareholder.includes('Hashim'));
+  const o = s.filter(b => !b.shareholder || !b.shareholder.includes('Hashim'));
+  const tot = s.reduce((a,b) => a+b.amount, 0);
+  document.getElementById('shs').innerHTML = `
+    <div class="sc bl"><div class="lb">Hashim Hashim</div><div class="vl">${aud(h.reduce((a,b)=>a+b.amount,0))}</div><div class="sb">${h.length} payments</div></div>
+    <div class="sc pu"><div class="lb">Other shareholders</div><div class="vl">${aud(o.reduce((a,b)=>a+b.amount,0))}</div><div class="sb">${o.length} payment(s)</div></div>
+    <div class="sc tl"><div class="lb">Total share capital</div><div class="vl">${aud(tot)}</div><div class="sb">${FYL[aFY]} · not taxable</div></div>`;
+  document.getElementById('shtit').textContent = `Share capital — ${FYL[aFY]}`;
+  const g = {};
+  s.forEach(b => { const k = b.shareholder||'Unknown'; if(!g[k]) g[k]=[]; g[k].push(b); });
+  let rows = '', n = 1;
+  Object.entries(g).forEach(([sh,tx]) => {
+    const isH = sh.includes('Hashim');
+    tx.sort((a,b)=>a.date.localeCompare(b.date)).forEach(t => {
+      rows += `<tr class="${isH?'rb':'rp'}">
+        <td>${n++}</td><td>${fd(t.date)}</td><td>${t.desc}</td>
+        <td><strong>${sh}</strong></td>
+        <td class="nr" style="color:var(--tl)">${aud(t.amount)}</td>
+        <td><span class="b ${isH?'bbl':'bpu'}">Share Capital</span></td>
+      </tr>`;
+    });
+  });
+  document.getElementById('sht').innerHTML = s.length
+    ? `<table><thead><tr><th>#</th><th>Date</th><th>Bank Reference</th><th>Shareholder</th><th class="thr">Amount</th><th>Type</th></tr></thead>
+       <tbody>${rows}</tbody>
+       <tfoot><tr><td colspan="4">Total ${FYL[aFY]}</td><td class="nr">${aud(tot)}</td><td></td></tr></tfoot></table>`
+    : `<div class="empty">No share capital recorded for ${FYL[aFY]}</div>`;
+}
+
+// GST
+function rGST() {
+  const e = fE(aFY,aQ).filter(x => x.total>0 && x.status==='Approved');
+  const gC = e.reduce((s,x)=>s+(x.gst||0),0);
+  const tP = e.reduce((s,x)=>s+x.total,0);
+  document.getElementById('gss').innerHTML = `
+    <div class="sc am"><div class="lb">GST on sales (1A)</div><div class="vl">$0.00</div><div class="sb">No taxable sales recorded</div></div>
+    <div class="sc gn"><div class="lb">GST credits (1B)</div><div class="vl">${aud(gC)}</div><div class="sb">From purchases this period</div></div>
+    <div class="sc tl"><div class="lb">Net GST refund</div><div class="vl">${aud(gC)}</div><div class="sb">Lodge by ${GD[aQ]}</div></div>`;
+  const ge = e.filter(x=>(x.gst||0)>0);
+  document.getElementById('gc').innerHTML = ge.length
+    ? ge.map(x=>`<div class="pr"><span>${x.supplier}<br><span class="sm muted">${x.desc}</span></span><span class="mono" style="color:var(--gn)">${aud(x.gst)}</span></div>`).join('')
+      + `<div class="dvd"></div><div class="pr st"><span>Total GST credits</span><span class="mono" style="color:var(--gn)"><strong>${aud(gC)}</strong></span></div>`
+    : `<div class="empty" style="border:none">No GST-claimable purchases this period</div>`;
+  document.getElementById('bas').innerHTML = `
+    <div class="pr i1"><span>G1 — Total sales (incl. GST)</span><span class="mono">$0.00</span></div>
+    <div class="pr i1"><span>G11 — Purchases (incl. GST)</span><span class="mono">${aud(tP)}</span></div>
+    <div class="dvd"></div>
+    <div class="pr"><span style="font-weight:600">1A — GST on sales</span><span class="mono"><strong>$0.00</strong></span></div>
+    <div class="pr"><span style="font-weight:600">1B — GST credits</span><span class="mono" style="color:var(--gn)"><strong>${aud(gC)}</strong></span></div>
+    <div class="pr"><span>W1 — Wages paid</span><span class="mono">$0.00</span></div>
+    <div class="pr"><span>W2 — PAYG withheld</span><span class="mono">$0.00</span></div>
+    <div class="dvd"></div>
+    <div class="pr" style="font-size:15px;font-weight:700"><span>Total (refund)</span><span class="mono" style="color:var(--gn)"><strong>${gC>0?'('+aud(gC)+')':'$0.00'}</strong></span></div>
+    <div class="al al-g" style="margin-top:12px;margin-bottom:0;font-size:11.5px">Lodge BAS by <strong>${GD[aQ]}</strong>. Verify all figures with your tax agent before lodging.</div>`;
+  const s = FYS[aFY];
+  const dm = {Q1:`Jul–Sep ${s}`,Q2:`Oct–Dec ${s}`,Q3:`Jan–Mar ${s+1}`,Q4:`Apr–Jun ${s+1}`};
+  const qr = ['Q1','Q2','Q3','Q4'].map(q => {
+    const qe = fE(aFY,q).filter(x=>x.total>0&&x.status==='Approved');
+    const gc = qe.reduce((a,x)=>a+(x.gst||0),0), tp = qe.reduce((a,x)=>a+x.total,0);
+    return `<tr class="${aQ===q?'rb':''}">
+      <td><strong>${q}</strong></td><td class="sm muted">${dm[q]}</td><td class="sm muted">${GD[q]}</td>
+      <td class="nr">$0.00</td>
+      <td class="nr" style="color:var(--gn)">${aud(gc)}</td>
+      <td class="nr">${aud(tp)}</td>
+      <td class="nr" style="color:${gc>0?'var(--gn)':'var(--muted)'}"><strong>${gc>0?'('+aud(gc)+') Refund':'$0.00'}</strong></td>
+      <td><span class="b ${gc>0?'bgn':'bgy'}">${gc>0?'Refund due':'Nil'}</span></td>
+    </tr>`;
+  }).join('');
+  const ae = DATA.expenses.filter(x=>x.fy===aFY&&x.total>0&&x.status==='Approved');
+  const fyG = ae.reduce((a,x)=>a+(x.gst||0),0), fyP = ae.reduce((a,x)=>a+x.total,0);
+  document.getElementById('gsq').innerHTML = `
+    <table><thead><tr><th>Quarter</th><th>Period</th><th>BAS due</th><th class="thr">GST sales</th><th class="thr">GST credits</th><th class="thr">Purchases</th><th class="thr">Net position</th><th>Status</th></tr></thead>
+    <tbody>${qr}</tbody>
+    <tfoot><tr><td colspan="3"><strong>Full year ${FYL[aFY]}</strong></td><td class="nr">$0.00</td><td class="nr" style="color:var(--gn)">${aud(fyG)}</td><td class="nr">${aud(fyP)}</td><td class="nr" style="color:var(--gn)"><strong>${fyG>0?'('+aud(fyG)+') Refund':'$0.00'}</strong></td><td></td></tr></tfoot></table>`;
+}
+
+// P&L
+function rPL() {
+  const e = (aQ==='ALL' ? DATA.expenses.filter(x=>x.fy===aFY) : fE(aFY,aQ))
+    .filter(x => x.status==='Approved' || x.status==='Refund');
+  const tE = e.reduce((s,x)=>s+(x.net||0),0), s = FYS[aFY];
+  const per = aQ==='ALL' ? `1 Jul ${s} – 30 Jun ${s+1}` : `${QD[aQ].d} ${(aQ==='Q1'||aQ==='Q2')?s:s+1}`;
+  const cats = {};
+  e.forEach(x => { if(!cats[x.cat]) cats[x.cat]=0; cats[x.cat]+=x.net; });
+  const catRows = Object.entries(cats)
+    .map(([c,v]) => `<div class="pr i2"><span>${c}</span><span class="mono">${aud(v)}</span></div>`)
+    .join('') || `<div class="pr i1"><span class="sm muted">No expenses this period</span><span class="mono muted">$0.00</span></div>`;
+  const shareC = DATA.bank.filter(b=>b.fy===aFY&&b.classification==='Share Capital').reduce((a,b)=>a+b.amount,0);
+  document.getElementById('plc').innerHTML = `<div class="cb">
+    <div style="text-align:center;padding-bottom:16px;border-bottom:2px solid var(--border);margin-bottom:14px">
+      <div style="font-family:var(--serif);font-size:24px;font-weight:700;color:var(--coal)">Noor Energy Pty Ltd</div>
+      <div class="sm muted">ABN 24 678 922 051</div>
+      <div style="font-size:14px;font-weight:600;color:#2d3561;margin-top:8px">Profit &amp; Loss — ${aQ==='ALL'?'Full Year':QD[aQ].l}</div>
+      <div class="sm muted">${per}</div>
+      <div style="font-size:10.5px;color:var(--am);font-style:italic;margin-top:5px">Not audited · All amounts ex-GST · AUD</div>
+    </div>
+    <div class="pr sh">Income</div>
+    <div class="pr i1"><span>Sales revenue</span><span class="mono">$0.00</span></div>
+    <div class="pr i1"><span>Other income</span><span class="mono">$0.00</span></div>
+    <div class="pr st"><span>Total income</span><span class="mono"><strong>$0.00</strong></span></div>
+    <div class="pr sh" style="margin-top:6px">Operating expenses</div>
+    ${catRows}
+    <div class="dvd"></div>
+    <div class="pr st"><span>Total expenses</span><span class="mono"><strong>${aud(tE)}</strong></span></div>
+    <div class="dvd"></div>
+    <div class="pr gt"><span>Net ${tE>0?'loss':'profit'}</span><span class="mono" style="color:${tE>0?'var(--rd)':'var(--gn)'}"><strong>${tE>0?'('+aud(tE)+')':aud(-tE)}</strong></span></div>
+    <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);line-height:1.8">
+      <strong style="color:var(--ink)">Notes:</strong>
+      Share capital of ${aud(shareC)} (Hashim Hashim + Mohammed Magzoub) is recorded as equity and not included in income.
+      GST amounts are excluded from all P&amp;L figures. Tax losses may be carried forward to future years.
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// ADD EXPENSE (inline tab)
+// ═══════════════════════════════════════════════════════
+function cGST() {
+  const t = parseFloat(document.getElementById('ae-to').value)||0;
+  const o = document.getElementById('ae-go').value;
+  if(o==='c') return;
+  const g = o==='10' ? parseFloat((t/11).toFixed(2)) : 0;
+  document.getElementById('ae-gs').value = g.toFixed(2);
+  document.getElementById('ae-ne').value = (t-g).toFixed(2);
+}
+function cNet() {
+  const t = parseFloat(document.getElementById('ae-to').value)||0;
+  const g = parseFloat(document.getElementById('ae-gs').value)||0;
+  document.getElementById('ae-ne').value = (t-g).toFixed(2);
+}
+function addExp() {
+  const d  = document.getElementById('ae-dt').value;
+  const fy = document.getElementById('ae-fy').value;
+  const su = document.getElementById('ae-su').value.trim();
+  const de = document.getElementById('ae-de').value.trim();
+  const ca = document.getElementById('ae-ca').value;
+  const to = parseFloat(document.getElementById('ae-to').value)||0;
+  const gs = parseFloat(document.getElementById('ae-gs').value)||0;
+  const ne = parseFloat(document.getElementById('ae-ne').value)||(to-gs);
+  const sr = document.getElementById('ae-sr').value.trim();
+  const no = document.getElementById('ae-no').value.trim();
+  if(!d||!su||!to) { toast('Date, supplier and total are required'); return; }
+  const exp = {id:uid(),date:d,fy,desc:de||su,supplier:su,cat:ca,total:to,gst:gs,net:ne,src:sr,status:'Approved',notes:no};
+  DATA.expenses.push(exp);
+  saveData();
+  addToRecent('exp', `${su} — ${aud(to)}`);
+  ['ae-su','ae-de','ae-to','ae-gs','ae-ne','ae-sr','ae-no'].forEach(id => document.getElementById(id).value='');
+  rAll();
+}
+function addBnk() {
+  const d  = document.getElementById('ab-dt').value;
+  const fy = document.getElementById('ab-fy').value;
+  const ty = document.getElementById('ab-ty').value;
+  const cl = document.getElementById('ab-cl').value;
+  const de = document.getElementById('ab-de').value.trim();
+  const am = parseFloat(document.getElementById('ab-am').value)||0;
+  const sh = document.getElementById('ab-sh').value.trim();
+  const sr = document.getElementById('ab-sr').value.trim();
+  if(!d||!de||!am) { toast('Date, description and amount are required'); return; }
+  const bnk = {id:uid(),date:d,fy,desc:de,type:ty,amount:am,classification:cl,shareholder:sh||'',matched:false,src:sr};
+  DATA.bank.push(bnk);
+  saveData();
+  addToRecent('bnk', `${ty}: ${de} — ${aud(am)}`);
+  ['ab-de','ab-am','ab-sh','ab-sr'].forEach(id => document.getElementById(id).value='');
+  rAll();
+}
+
+function addToRecent(type, txt) {
+  const el = document.getElementById(type==='exp'?'recent-exp':'recent-bnk');
+  if(el.querySelector('.empty')) el.innerHTML = '';
+  const row = document.createElement('div');
+  row.style.cssText = 'padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;display:flex;justify-content:space-between';
+  row.innerHTML = `<span>${txt}</span><span class="muted sm">${new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'})}</span>`;
+  el.insertBefore(row, el.firstChild);
+}
+
+// MODAL helpers
+function mcGST() {
+  const t=parseFloat(document.getElementById('m-ae-to').value)||0;
+  const o=document.getElementById('m-ae-go').value;
+  if(o==='c')return;
+  const g=o==='10'?parseFloat((t/11).toFixed(2)):0;
+  document.getElementById('m-ae-gs').value=g.toFixed(2);
+  document.getElementById('m-ae-ne').value=(t-g).toFixed(2);
+}
+function mcNet(){
+  const t=parseFloat(document.getElementById('m-ae-to').value)||0;
+  const g=parseFloat(document.getElementById('m-ae-gs').value)||0;
+  document.getElementById('m-ae-ne').value=(t-g).toFixed(2);
+}
+function mAddExp(){
+  const d=document.getElementById('m-ae-dt').value,fy=document.getElementById('m-ae-fy').value;
+  const su=document.getElementById('m-ae-su').value.trim(),de=document.getElementById('m-ae-de').value.trim();
+  const ca=document.getElementById('m-ae-ca').value;
+  const to=parseFloat(document.getElementById('m-ae-to').value)||0;
+  const gs=parseFloat(document.getElementById('m-ae-gs').value)||0;
+  const ne=parseFloat(document.getElementById('m-ae-ne').value)||(to-gs);
+  const sr=document.getElementById('m-ae-sr').value.trim();
+  if(!d||!su||!to){toast('Date, supplier and total are required');return}
+  DATA.expenses.push({id:uid(),date:d,fy,desc:de||su,supplier:su,cat:ca,total:to,gst:gs,net:ne,src:sr,status:'Approved',notes:''});
+  saveData();closeModal('expense');rAll();
+}
+function mAddBnk(){
+  const d=document.getElementById('m-ab-dt').value,fy=document.getElementById('m-ab-fy').value;
+  const ty=document.getElementById('m-ab-ty').value,cl=document.getElementById('m-ab-cl').value;
+  const de=document.getElementById('m-ab-de').value.trim();
+  const am=parseFloat(document.getElementById('m-ab-am').value)||0;
+  const sh=document.getElementById('m-ab-sh').value.trim();
+  const sr=document.getElementById('m-ab-sr').value.trim();
+  if(!d||!de||!am){toast('Date, description and amount are required');return}
+  DATA.bank.push({id:uid(),date:d,fy,desc:de,type:ty,amount:am,classification:cl,shareholder:sh||'',matched:false,src:sr});
+  saveData();closeModal('bank');rAll();
+}
+
+// DELETE
+function delExp(id) {
+  if(!confirm('Delete this expense?')) return;
+  DATA.expenses = DATA.expenses.filter(e => e.id !== id);
+  saveData(); rAll();
+}
+function delBnk(id) {
+  if(!confirm('Delete this transaction?')) return;
+  DATA.bank = DATA.bank.filter(b => b.id !== id);
+  saveData(); rAll();
+}
+
+// EXPORT / IMPORT
+function exportData() {
+  const blob = new Blob([JSON.stringify({expenses:DATA.expenses,bank:DATA.bank,exported:new Date().toISOString()},null,2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `NoorEnergy_BizBooks_${today()}.json`;
+  a.click();
+  toast('Data exported successfully');
+}
+function importData(input) {
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const d = JSON.parse(e.target.result);
+      if(!d.expenses || !d.bank) throw new Error('Invalid format');
+      DATA.expenses = d.expenses;
+      DATA.bank = d.bank;
+      saveData();
+      rAll();
+      toast('Data imported successfully');
+    } catch(err) {
+      alert('Could not import: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+function clearAllData() {
+  if(!confirm('This will delete ALL your added data. The pre-loaded FY2024-25 data will be restored. Are you sure?')) return;
+  localStorage.removeItem('ne_expenses');
+  localStorage.removeItem('ne_bank');
+  DATA = { expenses: [...BASE_EX], bank: [...BASE_BK] };
+  rAll();
+  toast('All data cleared — base data restored');
+}
+
+// NAV
+function go(id, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  document.getElementById('v-'+id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo(0,0);
+}
+function showST(id, btn) {
+  ['exp','bnk','tip'].forEach(s => {
+    const el = document.getElementById('st-'+s);
+    if(el) el.style.display = s===id ? 'block' : 'none';
+  });
+  document.querySelectorAll('.stab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+function openModal(type) {
+  const el = document.getElementById('modal-'+type);
+  if(el) {
+    el.classList.add('open');
+    const dtField = el.querySelector('input[type=date]');
+    if(dtField && !dtField.value) dtField.value = today();
+  }
+}
+function closeModal(type) {
+  const el = document.getElementById('modal-'+type);
+  if(el) el.classList.remove('open');
+}
+document.querySelectorAll('.modal-bg').forEach(m => {
+  m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open'); });
+});
+
+// INIT
+document.getElementById('ae-dt').value = today();
+document.getElementById('ab-dt').value = today();
+document.getElementById('m-ae-dt').value = today();
+document.getElementById('m-ab-dt').value = today();
+updB();
+rAll();
+</script>
+</body>
+</html>

@@ -540,18 +540,50 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 // BASE DATA — FY2424-25 pre-loaded
 // ═══════════════════════════════════════════════════════
 const BASE_EX = [
-  {id:'e1',date:'2024-07-08',fy:'FY2425',desc:'Application to Register New Company — Share Capital',supplier:'ASIC / business.gov.au',cat:'Registration & Licences',total:597,gst:0,net:597,src:'RECEIPT_FY2425_JUL_BUSINESS_REGISTRATION',status:'Approved',notes:''},
-  {id:'e2',date:'2024-07-08',fy:'FY2425',desc:'Business Name "Noor Energy" — 3-Year Registration',supplier:'ASIC / business.gov.au',cat:'Registration & Licences',total:102,gst:0,net:102,src:'RECEIPT_FY2425_JUL_BUSINESS_REGISTRATION',status:'Approved',notes:''},
-  {id:'e3',date:'2024-10-21',fy:'FY2425',desc:'ASIC Refund — Receipt H238303181389',supplier:'ASIC',cat:'Registration & Licences',total:-102,gst:0,net:-102,src:'BANK_FY2425_OCT_ASIC_REFUND',status:'Refund',notes:'Credit received'},
-  {id:'e4',date:'2025-02-13',fy:'FY2425',desc:'Business Insurance — Policy 6807260 (effective 1 Mar 2025)',supplier:'NRMA Insurance',cat:'Insurance',total:610.12,gst:55.47,net:554.65,src:'RECEIPT_FY2425_FEB_INSURANCE_POLICY',status:'Approved',notes:'Receipt #74549585 · Card xx9281'},
+  // ── FY2425 · Company Expenses ──
+  {id:'e1',date:'2024-07-08',fy:'FY2425',desc:'Company Registration — new PTY LTD (Share Capital application)',supplier:'ASIC / business.gov.au',cat:'Registration & Licences',total:597,gst:0,net:597,src:'RECEIPT_FY2425_JUL_BUSINESS REGISTRATION',status:'Approved',notes:'Receipt #13365704 · paid 08 Jul 2024'},
+  {id:'e2',date:'2024-07-08',fy:'FY2425',desc:'Business Name "Noor Energy" — 3-Year Registration',supplier:'ASIC / business.gov.au',cat:'Registration & Licences',total:102,gst:0,net:102,src:'RECEIPT_FY2425_JUL_BUSINESS REGISTRATION',status:'Approved',notes:'Receipt #13365704'},
+  {id:'e3',date:'2024-10-21',fy:'FY2425',desc:'ASIC Refund — Business Name fee returned',supplier:'ASIC',cat:'Registration & Licences',total:-102,gst:0,net:-102,src:'RECEIPT_FY2425_OCT_ASIC REFUND',status:'Refund',notes:'Receipt H238303181389 · Card xx5566'},
+  {id:'e4',date:'2025-02-13',fy:'FY2425',desc:'NRMA Business Insurance — Policy 6807260 (effective 1 Mar 2025)',supplier:'NRMA Insurance',cat:'Insurance',total:610.12,gst:55.47,net:554.65,src:'RECEIPT_FY2425_FEB_INSURANCE POLICY',status:'Approved',notes:'Receipt #74549585 · Card xx9281 · matched to bank 18 Feb 2025'},
+  // ── FY2425 · Partner-Paid Expenses — Future Reimbursement ──
+  {id:'e5',date:'2024-07-08',fy:'FY2425',desc:'Website Design — noorenergy.com.au development (500,000 SDG · AUD equiv. TBD)',supplier:'Mustafa Anwer Mohammed Hussien',cat:'Marketing & Website',total:0,gst:0,net:0,src:'EXPENSE_FY2425_JUL_WEBSITE DESIGN TRANSFER [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid via Bank of Khartoum · Trx.ID 20012470002 · 500,000 SDG · AUD equiv. to be confirmed at reimbursement'},
+  {id:'e6',date:'2024-08-02',fy:'FY2425',desc:'Logo & Website Design — additional payment (≈ AUD $155 equiv.)',supplier:'Mustafa Anwer Mohammed Hussien',cat:'Marketing & Website',total:155,gst:0,net:155,src:'EXPENSE_FY2425_AUG_LOGO DESIGN TRANSFER [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid via Bank of Khartoum · Trx.ID 20012890191 · 290,000 SDG stated as $155 equiv.'},
+  {id:'e7',date:'2024-08-31',fy:'FY2425',desc:'Document Postage to ATO — Canada Post international express (CAD $120.35)',supplier:'Canada Post',cat:'Postage & Freight',total:120.35,gst:0,net:120.35,src:'EXPENSE_FY2425_SEP_DOCS POSTAGE [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid · Receipt CC104632 · Destination: Australian Taxation Office · No AU GST (foreign purchase)'},
+  {id:'e8',date:'2025-01-02',fy:'FY2425',desc:'Business Card Printing — 100 standard cards (Vistaprint)',supplier:'Vistaprint Australia',cat:'Office Supplies',total:44.98,gst:4.09,net:40.89,src:'EXPENSE-FY2425_JAN_BUSINESS CARD PRINTING [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Yagoub Bala · Invoice #0223975009 · delivered to 428B Great Eastern Hwy Woodbridge'},
+  {id:'e9',date:'2024-07-08',fy:'FY2425',desc:'Domain Registration noorenergy.com.au + Microsoft 365 Email Essentials 1yr (actual payment 26 May 2024)',supplier:'GoDaddy',cat:'Software & Subscriptions',total:142.10,gst:12.92,net:129.18,src:'EXPENSE_FY2425_MAY_DOMAIN EXPENSES [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Mohammed Albashier · Receipt #3098273852 · emails: jacob@, hashim@, mo@noorenergy.com.au'},
+  {id:'e10',date:'2025-05-15',fy:'FY2425',desc:'Domain Renewal noorenergy.com.au + Ownership Protection (1yr)',supplier:'GoDaddy',cat:'Software & Subscriptions',total:42.59,gst:3.87,net:38.72,src:'EXPENSE_FY2425_MAY_DOMAIN RENEWAL [FUTURE]',status:'Future Reimbursement',notes:'Partner-paid by Mohammed Albashier · Receipt #3747492349'},
+  // ── FY2526 · Company Expenses ──
+  {id:'e11',date:'2025-08-07',fy:'FY2526',desc:'Lawpath Essentials Plan — legal & compliance subscription',supplier:'Lawpath',cat:'Software & Subscriptions',total:468,gst:42.54,net:425.46,src:'RECEIPT_FY2526_AUG_LAW PATH SUBSCRIPTION',status:'Approved',notes:'Invoice #77PB4EC8-0002 · matched to bank debit 07 Aug 2025'},
+  {id:'e12',date:'2025-08-30',fy:'FY2526',desc:'ASIC Annual Company Registration Renewal — Noor Energy PTY LTD',supplier:'ASIC',cat:'Registration & Licences',total:329,gst:0,net:329,src:'BANK_FY2526_SEP_CBA',status:'Approved',notes:'BPAY Ref 2296789220516 · paid via CommBank app · no GST on government fees'},
+  {id:'e13',date:'2026-02-19',fy:'FY2526',desc:'Equipment Procurement — 4× Minelab Gold Monster 2000 (client pass-through for Mogahid Altayeb)',supplier:'Raddock PTY LTD (Reeds Prospecting Supplies)',cat:'Equipment',total:11996,gst:1090.56,net:10905.44,src:'INV-IN_FY2526_FEB_EQUIPMENT PURCHASE-PAID',status:'Approved',notes:'Quote 26-00000789 · Evidence: EQUIPMENT-PURCHASE-EVIDENCE · Mogahid Altayeb engaged Noor Energy · funds received from Abdalkarim AlBorno'},
+  {id:'e14',date:'2026-04-27',fy:'FY2526',desc:'Facilitation & Coordination — equipment procurement & shipment to overseas client (INV-001)',supplier:'Yagoub Yousif Yagoub Bala',cat:'Professional Services',total:2000,gst:0,net:2000,src:'INV-IN_FY2526_APR_YAGOUB',status:'Approved',notes:'Invoice INV-001 dated 27 Apr 2026 · No GST (supplier not registered) · Paid $1,500 on 25 Feb + $500 on 06 Mar 2026'},
+  {id:'e15',date:'2026-03-17',fy:'FY2526',desc:'DHL Express Worldwide — Perth to Dubai (4 items, 27.5kg) for Mogahid Altayeb',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:415.25,gst:0,net:415.25,src:'RECEIPT_FY2526_MAR_DHL POSTAGE',status:'Approved',notes:'Invoice PERR000708514 · Air Waybill 7565139610 · Non-taxable international · Consignee: Mogahid Mahdi Alrayeb, Deira, Dubai'},
+  {id:'e16',date:'2026-03-30',fy:'FY2526',desc:'NRMA Business Insurance Renewal — Policy 6807260',supplier:'NRMA Business Insurance',cat:'Insurance',total:671.15,gst:61.01,net:610.14,src:'BANK_FY2526_MAR_CBA',status:'Approved',notes:'BPAY Ref 07940416001 · Renewal BP 6807260 · matched to bank debit 30 Mar 2026'},
+  // ── FY2526 · Partner-Paid Expenses — Future Reimbursement ──
+  {id:'e17',date:'2026-04-15',fy:'FY2526',desc:'Site Survey Expenses — Halfawi site visit, payment to M. Osman (AUD $500)',supplier:'M Osman',cat:'Travel',total:500,gst:0,net:500,src:'EXPENSE_FY2526_APR_SITE SURVEY EXPENSES 1 OF 2 [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid via PayID from Smart Access (acct on file) · Receipt N441569044793'},
+  {id:'e18',date:'2026-04-15',fy:'FY2526',desc:'Site Survey Expenses — Halfawi site visit, bank transfer (1,000,000 SDG · AUD equiv. TBD)',supplier:'Mosab Ahmed Osman Ahmed',cat:'Travel',total:0,gst:0,net:0,src:'EXPENSE_FY2526_APR_SITE SURVEY EXPENSES 2 OF 2 [FUTURE]',status:'Future Reimbursement',notes:'Partner-paid via Bank of Khartoum · Trx.ID 20024607574 · 1,000,000 SDG · AUD equiv. to be confirmed at reimbursement'},
 ];
 const BASE_BK = [
-  {id:'b1',date:'2024-12-18',fy:'FY2425',desc:'Transfer from NetBank — HH Share',type:'Credit',amount:1000,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:''},
-  {id:'b2',date:'2025-02-06',fy:'FY2425',desc:'Transfer from CommBank app — Transfer',type:'Credit',amount:800,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:''},
-  {id:'b3',date:'2025-02-18',fy:'FY2425',desc:'NRMA ADELAIDE AU — Card xx9281',type:'Debit',amount:610.12,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2425_FEB_INSURANCE_POLICY'},
-  {id:'b4',date:'2025-05-03',fy:'FY2425',desc:'Transfer from CommBank app — Transfer',type:'Credit',amount:2000,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:''},
-  {id:'b5',date:'2025-05-03',fy:'FY2425',desc:'Fast Transfer From MOHAMMED ALBASHIER — Noor Energy',type:'Credit',amount:5000,classification:'Share Capital',shareholder:'Mohammed Magzoub',matched:true,src:''},
-  {id:'b6',date:'2025-05-16',fy:'FY2425',desc:'Transfer from CommBank app — Noor Energy',type:'Credit',amount:1810.12,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:''},
+  // ── FY2425 · Statement 1 (6 Dec 2024 – 31 Mar 2025) ──
+  {id:'b1',date:'2024-12-18',fy:'FY2425',desc:'Transfer from NetBank — HH Share (share capital injection)',type:'Credit',amount:1000,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAR__CBA',gst:0},
+  {id:'b2',date:'2025-02-06',fy:'FY2425',desc:'Transfer from CommBank app — Transfer (share capital injection)',type:'Credit',amount:800,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAR__CBA',gst:0},
+  {id:'b3',date:'2025-02-18',fy:'FY2425',desc:'NRMA ADELAIDE AU — Card xx9281 (business insurance)',type:'Debit',amount:610.12,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2425_FEB_INSURANCE POLICY',gst:55.47},
+  // ── FY2425 · Statement 2 (1 Apr – 17 May 2025) ──
+  {id:'b4',date:'2025-05-03',fy:'FY2425',desc:'Transfer from CommBank app — Transfer (share capital injection)',type:'Credit',amount:2000,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
+  {id:'b5',date:'2025-05-03',fy:'FY2425',desc:'Fast Transfer From MOHAMMED ALBASHIER — Noor Energy (share capital)',type:'Credit',amount:5000,classification:'Share Capital',shareholder:'Mohammed Magzoub Albashier',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
+  {id:'b6',date:'2025-05-16',fy:'FY2425',desc:'Transfer from CommBank app — Noor Enegry (share capital injection)',type:'Credit',amount:1810.12,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
+  // ── FY2526 · Statement 4 (1 Jul – 30 Sep 2025) ──
+  {id:'b7',date:'2025-08-07',fy:'FY2526',desc:'LAWPATH — Essentials Plan annual subscription',type:'Debit',amount:468,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_AUG_LAW PATH SUBSCRIPTION',gst:42.54},
+  {id:'b8',date:'2025-08-30',fy:'FY2526',desc:'ASIC BPAY — Noor Energy annual company registration renewal',type:'Debit',amount:329,classification:'Expense',shareholder:'',matched:true,src:'BANK_FY2526_SEP_CBA',gst:0},
+  // ── FY2526 · Statement 6 (1 Jan – 31 Mar 2026) ──
+  {id:'b9',date:'2026-01-13',fy:'FY2526',desc:'Fast Transfer From HASIBULLAH NOORY — 247 Transport · INV260001',type:'Credit',amount:1485,classification:'Income',shareholder:'',matched:true,src:'RECEIPT_FY2526_JAN_CONSTRUCTION JOB PAYMENT',gst:135},
+  {id:'b10',date:'2026-02-17',fy:'FY2526',desc:'Fast Transfer From ABDALKARIM ALBORNO — Test (equipment purchase test transfer)',type:'Credit',amount:10,classification:'Client Funds',shareholder:'Abdalkarim AlBorno on behalf of Mogahid Altayeb',matched:true,src:'EQUIPMENT-PURCHASE-EVIDENCE',gst:0},
+  {id:'b11',date:'2026-02-18',fy:'FY2526',desc:'Fast Transfer From ABDALKARIM ALBORNO — Gift (equipment purchase funds for Mogahid Altayeb)',type:'Credit',amount:14400,classification:'Client Funds',shareholder:'Abdalkarim AlBorno on behalf of Mogahid Altayeb',matched:true,src:'EQUIPMENT-PURCHASE-EVIDENCE',gst:0},
+  {id:'b12',date:'2026-02-19',fy:'FY2526',desc:'Transfer To RADDOCK PTY LTD — 4× Minelab Gold Monster 2000 · Q 26-00000789',type:'Debit',amount:11996,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2526_FEB_EQUIPMENT PURCHASE-PAID',gst:1090.56},
+  {id:'b13',date:'2026-02-25',fy:'FY2526',desc:'Transfer To YAGOUB YOUSIF YAGOUB BALA — Postage (partial payment INV-001)',type:'Debit',amount:1500,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2526_APR_YAGOUB',gst:0},
+  {id:'b14',date:'2026-03-06',fy:'FY2526',desc:'Transfer To YAGOUB YOUSIF YAGOUB BALA — Service (final payment INV-001)',type:'Debit',amount:500,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2526_APR_YAGOUB',gst:0},
+  {id:'b15',date:'2026-03-17',fy:'FY2526',desc:'DHL EXPRESS MYBILL AU — Perth to Dubai shipment · PERR000708514',type:'Debit',amount:415.25,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_MAR_DHL POSTAGE',gst:0},
+  {id:'b16',date:'2026-03-30',fy:'FY2526',desc:'NRMA Business Insure BPAY — Renewal Policy 6807260',type:'Debit',amount:671.15,classification:'Expense',shareholder:'',matched:true,src:'BANK_FY2526_MAR_CBA',gst:61.01},
 ];
 
 // ═══════════════════════════════════════════════════════
@@ -715,20 +747,21 @@ function rBank() {
     <div class="sc ${cr-db>=0?'gn':'rd'}"><div class="lb">Net</div><div class="vl">${aud(cr-db)}</div><div class="sb">This period</div></div>`;
   document.getElementById('btit').textContent = `Bank — ${aQ==='ALL'?'Full Year':QD[aQ].l} ${FYL[aFY]}`;
   document.getElementById('bkt').innerHTML = b.length
-    ? `<table><thead><tr><th>Date</th><th>Description</th><th class="thr">Debit</th><th class="thr">Credit</th><th>Classification</th><th>Shareholder</th><th>Matched</th><th></th></tr></thead>
+    ? `<table><thead><tr><th>Date</th><th>Description</th><th class="thr">Debit</th><th class="thr">Credit</th><th>Classification</th><th>Shareholder / Note</th><th>Document</th><th>Matched</th><th></th></tr></thead>
        <tbody>${b.sort((a,c)=>a.date.localeCompare(c.date)).map(x=>`
-         <tr class="${x.classification==='Share Capital'?(x.shareholder&&x.shareholder.includes('Mohammed')?'rp':'rb'):(x.type==='Debit'?'rg':'')}">
+         <tr class="${x.classification==='Share Capital'?(x.shareholder&&x.shareholder.includes('Mohammed')?'rp':'rb'):x.classification==='Client Funds'?'ra':(x.type==='Debit'?'rg':'')}">
            <td>${fd(x.date)}</td>
-           <td>${x.desc}${x.src?`<br><span class="src">${x.src}</span>`:''}</td>
+           <td>${x.desc}</td>
            <td class="nr" style="color:var(--rd)">${x.type==='Debit'?aud(x.amount):'—'}</td>
            <td class="nr" style="color:var(--tl)">${x.type==='Credit'?aud(x.amount):'—'}</td>
-           <td><span class="b ${x.classification==='Share Capital'?'bbl':x.classification==='Income'?'btl':'bgy'}">${x.classification}</span></td>
+           <td><span class="b ${x.classification==='Share Capital'?'bbl':x.classification==='Income'?'btl':x.classification==='Client Funds'?'bam':'bgy'}">${x.classification}</span></td>
            <td class="sm muted">${x.shareholder||'—'}</td>
-           <td><span class="b ${x.matched?'bgn':'bam'}">${x.matched?'Matched':'Pending'}</span></td>
+           <td>${x.src?`<span class="src" title="${x.src}">${x.src}</span>`:'<span class="sm muted">—</span>'}</td>
+           <td><span class="b ${x.matched?'bgn':'bam'}">${x.matched?'✓ Matched':'Pending'}</span></td>
            <td><button class="btn btn-sm" style="color:var(--rd);border-color:var(--rd-lt)" onclick="delBnk('${x.id}')">Del</button></td>
          </tr>`).join('')}
        </tbody>
-       <tfoot><tr><td colspan="2">Totals</td><td class="nr" style="color:var(--rd)">${aud(db)}</td><td class="nr" style="color:var(--tl)">${aud(cr)}</td><td colspan="4"></td></tr></tfoot></table>`
+       <tfoot><tr><td colspan="2">Totals</td><td class="nr" style="color:var(--rd)">${aud(db)}</td><td class="nr" style="color:var(--tl)">${aud(cr)}</td><td colspan="5"></td></tr></tfoot></table>`
     : `<div class="empty">No bank transactions for this period</div>`;
 }
 
@@ -747,16 +780,16 @@ function rExp() {
   document.getElementById('ext').innerHTML = e.length
     ? `<table><thead><tr><th>Date</th><th>Supplier</th><th>Description</th><th>Category</th><th class="thr">Ex-GST</th><th class="thr">GST</th><th class="thr">Total</th><th>Status</th><th>Source</th><th></th></tr></thead>
        <tbody>${e.sort((a,b)=>a.date.localeCompare(b.date)).map(x=>`
-         <tr class="${x.status==='Refund'?'rg':'ra'}">
+         <tr class="${x.status==='Refund'?'rg':x.status==='Future Reimbursement'?'rp':'ra'}">
            <td>${fd(x.date)}</td>
            <td class="sm">${x.supplier}</td>
-           <td>${x.desc}</td>
+           <td>${x.desc}${x.notes?`<br><span class="sm muted" style="font-size:10px">${x.notes}</span>`:''}</td>
            <td class="sm muted">${x.cat}</td>
-           <td class="nr" style="${x.net<0?'color:var(--gn)':''}">${aud(x.net)}</td>
+           <td class="nr" style="${x.net<0?'color:var(--gn)':x.status==='Future Reimbursement'?'color:var(--muted)':''}">${x.status==='Future Reimbursement'&&x.total===0?'SDG/Foreign':aud(x.net)}</td>
            <td class="nr">${aud(x.gst||0)}</td>
-           <td class="nr" style="font-weight:600;${x.total<0?'color:var(--gn)':''}">${aud(x.total)}</td>
-           <td><span class="b ${x.status==='Approved'?'bgn':x.status==='Refund'?'btl':'bam'}">${x.status}</span></td>
-           <td><span class="src">${x.src||'—'}</span></td>
+           <td class="nr" style="font-weight:600;${x.total<0?'color:var(--gn)':x.status==='Future Reimbursement'?'color:var(--muted)':''}">${x.status==='Future Reimbursement'&&x.total===0?'SDG/Foreign':aud(x.total)}</td>
+           <td><span class="b ${x.status==='Approved'?'bgn':x.status==='Refund'?'btl':x.status==='Future Reimbursement'?'bpu':'bam'}">${x.status==='Future Reimbursement'?'Future Reimb.':x.status}</span></td>
+           <td><span class="src" title="${x.src||''}">${x.src||'—'}</span></td>
            <td><button class="btn btn-sm" style="color:var(--rd);border-color:var(--rd-lt)" onclick="delExp('${x.id}')">Del</button></td>
          </tr>`).join('')}
        </tbody>
@@ -801,25 +834,29 @@ function rGST() {
   const e = fE(aFY,aQ).filter(x => x.total>0 && x.status==='Approved');
   const gC = e.reduce((s,x)=>s+(x.gst||0),0);
   const tP = e.reduce((s,x)=>s+x.total,0);
+  const inc = fB(aFY,aQ).filter(x=>x.type==='Credit'&&x.classification==='Income');
+  const tI = inc.reduce((s,x)=>s+x.amount,0);
+  const gS = inc.reduce((s,x)=>s+(x.gst||0),0);
+  const netGST = gC - gS;
   document.getElementById('gss').innerHTML = `
-    <div class="sc am"><div class="lb">GST on sales (1A)</div><div class="vl">$0.00</div><div class="sb">No taxable sales recorded</div></div>
+    <div class="sc am"><div class="lb">GST on sales (1A)</div><div class="vl">${aud(gS)}</div><div class="sb">${inc.length} taxable sale${inc.length!==1?'s':''} this period</div></div>
     <div class="sc gn"><div class="lb">GST credits (1B)</div><div class="vl">${aud(gC)}</div><div class="sb">From purchases this period</div></div>
-    <div class="sc tl"><div class="lb">Net GST refund</div><div class="vl">${aud(gC)}</div><div class="sb">Lodge by ${GD[aQ]}</div></div>`;
+    <div class="sc tl"><div class="lb">Net GST ${netGST>=0?'refund':'payable'}</div><div class="vl">${aud(Math.abs(netGST))}</div><div class="sb">Lodge by ${GD[aQ]}</div></div>`;
   const ge = e.filter(x=>(x.gst||0)>0);
   document.getElementById('gc').innerHTML = ge.length
     ? ge.map(x=>`<div class="pr"><span>${x.supplier}<br><span class="sm muted">${x.desc}</span></span><span class="mono" style="color:var(--gn)">${aud(x.gst)}</span></div>`).join('')
       + `<div class="dvd"></div><div class="pr st"><span>Total GST credits</span><span class="mono" style="color:var(--gn)"><strong>${aud(gC)}</strong></span></div>`
     : `<div class="empty" style="border:none">No GST-claimable purchases this period</div>`;
   document.getElementById('bas').innerHTML = `
-    <div class="pr i1"><span>G1 — Total sales (incl. GST)</span><span class="mono">$0.00</span></div>
+    <div class="pr i1"><span>G1 — Total sales (incl. GST)</span><span class="mono">${aud(tI)}</span></div>
     <div class="pr i1"><span>G11 — Purchases (incl. GST)</span><span class="mono">${aud(tP)}</span></div>
     <div class="dvd"></div>
-    <div class="pr"><span style="font-weight:600">1A — GST on sales</span><span class="mono"><strong>$0.00</strong></span></div>
+    <div class="pr"><span style="font-weight:600">1A — GST on sales</span><span class="mono" style="color:${gS>0?'var(--rd)':'inherit'}"><strong>${aud(gS)}</strong></span></div>
     <div class="pr"><span style="font-weight:600">1B — GST credits</span><span class="mono" style="color:var(--gn)"><strong>${aud(gC)}</strong></span></div>
     <div class="pr"><span>W1 — Wages paid</span><span class="mono">$0.00</span></div>
     <div class="pr"><span>W2 — PAYG withheld</span><span class="mono">$0.00</span></div>
     <div class="dvd"></div>
-    <div class="pr" style="font-size:15px;font-weight:700"><span>Total (refund)</span><span class="mono" style="color:var(--gn)"><strong>${gC>0?'('+aud(gC)+')':'$0.00'}</strong></span></div>
+    <div class="pr" style="font-size:15px;font-weight:700"><span>Total (${netGST>=0?'refund':'payable'})</span><span class="mono" style="color:${netGST>=0?'var(--gn)':'var(--rd)'}"><strong>${netGST>=0?'('+aud(netGST)+')':aud(Math.abs(netGST))}</strong></span></div>
     <div class="al al-g" style="margin-top:12px;margin-bottom:0;font-size:11.5px">Lodge BAS by <strong>${GD[aQ]}</strong>. Verify all figures with your tax agent before lodging.</div>`;
   const s = FYS[aFY];
   const dm = {Q1:`Jul–Sep ${s}`,Q2:`Oct–Dec ${s}`,Q3:`Jan–Mar ${s+1}`,Q4:`Apr–Jun ${s+1}`};

@@ -126,6 +126,8 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 .qtq .qd{font-size:10.5px;margin-top:2px;font-family:var(--mono)}
 .qtq .qa{font-size:10px;margin-top:3px;font-weight:600;color:var(--gn)}
 .qtq.active .qa{color:rgba(255,255,255,.9)}
+.qtq .qpl{font-size:10px;margin-top:2px;font-weight:500}
+.qtq.active .qpl{color:rgba(255,255,255,.8)!important}
 .qtq .nd{font-size:9.5px;color:var(--muted);margin-top:3px}
 .qtq.active .nd{color:rgba(255,255,255,.5)}
 
@@ -686,12 +688,24 @@ function rQTL() {
   const s = FYS[aFY];
   const dm = {Q1:`Jul–Sep ${s}`,Q2:`Oct–Dec ${s}`,Q3:`Jan–Mar ${s+1}`,Q4:`Apr–Jun ${s+1}`,ALL:`Full year ${s}–${s+1}`};
   document.getElementById('qtl').innerHTML = ['Q1','Q2','Q3','Q4','ALL'].map(q => {
-    const e = fE(aFY,q), g = e.reduce((a,x)=>a+(x.gst||0),0), hb = fB(aFY,q).length > 0;
-    const lbl = q==='ALL' ? 'Full Year' : `${q} · ${GD[q]}`;
+    const eApp   = fE(aFY,q).filter(x => x.total>0 && x.status==='Approved');
+    const g      = eApp.reduce((a,x)=>a+(x.gst||0),0);
+    const ePL    = fE(aFY,q).filter(x => x.status==='Approved'||x.status==='Refund');
+    const netExp = ePL.reduce((a,x)=>a+(x.net||0),0);
+    const incB   = fB(aFY,q).filter(x=>x.type==='Credit'&&x.classification==='Income');
+    const netInc = incB.reduce((a,x)=>a+(x.amount-(x.gst||0)),0);
+    const netPL  = netInc - netExp;
+    const hb     = fB(aFY,q).length > 0;
+    const hasData = eApp.length>0 || hb;
+    const lbl    = q==='ALL' ? 'Full Year' : `${q} · ${GD[q]}`;
+    const plCol  = netPL>0 ? 'var(--gn)' : netPL<0 ? 'var(--rd)' : 'var(--muted)';
+    const plTxt  = netPL>=0 ? `+${aud(netPL)} profit` : `(${aud(Math.abs(netPL))}) loss`;
     return `<div class="qtq ${aQ===q?'active':''}" onclick="setQ('${q}')">
       <div class="ql">${lbl}</div>
       <div class="qd">${dm[q]}</div>
-      ${e.length||hb ? `<div class="qa">${aud(g)} GST credits</div>` : `<div class="nd">No data yet</div>`}
+      ${hasData
+        ? `<div class="qa">${aud(g)} GST credits</div><div class="qpl" style="color:${plCol}">${plTxt}</div>`
+        : `<div class="nd">No data yet</div>`}
     </div>`;
   }).join('');
 }

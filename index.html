@@ -9,6 +9,7 @@
 :root {
   --coal:#1a1a2e; --navy:#16213e;
   --tl:#0f9b8e; --tl-lt:#e0f5f3; --tl-dk:#0a7a6f;
+  --gold:#f0b429; --gold-lt:#fef9e7; --gold-dk:#d4920a;
   --rd:#c0392b; --rd-lt:#fdf1f0;
   --gn:#1a7a5e; --gn-lt:#eaf5f1;
   --am:#d4750a; --am-lt:#fef5e7;
@@ -201,8 +202,8 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 .reimb-head h4{font-size:12px;font-weight:700;color:var(--ink)}
 .reimb-total{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--pu)}
 
-/* PROFESSIONAL: improved header subtle gradient */
-.hdr{background:linear-gradient(135deg,#1a1a2e 0%,#0d1b35 100%)}
+/* PROFESSIONAL: improved header subtle gradient + gold accent border */
+.hdr{background:linear-gradient(135deg,#1a1a2e 0%,#0d1b35 100%);border-bottom:2px solid var(--gold)}
 
 /* PROFESSIONAL: card hover lift */
 .card:hover{box-shadow:0 4px 20px rgba(26,26,46,.12)}
@@ -218,7 +219,8 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 <!-- PASSWORD GATE -->
 <div class="pw-gate" id="pw-gate">
   <div class="pw-box">
-    <div class="pw-logo">Noor<em>Energy</em> BizBooks</div>
+    <img src="noor-energy-logo.jpeg" alt="Noor Energy" style="height:56px;width:auto;border-radius:8px;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto">
+    <div class="pw-logo" style="font-size:18px">Noor<em>Energy</em> <span style="color:var(--gold);font-family:var(--mono);font-size:13px;font-weight:400">BizBooks</span></div>
     <div class="pw-sub">ABN 24 678 922 051 · Internal access only</div>
     <input type="password" id="pw-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')pwCheck()">
     <button onclick="pwCheck()">Unlock</button>
@@ -231,9 +233,12 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 
 <!-- HEADER -->
 <header class="hdr">
-  <div style="display:flex;align-items:center;gap:16px">
-    <div class="hdr-brand">Noor<em>Energy</em> BizBooks</div>
-    <div class="hdr-abn">ABN 24 678 922 051</div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <img src="noor-energy-logo.jpeg" alt="Noor Energy" style="height:40px;width:auto;border-radius:5px;display:block">
+    <div>
+      <div class="hdr-brand" style="font-size:17px;line-height:1.1">Noor<em>Energy</em> <span style="color:#f0b429;font-size:13px;font-weight:400;font-family:var(--mono);letter-spacing:.5px">BizBooks</span></div>
+      <div class="hdr-abn">ABN 24 678 922 051</div>
+    </div>
   </div>
   <div class="hdr-right">
     <span class="hdr-abn">CBA 06 7873 xxx3737</span>
@@ -673,7 +678,7 @@ const BASE_EX = [
   {id:'e4',date:'2025-02-13',fy:'FY2425',desc:'NRMA Business Insurance — Policy 6807260 (effective 1 Mar 2025)',supplier:'NRMA Insurance',cat:'Insurance',total:610.12,gst:55.47,net:554.65,src:'RECEIPT_FY2425_FEB_INSURANCE POLICY',status:'Approved',notes:'Receipt #74549585 · Card xx9281 · matched to bank 18 Feb 2025'},
   // ── FY2425 · Partner-Paid Expenses — Future Reimbursement ──
   {id:'e5',date:'2024-07-08',fy:'FY2425',desc:'Website Design — noorenergy.com.au development (500,000 SDG · AUD equiv. TBD)',supplier:'Mustafa Anwer Mohammed Hussien',cat:'Marketing & Website',total:0,gst:0,net:0,src:'EXPENSE_FY2425_JUL_WEBSITE DESIGN TRANSFER [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid via Bank of Khartoum · Trx.ID 20012470002 · 500,000 SDG · AUD equiv. to be confirmed at reimbursement'},
-  {id:'e6',date:'2024-08-02',fy:'FY2425',desc:'Logo & Website Design — additional payment (≈ AUD $155 equiv.)',supplier:'Mustafa Anwer Mohammed Hussien',cat:'Marketing & Website',total:155,gst:0,net:155,src:'EXPENSE_FY2425_AUG_LOGO DESIGN TRANSFER [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid via Bank of Khartoum · Trx.ID 20012890191 · 290,000 SDG stated as $155 equiv.'},
+  {id:'e6',date:'2024-08-02',fy:'FY2425',desc:'Logo & Website Design — additional payment (290,000 SDG · AUD $155 equiv.)',supplier:'Mustafa Anwer Mohammed Hussien',cat:'Marketing & Website',total:155,gst:0,net:155,src:'EXPENSE_FY2425_AUG_LOGO DESIGN TRANSFER [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid via Bank of Khartoum · Trx.ID 20012890191 · 290,000 SDG = AUD $155 equiv.'},
   {id:'e7',date:'2024-08-31',fy:'FY2425',desc:'Document Postage to ATO — Canada Post international express (CAD $120.35)',supplier:'Canada Post',cat:'Postage & Freight',total:120.35,gst:0,net:120.35,src:'EXPENSE_FY2425_SEP_DOCS POSTAGE [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid · Receipt CC104632 · Destination: Australian Taxation Office · No AU GST (foreign purchase)'},
   {id:'e8',date:'2025-01-02',fy:'FY2425',desc:'Business Card Printing — 100 standard cards (Vistaprint)',supplier:'Vistaprint Australia',cat:'Office Supplies',total:44.98,gst:4.09,net:40.89,src:'EXPENSE-FY2425_JAN_BUSINESS CARD PRINTING [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Yagoub Bala · Invoice #0223975009 · delivered to 428B Great Eastern Hwy Woodbridge'},
   {id:'e9',date:'2024-07-08',fy:'FY2425',desc:'Domain Registration noorenergy.com.au + Microsoft 365 Email Essentials 1yr (actual payment 26 May 2024)',supplier:'GoDaddy',cat:'Software & Subscriptions',total:142.10,gst:12.92,net:129.18,src:'EXPENSE_FY2425_MAY_DOMAIN EXPENSES [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Mohammed Albashier · Receipt #3098273852 · emails: jacob@, hashim@, mo@noorenergy.com.au'},
@@ -686,8 +691,7 @@ const BASE_EX = [
   {id:'e15',date:'2026-03-17',fy:'FY2526',desc:'DHL Express Worldwide — Perth to Dubai (4 items, 27.5kg) for Mogahid Altayeb',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:415.25,gst:0,net:415.25,src:'RECEIPT_FY2526_MAR_DHL POSTAGE',status:'Approved',notes:'Invoice PERR000708514 · Air Waybill 7565139610 · Non-taxable international · Consignee: Mogahid Mahdi Alrayeb, Deira, Dubai'},
   {id:'e16',date:'2026-03-30',fy:'FY2526',desc:'NRMA Business Insurance Renewal — Policy 6807260',supplier:'NRMA Business Insurance',cat:'Insurance',total:671.15,gst:61.01,net:610.14,src:'BANK_FY2526_MAR_CBA',status:'Approved',notes:'BPAY Ref 07940416001 · Renewal BP 6807260 · matched to bank debit 30 Mar 2026'},
   // ── FY2526 · Partner-Paid Expenses — Future Reimbursement ──
-  {id:'e17',date:'2026-04-15',fy:'FY2526',desc:'Site Survey Expenses — Halfawi site visit, payment to M. Osman (AUD $500)',supplier:'M Osman',cat:'Travel',total:500,gst:0,net:500,src:'EXPENSE_FY2526_APR_SITE SURVEY EXPENSES 1 OF 2 [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid via PayID from Smart Access (acct on file) · Receipt N441569044793'},
-  {id:'e18',date:'2026-04-15',fy:'FY2526',desc:'Site Survey Expenses — Halfawi site visit, bank transfer (1,000,000 SDG · AUD equiv. TBD)',supplier:'Mosab Ahmed Osman Ahmed',cat:'Travel',total:0,gst:0,net:0,src:'EXPENSE_FY2526_APR_SITE SURVEY EXPENSES 2 OF 2 [FUTURE]',status:'Future Reimbursement',notes:'Partner-paid via Bank of Khartoum · Trx.ID 20024607574 · 1,000,000 SDG · AUD equiv. to be confirmed at reimbursement'},
+  {id:'e17',date:'2026-04-15',fy:'FY2526',desc:'Site Survey Expenses — Halfawi site visit (AUD $500 · 1,000,000 SDG equiv.)',supplier:'Mosab Ahmed Osman Ahmed / M Osman',cat:'Travel',total:500,gst:0,net:500,src:'EXPENSE_FY2526_APR_SITE SURVEY EXPENSES [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid: AUD $500 via PayID (Smart Access acct on file, Receipt N441569044793) · equivalent 1,000,000 SDG via Bank of Khartoum (Trx.ID 20024607574)'},
 ];
 const BASE_BK = [
   // ── FY2425 · Statement 1 (6 Dec 2024 – 31 Mar 2025) ──

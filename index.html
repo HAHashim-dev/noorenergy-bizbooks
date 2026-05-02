@@ -189,6 +189,28 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 .ng-r{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px}
 .ng-t{font-family:var(--mono);font-size:10px;background:rgba(15,155,142,.2);color:var(--tl);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;margin-top:1px}
 .ng-d{font-size:11px;color:#8aa4be;line-height:1.5}
+
+/* INVOICE STATUS BADGES */
+.b.bpd{background:#e8f8ef;color:#1a7a5e}
+.b.bos{background:var(--am-lt);color:var(--am)}
+.b.bpt{background:var(--bl-lt);color:var(--bl)}
+
+/* REIMBURSEMENT CARDS */
+.reimb-card{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:var(--sh);margin-bottom:12px}
+.reimb-head{background:var(--bg);padding:10px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.reimb-head h4{font-size:12px;font-weight:700;color:var(--ink)}
+.reimb-total{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--pu)}
+
+/* PROFESSIONAL: improved header subtle gradient */
+.hdr{background:linear-gradient(135deg,#1a1a2e 0%,#0d1b35 100%)}
+
+/* PROFESSIONAL: card hover lift */
+.card:hover{box-shadow:0 4px 20px rgba(26,26,46,.12)}
+.card{transition:box-shadow .2s}
+
+/* PROFESSIONAL: stat card enhancements */
+.sc{transition:transform .15s,box-shadow .15s}
+.sc:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(26,26,46,.1)}
 </style>
 </head>
 <body>
@@ -254,6 +276,7 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
   <button class="tab"     onclick="go('exp',this)">🧾 Expenses</button>
   <button class="tab"     onclick="go('shares',this)">👥 Share Capital</button>
   <button class="tab"     onclick="go('gst',this)">📋 GST &amp; BAS</button>
+  <button class="tab"     onclick="go('inv',this)">📄 Invoices</button>
   <button class="tab"     onclick="go('pl',this)">📈 P&amp;L</button>
   <button class="tab"     onclick="go('add',this)">➕ Add Data</button>
 </nav>
@@ -267,6 +290,7 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 <div id="v-dash" class="view on">
   <div id="da" class="al al-t mb"></div>
   <div class="g4 mb" id="ds"></div>
+  <div class="g2 mb" id="ds2"></div>
   <div class="g2 mb">
     <div class="card"><div class="ch"><h3>Expenses this period</h3></div><div id="de"></div></div>
     <div class="card"><div class="ch"><h3>Bank this period</h3></div><div id="db"></div></div>
@@ -315,6 +339,45 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 <!-- ══════ P&L ══════ -->
 <div id="v-pl" class="view">
   <div class="card" style="max-width:600px;margin:0 auto" id="plc"></div>
+</div>
+
+<!-- ══════ INVOICES ══════ -->
+<div id="v-inv" class="view">
+  <div class="stabs" style="margin-bottom:16px">
+    <button class="stab on" onclick="showINV('received',this)">📥 Bills Received</button>
+    <button class="stab"    onclick="showINV('sent',this)">📤 Invoices Sent</button>
+    <button class="stab"    onclick="showINV('reimb',this)">🔁 Reimbursements</button>
+  </div>
+
+  <!-- Bills Received -->
+  <div id="inv-received">
+    <div class="g3 mb" id="inv-in-kpi"></div>
+    <div class="card">
+      <div class="ch">
+        <h3 id="inv-in-title">Bills received</h3>
+        <button class="btn btn-tl btn-sm" onclick="openModal('inv-in')">+ Add Bill</button>
+      </div>
+      <div id="inv-in-tbl"></div>
+    </div>
+  </div>
+
+  <!-- Invoices Sent -->
+  <div id="inv-sent" style="display:none">
+    <div class="g3 mb" id="inv-out-kpi"></div>
+    <div class="card">
+      <div class="ch">
+        <h3 id="inv-out-title">Invoices sent</h3>
+        <button class="btn btn-tl btn-sm" onclick="openModal('inv-out')">+ Add Invoice</button>
+      </div>
+      <div id="inv-out-tbl"></div>
+    </div>
+  </div>
+
+  <!-- Reimbursements -->
+  <div id="inv-reimb" style="display:none">
+    <div class="g2 mb" id="reimb-kpi"></div>
+    <div id="reimb-content"></div>
+  </div>
 </div>
 
 <!-- ══════ ADD DATA ══════ -->
@@ -548,6 +611,56 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
   </div>
 </div>
 
+<!-- MODAL: Add Bill Received -->
+<div class="modal-bg" id="modal-inv-in">
+  <div class="modal">
+    <div class="mh"><h3>Add bill received</h3><button class="close-x" onclick="closeModal('inv-in')">×</button></div>
+    <div class="mb2">
+      <div class="fr2">
+        <div class="fg"><label>Invoice date</label><input type="date" id="aii-dt"></div>
+        <div class="fg"><label>Financial Year</label>
+          <select id="aii-fy"><option value="FY2425">FY 2024–25</option><option value="FY2526">FY 2025–26</option><option value="FY2627">FY 2026–27</option><option value="FY2728">FY 2027–28</option></select>
+        </div>
+      </div>
+      <div class="fg"><label>Reference / file name</label><input type="text" id="aii-ref" placeholder="INV-IN_FY2526_JUN_SUPPLIER"></div>
+      <div class="fg"><label>Supplier / company</label><input type="text" id="aii-sup" placeholder="Supplier name"></div>
+      <div class="fg"><label>Description</label><input type="text" id="aii-desc" placeholder="What is this bill for?"></div>
+      <div class="fr3">
+        <div class="fg"><label>Total (incl. GST)</label><input type="number" id="aii-amt" step="0.01" placeholder="0.00" oninput="cAiiGST()"></div>
+        <div class="fg"><label>GST amount</label><input type="number" id="aii-gst" step="0.01" placeholder="0.00" oninput="cAiiNet()"></div>
+        <div class="fg"><label>Net (ex-GST)</label><input type="number" id="aii-net" step="0.01" placeholder="0.00" readonly style="background:var(--bg)"></div>
+      </div>
+      <div class="fg"><label>Notes</label><input type="text" id="aii-notes" placeholder="Optional notes"></div>
+    </div>
+    <div class="mf"><button class="btn" onclick="closeModal('inv-in')">Cancel</button><button class="btn btn-tl" onclick="saveInvIn()">Save Bill</button></div>
+  </div>
+</div>
+
+<!-- MODAL: Add Invoice Sent -->
+<div class="modal-bg" id="modal-inv-out">
+  <div class="modal">
+    <div class="mh"><h3>Add invoice sent</h3><button class="close-x" onclick="closeModal('inv-out')">×</button></div>
+    <div class="mb2">
+      <div class="fr2">
+        <div class="fg"><label>Invoice date</label><input type="date" id="aio-dt"></div>
+        <div class="fg"><label>Financial Year</label>
+          <select id="aio-fy"><option value="FY2425">FY 2024–25</option><option value="FY2526">FY 2025–26</option><option value="FY2627">FY 2026–27</option><option value="FY2728">FY 2027–28</option></select>
+        </div>
+      </div>
+      <div class="fg"><label>Reference / file name</label><input type="text" id="aio-ref" placeholder="INV-OUT_FY2526_JUN_CLIENT"></div>
+      <div class="fg"><label>Client / company</label><input type="text" id="aio-cli" placeholder="Client name"></div>
+      <div class="fg"><label>Description</label><input type="text" id="aio-desc" placeholder="Services provided"></div>
+      <div class="fr3">
+        <div class="fg"><label>Total (incl. GST)</label><input type="number" id="aio-amt" step="0.01" placeholder="0.00" oninput="cAioGST()"></div>
+        <div class="fg"><label>GST amount</label><input type="number" id="aio-gst" step="0.01" placeholder="0.00" oninput="cAioNet()"></div>
+        <div class="fg"><label>Net (ex-GST)</label><input type="number" id="aio-net" step="0.01" placeholder="0.00" readonly style="background:var(--bg)"></div>
+      </div>
+      <div class="fg"><label>Notes</label><input type="text" id="aio-notes" placeholder="Optional notes"></div>
+    </div>
+    <div class="mf"><button class="btn" onclick="closeModal('inv-out')">Cancel</button><button class="btn btn-tl" onclick="saveInvOut()">Save Invoice</button></div>
+  </div>
+</div>
+
 <script>
 // ═══════════════════════════════════════════════════════
 // BASE DATA — FY2424-25 pre-loaded
@@ -598,6 +711,25 @@ const BASE_BK = [
   {id:'b15',date:'2026-03-17',fy:'FY2526',desc:'DHL EXPRESS MYBILL AU — Perth to Dubai shipment · PERR000708514',type:'Debit',amount:415.25,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_MAR_DHL POSTAGE',gst:0},
   {id:'b16',date:'2026-03-30',fy:'FY2526',desc:'NRMA Business Insure BPAY — Renewal Policy 6807260',type:'Debit',amount:671.15,classification:'Expense',shareholder:'',matched:true,src:'BANK_FY2526_MAR_CBA',gst:61.01},
 ];
+const BASE_INV_IN = [
+  {id:'ii1',date:'2026-02-17',fy:'FY2526',ref:'INV-IN_FY2526_FEB_EQUIPMENT PURCHASE-PAID',
+   desc:'4× Minelab Gold Monster 2000 (Quote 26-00000789)',
+   supplier:'Raddock PTY LTD (Reeds Prospecting Supplies)',
+   amount:11996,gst:1090.56,net:10905.44,
+   notes:'Equipment for Mogahid Mahdi Altayeb · client funds received from Abdalkarim AlBorno'},
+  {id:'ii2',date:'2026-04-27',fy:'FY2526',ref:'INV-IN_FY2526_APR_YAGOUB',
+   desc:'Facilitation & Coordination — equipment procurement & shipment (INV-001)',
+   supplier:'Yagoub Yousif Yagoub Bala',
+   amount:2000,gst:0,net:2000,
+   notes:'Invoice INV-001 · paid $1,500 on 25 Feb 2026 + $500 on 06 Mar 2026'},
+];
+const BASE_INV_OUT = [
+  {id:'io1',date:'2025-12-20',fy:'FY2526',ref:'INV-OUT_FY2526_JAN_CONSTRUCTION JOB',
+   desc:'Construction site services — project payment (INV260001)',
+   client:'Hasibullah Noory / 247 Transport',
+   amount:1485,gst:135,net:1350,
+   notes:'Payment received 13 Jan 2026 · bank ref: Fast Transfer From HASIBULLAH NOORY'},
+];
 
 // ═══════════════════════════════════════════════════════
 // LOCALSTORAGE DATA STORE
@@ -606,17 +738,23 @@ function loadData() {
   try {
     const ex = JSON.parse(localStorage.getItem('ne_expenses') || 'null');
     const bk = JSON.parse(localStorage.getItem('ne_bank') || 'null');
+    const ii = JSON.parse(localStorage.getItem('ne_inv_in') || 'null');
+    const io = JSON.parse(localStorage.getItem('ne_inv_out') || 'null');
     return {
       expenses: ex || [...BASE_EX],
-      bank: bk || [...BASE_BK]
+      bank: bk || [...BASE_BK],
+      invoicesIn: ii || [...BASE_INV_IN],
+      invoicesOut: io || [...BASE_INV_OUT],
     };
   } catch(e) {
-    return { expenses: [...BASE_EX], bank: [...BASE_BK] };
+    return { expenses: [...BASE_EX], bank: [...BASE_BK], invoicesIn: [...BASE_INV_IN], invoicesOut: [...BASE_INV_OUT] };
   }
 }
 function saveData() {
   localStorage.setItem('ne_expenses', JSON.stringify(DATA.expenses));
   localStorage.setItem('ne_bank', JSON.stringify(DATA.bank));
+  localStorage.setItem('ne_inv_in', JSON.stringify(DATA.invoicesIn));
+  localStorage.setItem('ne_inv_out', JSON.stringify(DATA.invoicesOut));
   toast('Data saved');
 }
 let DATA = loadData();
@@ -713,7 +851,7 @@ function rQTL() {
 // ═══════════════════════════════════════════════════════
 // RENDER ALL
 // ═══════════════════════════════════════════════════════
-function rAll() { rQTL(); rDash(); rBank(); rExp(); rShares(); rGST(); rPL(); }
+function rAll() { rQTL(); rDash(); rBank(); rExp(); rShares(); rGST(); rPL(); rInv(); }
 
 // DASHBOARD
 function rDash() {
@@ -736,6 +874,19 @@ function rDash() {
     <div class="sc rd"><div class="lb">Total expenses</div><div class="vl">${aud(tE)}</div><div class="sb">${ap.length} approved items</div></div>
     <div class="sc gn"><div class="lb">GST credits</div><div class="vl">${aud(gC)}</div><div class="sb">Claimable this period</div></div>
     <div class="sc bl"><div class="lb">Share capital</div><div class="vl">${aud(sc)}</div><div class="sb">Not taxable income</div></div>`;
+
+  // Reimbursements & outstanding bills summary for dashboard
+  const reimbAll = DATA.expenses.filter(x=>x.status==='Future Reimbursement');
+  const reimbAUD = reimbAll.filter(x=>x.total>0).reduce((s,x)=>s+x.total,0);
+  const fYinvIn = DATA.invoicesIn.filter(x=>x.fy===aFY);
+  const outBillsAmt = fYinvIn.reduce((s,inv)=>{
+    const paid = DATA.bank.filter(b=>b.type==='Debit'&&b.src===inv.ref).reduce((a,b)=>a+b.amount,0);
+    return paid>=inv.amount ? s : s+(inv.amount-paid);
+  },0);
+  const outBillsCt = fYinvIn.filter(inv=>DATA.bank.filter(b=>b.type==='Debit'&&b.src===inv.ref).reduce((a,b)=>a+b.amount,0)<inv.amount).length;
+  document.getElementById('ds2').innerHTML = `
+    <div class="sc pu"><div class="lb">Partner reimbursements owed</div><div class="vl">${aud(reimbAUD)}</div><div class="sb">All-time · excludes SDG amounts</div></div>
+    <div class="sc am"><div class="lb">Outstanding bills — ${FYL[aFY]}</div><div class="vl">${aud(outBillsAmt)}</div><div class="sb">${outBillsCt} unpaid bill(s) this FY</div></div>`;
 
   document.getElementById('de').innerHTML = ap.length
     ? `<table><thead><tr><th>Date</th><th>Supplier</th><th class="thr">GST</th><th class="thr">Total</th></tr></thead>
@@ -1079,9 +1230,163 @@ function delBnk(id) {
   saveData(); rAll();
 }
 
+// ═══════════════════════════════════════════════════════
+// INVOICE TRACKING
+// ═══════════════════════════════════════════════════════
+function showINV(id, btn) {
+  ['received','sent','reimb'].forEach(s => {
+    document.getElementById('inv-'+s).style.display = s===id ? 'block' : 'none';
+  });
+  btn.closest('.stabs').querySelectorAll('.stab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function rInv() {
+  if(!document.getElementById('inv-in-kpi')) return;
+  const allInvIn  = DATA.invoicesIn.filter(x=>x.fy===aFY);
+  const allInvOut = DATA.invoicesOut.filter(x=>x.fy===aFY);
+
+  // ── Status computation for bills received ──
+  const invInCalc = allInvIn.map(inv => {
+    const paidB = DATA.bank.filter(b=>b.type==='Debit'&&b.src===inv.ref);
+    const paid  = paidB.reduce((s,b)=>s+b.amount,0);
+    const status= paid>=inv.amount?'Paid':paid>0?'Partial':'Outstanding';
+    const dates = paidB.map(b=>b.date).sort();
+    return {...inv, _paid:paid, _status:status, _lastPaid:dates[dates.length-1]||null};
+  });
+
+  // ── Status computation for invoices sent ──
+  const invOutCalc = allInvOut.map(inv => {
+    const rcvdB = DATA.bank.filter(b=>b.type==='Credit'&&b.src===inv.ref);
+    const rcvd  = rcvdB.reduce((s,b)=>s+b.amount,0);
+    const status= rcvd>=inv.amount?'Paid':rcvd>0?'Partial':'Outstanding';
+    const dates = rcvdB.map(b=>b.date).sort();
+    return {...inv, _rcvd:rcvd, _status:status, _lastRcvd:dates[dates.length-1]||null};
+  });
+
+  // ── Bills Received KPIs ──
+  const inOutAmt  = invInCalc.filter(x=>x._status!=='Paid').reduce((s,x)=>s+(x.amount-x._paid),0);
+  const inPaidAmt = invInCalc.filter(x=>x._status==='Paid').reduce((s,x)=>s+x.amount,0);
+  const inTotal   = invInCalc.reduce((s,x)=>s+x.amount,0);
+  document.getElementById('inv-in-kpi').innerHTML = `
+    <div class="sc am"><div class="lb">Outstanding bills</div><div class="vl">${aud(inOutAmt)}</div><div class="sb">${invInCalc.filter(x=>x._status!=='Paid').length} unpaid</div></div>
+    <div class="sc gn"><div class="lb">Bills paid</div><div class="vl">${aud(inPaidAmt)}</div><div class="sb">${invInCalc.filter(x=>x._status==='Paid').length} settled</div></div>
+    <div class="sc tl"><div class="lb">Total billed to us</div><div class="vl">${aud(inTotal)}</div><div class="sb">${invInCalc.length} invoice(s) this FY</div></div>`;
+
+  // ── Bills Received Table ──
+  document.getElementById('inv-in-title').textContent = `Bills received — ${FYL[aFY]}`;
+  const invInRows = invInCalc.sort((a,b)=>a.date.localeCompare(b.date)).map(x=>`
+    <tr class="${x._status==='Outstanding'?'ra':x._status==='Partial'?'rb':'rg'}">
+      <td>${fd(x.date)}</td>
+      <td class="sm">${x.supplier}</td>
+      <td>${x.desc}${x.notes?`<br><span class="sm muted" style="font-size:10px">${x.notes}</span>`:''}</td>
+      <td><span class="src" title="${x.ref||''}">${x.ref||'—'}</span></td>
+      <td class="nr">${aud(x.gst||0)}</td>
+      <td class="nr" style="font-weight:600">${aud(x.amount)}</td>
+      <td><span class="b ${x._status==='Paid'?'bpd':x._status==='Partial'?'bpt':'bos'}">${x._status==='Paid'?'✓ Paid':x._status}</span></td>
+      <td class="sm muted">${x._lastPaid?fd(x._lastPaid):'—'}</td>
+      <td><button class="btn btn-sm" style="color:var(--rd);border-color:var(--rd-lt)" onclick="delInvIn('${x.id}')">Del</button></td>
+    </tr>`).join('');
+  document.getElementById('inv-in-tbl').innerHTML = invInCalc.length
+    ? `<table><thead><tr><th>Date</th><th>Supplier</th><th>Description</th><th>Reference</th><th class="thr">GST</th><th class="thr">Amount</th><th>Status</th><th>Paid date</th><th></th></tr></thead>
+       <tbody>${invInRows}</tbody>
+       <tfoot><tr><td colspan="5"><strong>Total</strong></td><td class="nr"><strong>${aud(inTotal)}</strong></td><td colspan="3"></td></tr></tfoot></table>`
+    : `<div class="empty">No bills recorded for ${FYL[aFY]}. Click <strong>+ Add Bill</strong> to record an invoice received.</div>`;
+
+  // ── Invoices Sent KPIs ──
+  const outOutAmt  = invOutCalc.filter(x=>x._status!=='Paid').reduce((s,x)=>s+(x.amount-x._rcvd),0);
+  const outPaidAmt = invOutCalc.filter(x=>x._status==='Paid').reduce((s,x)=>s+x.amount,0);
+  const outTotal   = invOutCalc.reduce((s,x)=>s+x.amount,0);
+  document.getElementById('inv-out-kpi').innerHTML = `
+    <div class="sc am"><div class="lb">Outstanding receivables</div><div class="vl">${aud(outOutAmt)}</div><div class="sb">${invOutCalc.filter(x=>x._status!=='Paid').length} unpaid</div></div>
+    <div class="sc gn"><div class="lb">Payments received</div><div class="vl">${aud(outPaidAmt)}</div><div class="sb">${invOutCalc.filter(x=>x._status==='Paid').length} settled</div></div>
+    <div class="sc tl"><div class="lb">Total invoiced</div><div class="vl">${aud(outTotal)}</div><div class="sb">${invOutCalc.length} invoice(s) this FY</div></div>`;
+
+  // ── Invoices Sent Table ──
+  document.getElementById('inv-out-title').textContent = `Invoices sent — ${FYL[aFY]}`;
+  const invOutRows = invOutCalc.sort((a,b)=>a.date.localeCompare(b.date)).map(x=>`
+    <tr class="${x._status==='Outstanding'?'ra':x._status==='Partial'?'rb':'rg'}">
+      <td>${fd(x.date)}</td>
+      <td class="sm">${x.client}</td>
+      <td>${x.desc}${x.notes?`<br><span class="sm muted" style="font-size:10px">${x.notes}</span>`:''}</td>
+      <td><span class="src" title="${x.ref||''}">${x.ref||'—'}</span></td>
+      <td class="nr">${aud(x.gst||0)}</td>
+      <td class="nr" style="font-weight:600">${aud(x.amount)}</td>
+      <td><span class="b ${x._status==='Paid'?'bpd':x._status==='Partial'?'bpt':'bos'}">${x._status==='Paid'?'✓ Paid':x._status}</span></td>
+      <td class="sm muted">${x._lastRcvd?fd(x._lastRcvd):'—'}</td>
+      <td><button class="btn btn-sm" style="color:var(--rd);border-color:var(--rd-lt)" onclick="delInvOut('${x.id}')">Del</button></td>
+    </tr>`).join('');
+  document.getElementById('inv-out-tbl').innerHTML = invOutCalc.length
+    ? `<table><thead><tr><th>Date</th><th>Client</th><th>Description</th><th>Reference</th><th class="thr">GST</th><th class="thr">Amount</th><th>Status</th><th>Received</th><th></th></tr></thead>
+       <tbody>${invOutRows}</tbody>
+       <tfoot><tr><td colspan="5"><strong>Total</strong></td><td class="nr"><strong>${aud(outTotal)}</strong></td><td colspan="3"></td></tr></tfoot></table>`
+    : `<div class="empty">No invoices sent recorded for ${FYL[aFY]}. Click <strong>+ Add Invoice</strong> to record an outgoing invoice.</div>`;
+
+  // ── Reimbursements ──
+  const reimb    = DATA.expenses.filter(x=>x.status==='Future Reimbursement');
+  const reimbAUD = reimb.filter(x=>x.total>0).reduce((s,x)=>s+x.total,0);
+  const reimbSDG = reimb.filter(x=>x.total===0).length;
+  document.getElementById('reimb-kpi').innerHTML = `
+    <div class="sc pu"><div class="lb">Total AUD owed to partners</div><div class="vl">${aud(reimbAUD)}</div><div class="sb">All financial years · excludes SDG</div></div>
+    <div class="sc am"><div class="lb">Foreign currency items</div><div class="vl">${reimbSDG}</div><div class="sb">SDG amounts — AUD equiv. TBD</div></div>`;
+
+  const reimbRows = reimb.sort((a,b)=>a.date.localeCompare(b.date)).map(x=>`
+    <tr class="rp">
+      <td>${fd(x.date)}</td>
+      <td class="sm muted">${x.fy}</td>
+      <td class="sm">${x.supplier}</td>
+      <td>${x.desc}${x.notes?`<br><span class="sm muted" style="font-size:10px">${x.notes}</span>`:''}</td>
+      <td class="sm muted">${x.cat}</td>
+      <td class="nr" style="font-weight:600;color:${x.total===0?'var(--muted)':'var(--pu)'}">${x.total===0?'SDG/Foreign':aud(x.total)}</td>
+      <td><span class="src" title="${x.src||''}">${x.src||'—'}</span></td>
+    </tr>`).join('');
+  document.getElementById('reimb-content').innerHTML = reimb.length
+    ? `<div class="card"><div class="ch"><h3>All partner-paid expenses — pending reimbursement</h3></div>
+       <table><thead><tr><th>Date</th><th>FY</th><th>Supplier / Recipient</th><th>Description</th><th>Category</th><th class="thr">Amount (AUD)</th><th>Source</th></tr></thead>
+       <tbody>${reimbRows}</tbody>
+       <tfoot><tr><td colspan="5"><strong>Total AUD outstanding</strong></td>
+         <td class="nr" style="color:var(--pu)"><strong>${aud(reimbAUD)}</strong></td>
+         <td class="sm muted">+ ${reimbSDG} SDG item(s) TBD</td>
+       </tr></tfoot></table></div>`
+    : `<div class="empty">No partner reimbursements recorded.</div>`;
+}
+
+// Invoice form helpers
+function cAiiGST(){const t=parseFloat(document.getElementById('aii-amt').value)||0;const g=parseFloat((t/11).toFixed(2));document.getElementById('aii-gst').value=g;document.getElementById('aii-net').value=(t-g).toFixed(2);}
+function cAiiNet(){const t=parseFloat(document.getElementById('aii-amt').value)||0;const g=parseFloat(document.getElementById('aii-gst').value)||0;document.getElementById('aii-net').value=(t-g).toFixed(2);}
+function cAioGST(){const t=parseFloat(document.getElementById('aio-amt').value)||0;const g=parseFloat((t/11).toFixed(2));document.getElementById('aio-gst').value=g;document.getElementById('aio-net').value=(t-g).toFixed(2);}
+function cAioNet(){const t=parseFloat(document.getElementById('aio-amt').value)||0;const g=parseFloat(document.getElementById('aio-gst').value)||0;document.getElementById('aio-net').value=(t-g).toFixed(2);}
+
+function saveInvIn() {
+  const date=document.getElementById('aii-dt').value, fy=document.getElementById('aii-fy').value;
+  const ref=document.getElementById('aii-ref').value, desc=document.getElementById('aii-desc').value;
+  const supplier=document.getElementById('aii-sup').value;
+  const amount=parseFloat(document.getElementById('aii-amt').value)||0;
+  const gst=parseFloat(document.getElementById('aii-gst').value)||0;
+  const notes=document.getElementById('aii-notes').value;
+  if(!date||!supplier||!amount){toast('Date, supplier and amount are required');return;}
+  DATA.invoicesIn.push({id:'ii'+uid(),date,fy,ref,desc,supplier,amount,gst,net:amount-gst,notes});
+  saveData();rInv();closeModal('inv-in');
+  toast('Bill saved');
+}
+function saveInvOut() {
+  const date=document.getElementById('aio-dt').value, fy=document.getElementById('aio-fy').value;
+  const ref=document.getElementById('aio-ref').value, desc=document.getElementById('aio-desc').value;
+  const client=document.getElementById('aio-cli').value;
+  const amount=parseFloat(document.getElementById('aio-amt').value)||0;
+  const gst=parseFloat(document.getElementById('aio-gst').value)||0;
+  const notes=document.getElementById('aio-notes').value;
+  if(!date||!client||!amount){toast('Date, client and amount are required');return;}
+  DATA.invoicesOut.push({id:'io'+uid(),date,fy,ref,desc,client,amount,gst,net:amount-gst,notes});
+  saveData();rInv();closeModal('inv-out');
+  toast('Invoice saved');
+}
+function delInvIn(id){DATA.invoicesIn=DATA.invoicesIn.filter(x=>x.id!==id);saveData();rInv();}
+function delInvOut(id){DATA.invoicesOut=DATA.invoicesOut.filter(x=>x.id!==id);saveData();rInv();}
+
 // EXPORT / IMPORT
 function exportData() {
-  const blob = new Blob([JSON.stringify({expenses:DATA.expenses,bank:DATA.bank,exported:new Date().toISOString()},null,2)], {type:'application/json'});
+  const blob = new Blob([JSON.stringify({expenses:DATA.expenses,bank:DATA.bank,invoicesIn:DATA.invoicesIn,invoicesOut:DATA.invoicesOut,exported:new Date().toISOString()},null,2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = `NoorEnergy_BizBooks_${today()}.json`;
@@ -1098,6 +1403,8 @@ function importData(input) {
       if(!d.expenses || !d.bank) throw new Error('Invalid format');
       DATA.expenses = d.expenses;
       DATA.bank = d.bank;
+      if(d.invoicesIn) DATA.invoicesIn = d.invoicesIn;
+      if(d.invoicesOut) DATA.invoicesOut = d.invoicesOut;
       saveData();
       rAll();
       toast('Data imported successfully');
@@ -1112,7 +1419,9 @@ function clearAllData() {
   if(!confirm('This will delete ALL your added data. The pre-loaded FY2024-25 data will be restored. Are you sure?')) return;
   localStorage.removeItem('ne_expenses');
   localStorage.removeItem('ne_bank');
-  DATA = { expenses: [...BASE_EX], bank: [...BASE_BK] };
+  localStorage.removeItem('ne_inv_in');
+  localStorage.removeItem('ne_inv_out');
+  DATA = { expenses: [...BASE_EX], bank: [...BASE_BK], invoicesIn: [...BASE_INV_IN], invoicesOut: [...BASE_INV_OUT] };
   rAll();
   toast('All data cleared — base data restored');
 }

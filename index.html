@@ -36,6 +36,10 @@ a{color:inherit;text-decoration:none}
 .plbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:#5a7090;white-space:nowrap}
 .psel{appearance:none;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#dde8f0;padding:5px 28px 5px 10px;border-radius:6px;font-family:var(--mono);font-size:11.5px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' fill='none' stroke='%235a7090' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
 .psel option{background:#16213e}
+.fy-pills{display:flex;gap:5px;align-items:center}
+.fy-pill{padding:5px 13px;border-radius:20px;font-size:11.5px;font-weight:600;font-family:var(--mono);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#8aa4be;cursor:pointer;transition:all .15s;white-space:nowrap}
+.fy-pill:hover{background:rgba(255,255,255,.16);color:#dde8f0;border-color:rgba(255,255,255,.28)}
+.fy-pill.active{background:var(--tl);border-color:var(--tl);color:#fff}
 .qpill{padding:3px 12px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--mono);background:var(--tl);color:#fff;margin-left:auto}
 .pdts{font-size:10.5px;color:#5a7090}
 
@@ -218,18 +222,23 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 <!-- PERIOD BAR -->
 <div class="pbar">
   <span class="plbl">Financial Year</span>
-  <select class="psel" id="fy-sel" onchange="onFY()">
+  <div class="fy-pills" id="fy-pills">
+    <button class="fy-pill active" data-fy="FY2425" onclick="setFY('FY2425')">FY 2024–25</button>
+    <button class="fy-pill" data-fy="FY2526" onclick="setFY('FY2526')">FY 2025–26</button>
+    <button class="fy-pill" data-fy="FY2627" onclick="setFY('FY2627')">FY 2026–27</button>
+    <button class="fy-pill" data-fy="FY2728" onclick="setFY('FY2728')">FY 2027–28</button>
+  </div>
+  <select class="psel" id="fy-sel" onchange="onFY()" style="display:none">
     <option value="FY2425">FY 2024–25</option>
     <option value="FY2526">FY 2025–26</option>
     <option value="FY2627">FY 2026–27</option>
     <option value="FY2728">FY 2027–28</option>
   </select>
-  <span class="plbl" style="margin-left:6px">GST Quarter</span>
-  <select class="psel" id="q-sel" onchange="onQ()">
-    <option value="Q1">Q1 — Jul, Aug, Sep</option>
-    <option value="Q2">Q2 — Oct, Nov, Dec</option>
-    <option value="Q3">Q3 — Jan, Feb, Mar</option>
-    <option value="Q4">Q4 — Apr, May, Jun</option>
+  <select class="psel" id="q-sel" onchange="onQ()" style="display:none">
+    <option value="Q1">Q1</option>
+    <option value="Q2">Q2</option>
+    <option value="Q3">Q3</option>
+    <option value="Q4">Q4</option>
     <option value="ALL">Full Year</option>
   </select>
   <span class="qpill" id="qpill">Q1 FY2024-25</span>
@@ -655,7 +664,8 @@ function toast(msg) {
 // ═══════════════════════════════════════════════════════
 // PERIOD
 // ═══════════════════════════════════════════════════════
-function onFY() { aFY = document.getElementById('fy-sel').value; updB(); rAll(); }
+function setFY(fy) { aFY = fy; document.getElementById('fy-sel').value = fy; updB(); rAll(); }
+function onFY() { setFY(document.getElementById('fy-sel').value); }
 function onQ()  { aQ  = document.getElementById('q-sel').value;  updB(); rAll(); }
 function updB() {
   const s = FYS[aFY];
@@ -663,6 +673,9 @@ function updB() {
   document.getElementById('pdts').textContent  = aQ==='ALL'
     ? `1 Jul ${s} – 30 Jun ${s+1}`
     : `${QD[aQ].d} ${(aQ==='Q1'||aQ==='Q2') ? s : s+1}`;
+  document.querySelectorAll('#fy-pills .fy-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.fy === aFY);
+  });
 }
 function setQ(q) { aQ=q; document.getElementById('q-sel').value=q; updB(); rAll(); }
 
@@ -671,11 +684,12 @@ function setQ(q) { aQ=q; document.getElementById('q-sel').value=q; updB(); rAll(
 // ═══════════════════════════════════════════════════════
 function rQTL() {
   const s = FYS[aFY];
-  const dm = {Q1:`Jul–Sep ${s}`,Q2:`Oct–Dec ${s}`,Q3:`Jan–Mar ${s+1}`,Q4:`Apr–Jun ${s+1}`};
-  document.getElementById('qtl').innerHTML = ['Q1','Q2','Q3','Q4'].map(q => {
+  const dm = {Q1:`Jul–Sep ${s}`,Q2:`Oct–Dec ${s}`,Q3:`Jan–Mar ${s+1}`,Q4:`Apr–Jun ${s+1}`,ALL:`Full year ${s}–${s+1}`};
+  document.getElementById('qtl').innerHTML = ['Q1','Q2','Q3','Q4','ALL'].map(q => {
     const e = fE(aFY,q), g = e.reduce((a,x)=>a+(x.gst||0),0), hb = fB(aFY,q).length > 0;
+    const lbl = q==='ALL' ? 'Full Year' : `${q} · ${GD[q]}`;
     return `<div class="qtq ${aQ===q?'active':''}" onclick="setQ('${q}')">
-      <div class="ql">${q} · ${GD[q]}</div>
+      <div class="ql">${lbl}</div>
       <div class="qd">${dm[q]}</div>
       ${e.length||hb ? `<div class="qa">${aud(g)} GST credits</div>` : `<div class="nd">No data yet</div>`}
     </div>`;

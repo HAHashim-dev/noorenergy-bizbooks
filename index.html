@@ -889,8 +889,14 @@ function rDash() {
   },0);
   const outBillsCt = fYinvIn.filter(inv=>DATA.bank.filter(b=>b.type==='Debit'&&b.src===inv.ref).reduce((a,b)=>a+b.amount,0)<inv.amount).length;
   document.getElementById('ds2').innerHTML = `
-    <div class="sc pu"><div class="lb">Partner reimbursements owed</div><div class="vl">${aud(reimbAUD)}</div><div class="sb">All-time · excludes SDG amounts</div></div>
-    <div class="sc am"><div class="lb">Outstanding bills — ${FYL[aFY]}</div><div class="vl">${aud(outBillsAmt)}</div><div class="sb">${outBillsCt} unpaid bill(s) this FY</div></div>`;
+    <div class="sc pu" style="cursor:pointer" onclick="goInv('reimb')" title="View partner reimbursements">
+      <div class="lb">Partner reimbursements owed</div><div class="vl">${aud(reimbAUD)}</div>
+      <div class="sb">All-time · excludes SDG · <span style="color:var(--pu);font-weight:600">View →</span></div>
+    </div>
+    <div class="sc am" style="cursor:pointer" onclick="goInv('received')" title="View outstanding bills">
+      <div class="lb">Outstanding bills — ${FYL[aFY]}</div><div class="vl">${aud(outBillsAmt)}</div>
+      <div class="sb">${outBillsCt} unpaid bill(s) this FY · <span style="color:var(--am);font-weight:600">View →</span></div>
+    </div>`;
 
   document.getElementById('de').innerHTML = ap.length
     ? `<table><thead><tr><th>Date</th><th>Supplier</th><th class="thr">GST</th><th class="thr">Total</th></tr></thead>
@@ -1437,6 +1443,12 @@ function go(id, btn) {
   document.getElementById('v-'+id).classList.add('on');
   btn.classList.add('on');
   window.scrollTo(0,0);
+}
+function goInv(sub) {
+  const tabBtn = Array.from(document.querySelectorAll('.tab')).find(b => (b.getAttribute('onclick')||'').includes("'inv'"));
+  if(tabBtn) go('inv', tabBtn);
+  const stabBtn = Array.from(document.querySelectorAll('#v-inv .stab')).find(b => (b.getAttribute('onclick')||'').includes("'"+sub+"'"));
+  if(stabBtn) showINV(sub, stabBtn);
 }
 function showST(id, btn) {
   ['exp','bnk','tip'].forEach(s => {

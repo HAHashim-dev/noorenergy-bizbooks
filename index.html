@@ -1544,34 +1544,63 @@ function rTax() {
     return `<div class="ato-row"><span class="ato-code">${code}</span><div class="ato-row-lbl">${meta.label}<span class="ato-row-sub">${sub}</span></div><span class="ato-row-val">${aud(g.total)}</span></div>`;
   }).join('') || `<div class="ato-row"><span class="ato-code">7L</span><div class="ato-row-lbl" style="color:var(--muted)">No deductions recorded</div><span class="ato-row-val">$0.00</span></div>`;
 
+  // Excluded future reimbursements — shown for transparency, not in tax calc
+  const exclExp  = DATA.expenses.filter(x => x.fy === aFY && x.status === 'Future Reimbursement');
+  const exclAUD  = exclExp.filter(x => x.total > 0).reduce((a,x) => a + x.total, 0);
+  const exclSDG  = exclExp.filter(x => x.total === 0).length;
+  const exclRows = exclExp.map(x => `
+    <div class="ato-row" style="opacity:.55">
+      <span class="ato-code" style="background:#888">—</span>
+      <div class="ato-row-lbl">${x.desc}<span class="ato-row-sub">${x.supplier} · Not paid by Noor Energy</span></div>
+      <span class="ato-row-val" style="color:var(--muted);text-decoration:line-through">${x.total===0?'SDG/Foreign':aud(x.total)}</span>
+    </div>`).join('');
+  const exclSection = exclExp.length ? `
+    <div class="ato-sec-hdr" style="background:#fff8f0;border-top:1px solid var(--border)">
+      <span class="ato-sec-num" style="background:#888">✕</span>
+      <h4 style="color:var(--am)">Excluded — partner-paid (Future Reimbursement) · not deductible until paid by Noor Energy</h4>
+    </div>
+    ${exclRows}
+    <div style="padding:8px 20px;background:#fff8f0;font-size:10.5px;color:var(--am);border-top:1px dashed #f4c887">
+      ${exclExp.length} item(s) excluded · AUD ${aud(exclAUD)}${exclSDG>0?` + ${exclSDG} SDG amount(s) TBD`:''} — deductible only in the year Noor Energy actually makes the payment
+    </div>` : '';
+
   document.getElementById('tax-ded-card').innerHTML = `
     <div class="ato-card-hdr"><h3>Section 7 — Deductions</h3><span>All amounts ex-GST · AUD</span></div>
-    <div class="ato-sec-hdr"><span class="ato-sec-num">7</span><h4>Deduction items — ${FYL[aFY]}</h4></div>
+    <div class="ato-sec-hdr"><span class="ato-sec-num">7</span><h4>Included deductions — ${FYL[aFY]}</h4></div>
     ${dedRows}
-    <div class="ato-tot"><span class="ato-code">7T</span><div class="ato-row-lbl">Total deductions</div><span class="ato-row-val">${aud(total7T)}</span></div>`;
+    <div class="ato-tot"><span class="ato-code">7T</span><div class="ato-row-lbl">Total deductions</div><span class="ato-row-val">${aud(total7T)}</span></div>
+    ${exclSection}`;
 
   // ── Tax calculation card ─────────────────────────────
   const priorLossRow = priorLoss > 0
-    ? `<div class="tax-calc-row am-bg"><span>Prior year losses available (carry-forward)</span><b style="color:var(--am)">(${aud(priorLoss)})</b></div>
-       <div class="tax-calc-row gn-bg"><span>Prior year losses applied this year</span><b style="color:var(--gn)">(${aud(lossUsed)})</b></div>`
+    ? `<div class="tax-calc-row am-bg"><span>Prior year losses available (carry-forward)</span><b style="color:var(--am)">${aud(priorLoss)}</b></div>
+       <div class="tax-calc-row gn-bg"><span>Less: prior year losses applied this year</span><b style="color:var(--gn)">(${aud(lossUsed)})</b></div>`
     : '';
   const cfwdRow = lossCFwd > 0
-    ? `<div class="tax-calc-row am-bg" style="margin-top:4px"><span>Tax losses carried forward to next year</span><b style="color:var(--am)">${aud(lossCFwd)}</b></div>`
+    ? `<div class="tax-calc-row am-bg"><span>Tax losses carried forward to next year</span><b style="color:var(--am)">${aud(lossCFwd)}</b></div>`
     : '';
 
   document.getElementById('tax-calc-card').innerHTML = `
     <div class="ato-card-hdr"><h3>Tax Calculation</h3><span>Section 7D → Section 10</span></div>
     <div class="tax-calc-row"><span>6S — Total assessable income</span><b>${aud(total6S)}</b></div>
-    <div class="tax-calc-row"><span>7T — Total deductions</span><b>(${aud(total7T)})</b></div>
-    <div class="tax-calc-row ${netThisFY<0?'rd-bg':'tl-bg'}" style="font-weight:600"><span>Net income / (loss) this year</span><b style="color:${netThisFY<0?'var(--rd)':'var(--tl)'}">${netThisFY<0?'('+aud(Math.abs(netThisFY))+')':aud(netThisFY)}</b></div>
+    <div class="tax-calc-row"><span>7T — Less: total deductions</span><b>(${aud(total7T)})</b></div>
+    <div class="tax-calc-row ${netThisFY<0?'rd-bg':'tl-bg'}" style="font-weight:600;border-top:2px solid var(--border)">
+      <span>Net income / (loss) for ${FYL[aFY]}</span>
+      <b style="color:${netThisFY<0?'var(--rd)':'var(--tl)'}">${netThisFY<0?'('+aud(Math.abs(netThisFY))+')':aud(netThisFY)}</b>
+    </div>
     ${priorLossRow}
-    <div class="tax-calc-row" style="font-weight:700;border-top:2px solid var(--border)"><span>7D — Taxable income</span><b>${aud(taxableInc)}</b></div>
-    <div class="tax-calc-row"><span>Tax rate — ${isBRE?'Base Rate Entity (BRE)':'Standard'}</span><b>${(TAX_RATE*100).toFixed(0)}%</b></div>
-    <div class="tax-calc-row ${estimatedTax>0?'rd-bg':'gn-bg'}" style="font-weight:700;font-size:14px"><span>Estimated tax payable</span><b style="color:${estimatedTax>0?'var(--rd)':'var(--gn)'}">${aud(estimatedTax)}</b></div>
+    <div class="tax-calc-row" style="font-weight:700;font-size:13px;border-top:2px solid var(--border)">
+      <span>7D — Taxable income</span><b>${aud(taxableInc)}</b>
+    </div>
+    <div class="tax-calc-row"><span>Tax rate — ${isBRE?'Base Rate Entity (BRE)':'Standard rate'}</span><b>${(TAX_RATE*100).toFixed(0)}%</b></div>
+    <div class="tax-calc-row ${estimatedTax>0?'rd-bg':'gn-bg'}" style="font-weight:700;font-size:14px;border-top:2px solid var(--border)">
+      <span>Estimated income tax payable</span>
+      <b style="color:${estimatedTax>0?'var(--rd)':'var(--gn)'}">${aud(estimatedTax)}</b>
+    </div>
     ${cfwdRow}
-    <div style="padding:10px 20px;font-size:10.5px;color:var(--muted);border-top:1px solid var(--border)">
-      Base Rate Entity: aggregated turnover &lt; $50M · passive income &lt; 80%. Tax rate 25% from FY2021–22.<br>
-      Partner reimbursement expenses (Future Reimbursement status) are <strong>not included</strong> above — discuss with your tax agent.
+    <div style="padding:10px 20px;font-size:10.5px;color:var(--muted);border-top:1px solid var(--border);line-height:1.7">
+      Base Rate Entity: aggregated turnover &lt; $50M · passive income &lt; 80% of assessable income. Tax rate 25% applies from FY2021–22 onwards.<br>
+      Future Reimbursement expenses are <strong>excluded</strong> — they become deductible in the year Noor Energy actually pays them.
     </div>`;
 
   // ── Lodgment info card ───────────────────────────────

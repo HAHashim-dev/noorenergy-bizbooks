@@ -213,31 +213,33 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 .sc{transition:transform .15s,box-shadow .15s}
 .sc:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(26,26,46,.1)}
 
-/* INCOME TAX TAB */
-.ato-card{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:var(--sh);margin-bottom:16px}
-.ato-card-hdr{background:var(--coal);color:#fff;padding:13px 20px;display:flex;align-items:center;justify-content:space-between}
-.ato-card-hdr h3{font-size:13px;font-weight:600;color:#fff;letter-spacing:.2px}
-.ato-card-hdr span{font-size:10.5px;color:#8aa4be;font-family:var(--mono)}
-.ato-sec-hdr{padding:7px 20px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
-.ato-sec-hdr h4{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
-.ato-sec-num{font-family:var(--mono);font-size:10px;font-weight:700;background:var(--navy);color:var(--gold);padding:2px 8px;border-radius:4px;flex-shrink:0}
-.ato-row{display:flex;align-items:center;padding:9px 20px;border-bottom:1px solid var(--border);gap:10px}
-.ato-row:last-child{border-bottom:none}
-.ato-code{font-family:var(--mono);font-size:9px;font-weight:700;background:var(--navy);color:var(--gold);padding:2px 7px;border-radius:3px;flex-shrink:0;min-width:30px;text-align:center}
-.ato-row-lbl{flex:1;font-size:12.5px;line-height:1.4}
-.ato-row-sub{font-size:10px;color:var(--muted);display:block;margin-top:1px}
-.ato-row-val{font-family:var(--mono);font-size:13px;white-space:nowrap}
-.ato-tot{display:flex;align-items:center;padding:11px 20px;background:var(--bg);border-top:2px solid var(--border);gap:10px}
-.ato-tot .ato-code{background:var(--tl);color:#fff}
-.ato-tot .ato-row-lbl{font-weight:700;font-size:13px}
-.ato-tot .ato-row-val{font-size:15px;font-weight:700}
-.tax-calc-row{display:flex;justify-content:space-between;align-items:baseline;padding:8px 20px;border-bottom:1px dashed var(--border);font-size:12.5px}
-.tax-calc-row:last-child{border-bottom:none}
-.tax-calc-row.tl-bg{background:var(--tl-lt)}
-.tax-calc-row.gn-bg{background:var(--gn-lt)}
-.tax-calc-row.rd-bg{background:var(--rd-lt)}
-.tax-calc-row.am-bg{background:var(--am-lt)}
-.tax-calc-row b{font-family:var(--mono)}
+/* FAS 3 INCOME TAX FORM */
+.fas-wrap{max-width:860px;margin:0 auto}
+.fas-section{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.fas-sec-hdr{background:#2c5282;color:#fff;padding:8px 16px;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.4px}
+.fas-sec-hdr .fas-num{background:rgba(255,255,255,.22);padding:1px 9px;border-radius:10px;font-size:10px;font-family:var(--mono);flex-shrink:0}
+.fas-sec-hdr .fas-yr{margin-left:auto;font-family:var(--mono);font-size:10px;opacity:.8}
+.fas-sub-hdr{padding:5px 16px;background:var(--bg);border-bottom:1px solid var(--border);font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+.fas-row{display:flex;align-items:center;padding:6px 16px;border-bottom:1px solid var(--border);gap:10px;min-height:32px}
+.fas-row:last-child{border-bottom:none}
+.fas-lbl{flex:1;font-size:12px;color:var(--ink);line-height:1.4}
+.fas-lbl .fas-note{font-size:10px;color:var(--muted);display:block;margin-top:1px;font-family:var(--mono)}
+.fas-code{font-family:var(--mono);font-size:9.5px;font-weight:700;background:var(--navy);color:var(--gold);padding:2px 8px;border-radius:3px;min-width:28px;text-align:center;flex-shrink:0}
+.fas-val{font-family:var(--mono);font-size:12.5px;min-width:120px;text-align:right;white-space:nowrap}
+.fas-val.z{color:#c8d0da}
+.fas-val.nz{font-weight:700;color:var(--ink)}
+.fas-val.calc{color:var(--muted);font-style:italic}
+.fas-val.loss-v{color:var(--rd);font-weight:700}
+.fas-val.profit-v{color:var(--tl);font-weight:700}
+.fas-val.nil-v{color:var(--gn);font-weight:700}
+.fas-val.pos-v{color:var(--am);font-weight:700}
+.fas-tot{display:flex;align-items:center;padding:9px 16px;background:var(--bg);border-top:2px solid var(--border);gap:10px}
+.fas-tot .fas-lbl{font-weight:700;font-size:12.5px}
+.fas-tot .fas-val{font-size:14px;font-weight:700}
+.fas-excl{display:flex;align-items:center;padding:5px 16px;border-bottom:1px solid #fde9cc;gap:10px;background:#fffaf5;opacity:.6}
+.fas-excl:last-child{border-bottom:none}
+.fas-excl .fas-lbl{color:var(--muted);font-size:11.5px}
+.fas-excl .fas-val{color:#bbb;text-decoration:line-through;font-size:12px}
 </style>
 </head>
 <body>
@@ -370,18 +372,9 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 
 <!-- ══════ INCOME TAX ══════ -->
 <div id="v-tax" class="view">
-  <div class="al al-a mb">Estimates only — not tax advice. Verify all figures with a registered tax agent before lodging. Always-full-year view; quarter selector has no effect here.</div>
+  <div class="al al-a mb">Estimates only — verify with a registered tax agent before lodging. This tab mirrors the FAS 3 company tax return form — copy each value into the matching field code in FAS 3. Always full-year view regardless of quarter selected.</div>
   <div class="g4 mb" id="tax-kpi"></div>
-  <div class="g2 mb">
-    <div>
-      <div class="ato-card" id="tax-income-card"></div>
-      <div class="ato-card" id="tax-ded-card"></div>
-    </div>
-    <div>
-      <div class="ato-card" id="tax-calc-card"></div>
-      <div class="ato-card" style="margin-bottom:0" id="tax-lodge-card"></div>
-    </div>
-  </div>
+  <div class="fas-wrap" id="tax-fas-form"></div>
 </div>
 
 <!-- ══════ P&L ══════ -->
@@ -896,28 +889,20 @@ function rQTL() {
 }
 
 // ═══════════════════════════════════════════════════════
-// INCOME TAX — ATO CATEGORY MAPS
+// FAS 3 EXPENSE CATEGORY → FORM FIELD MAPPING
 // ═══════════════════════════════════════════════════════
-const EXP_ATO = {
-  'Registration & Licences': '7L',
-  'Insurance':               '7L',
-  'Software & Subscriptions':'7L',
-  'Professional Services':   '7B',
-  'Marketing & Website':     '7L',
-  'Postage & Freight':       '7L',
-  'Equipment':               '7A',
-  'Travel':                  '7L',
-  'Office Supplies':         '7L',
-  'Bank Charges':            '7L',
-  'Other':                   '7L',
-};
-const ATO_DED_META = {
-  '7A': {label:'Cost of sales',                        order:1},
-  '7B': {label:'Contractor and sub-contractor costs',  order:2},
-  '7C': {label:'Superannuation contributions',         order:3},
-  '7I': {label:'Salaries and wages',                   order:4},
-  '7J': {label:'Decline in value / depreciation',      order:5},
-  '7L': {label:'All other deductions',                 order:6},
+const EXP_FAS = {
+  'Registration & Licences': {code:'S', label:'All other expenses'},
+  'Insurance':               {code:'S', label:'All other expenses'},
+  'Software & Subscriptions':{code:'S', label:'All other expenses'},
+  'Professional Services':   {code:'C', label:'Contractor, sub-contractor & commission expenses'},
+  'Marketing & Website':     {code:'S', label:'All other expenses'},
+  'Postage & Freight':       {code:'S', label:'All other expenses'},
+  'Equipment':               {code:'A', label:'Cost of sales'},
+  'Travel':                  {code:'S', label:'All other expenses'},
+  'Office Supplies':         {code:'S', label:'All other expenses'},
+  'Bank Charges':            {code:'S', label:'All other expenses'},
+  'Other':                   {code:'S', label:'All other expenses'},
 };
 
 // ═══════════════════════════════════════════════════════
@@ -1468,129 +1453,275 @@ function delInvOut(id){DATA.invoicesOut=DATA.invoicesOut.filter(x=>x.id!==id);sa
 function rTax() {
   if(!document.getElementById('tax-kpi')) return;
 
-  // ── Full-year data (ignore aQ) ──────────────────────
   const allBank = DATA.bank.filter(x => x.fy === aFY);
   const allExp  = DATA.expenses.filter(x => x.fy === aFY && (x.status === 'Approved' || x.status === 'Refund'));
+  const exclExp = DATA.expenses.filter(x => x.fy === aFY && x.status === 'Future Reimbursement');
   const s = FYS[aFY];
+  const yearOfReturn = s + 1;
 
-  // ── Section 6 Income (ex-GST) ───────────────────────
-  const salesB  = allBank.filter(x => x.type === 'Credit' && x.classification === 'Income');
-  const cfB     = allBank.filter(x => x.type === 'Credit' && x.classification === 'Client Funds');
-  const netSales = salesB.reduce((a, x) => a + (x.amount - (x.gst||0)), 0);
-  const netCF    = cfB.reduce((a, x)    => a + (x.amount - (x.gst||0)), 0);
-  const total6S  = netSales + netCF;
+  // ── Section 6 Income ────────────────────────────────
+  const salesB   = allBank.filter(x => x.type==='Credit' && x.classification==='Income');
+  const cfB      = allBank.filter(x => x.type==='Credit' && x.classification==='Client Funds');
+  const netSales = salesB.reduce((a,x) => a+(x.amount-(x.gst||0)), 0);
+  const netCF    = cfB.reduce((a,x)    => a+(x.amount-(x.gst||0)), 0);
+  const inc6C    = netSales + netCF;   // C — Other sales of goods and services
+  const total6S  = inc6C;              // S — Total income
 
-  // ── Section 7 Deductions (ex-GST, by ATO code) ──────
-  const groups = {};
+  // ── Section 6 Expenses (by FAS code) ────────────────
+  const fasG = {};
   allExp.forEach(x => {
-    const code = EXP_ATO[x.cat] || '7L';
-    if (!groups[code]) groups[code] = {items:[], total:0};
-    groups[code].items.push(x);
-    groups[code].total += (x.net || 0);
+    const m = EXP_FAS[x.cat] || {code:'S'};
+    if (!fasG[m.code]) fasG[m.code] = {items:[], total:0};
+    fasG[m.code].items.push(x);
+    fasG[m.code].total += (x.net||0);
   });
-  const total7T = Object.values(groups).reduce((a, g) => a + g.total, 0);
+  const exp6A = fasG['A']?.total || 0;   // A — Cost of sales
+  const exp6C = fasG['C']?.total || 0;   // C — Contractor costs
+  const exp6S = fasG['S']?.total || 0;   // S — All other expenses
+  const total6Q = exp6A + exp6C + exp6S; // Q — Total expense
+  const totalPL = total6S - total6Q;     // T — Total profit or loss
 
-  // ── Net income for this FY ───────────────────────────
-  const netThisFY = total6S - total7T;
-
-  // ── Prior year accumulated losses ───────────────────
+  // ── Prior year losses ────────────────────────────────
   const fyOrder = ['FY2425','FY2526','FY2627','FY2728'];
   const fyIdx = fyOrder.indexOf(aFY);
   let priorLoss = 0;
   for (let i = 0; i < fyIdx; i++) {
     const fy = fyOrder[i];
-    const fyI = DATA.bank.filter(b => b.fy===fy && b.type==='Credit' && (b.classification==='Income'||b.classification==='Client Funds')).reduce((a,b)=>a+(b.amount-(b.gst||0)),0);
-    const fyE = DATA.expenses.filter(e => e.fy===fy && (e.status==='Approved'||e.status==='Refund')).reduce((a,e)=>a+(e.net||0),0);
+    const fyI = DATA.bank.filter(b=>b.fy===fy&&b.type==='Credit'&&(b.classification==='Income'||b.classification==='Client Funds')).reduce((a,b)=>a+(b.amount-(b.gst||0)),0);
+    const fyE = DATA.expenses.filter(e=>e.fy===fy&&(e.status==='Approved'||e.status==='Refund')).reduce((a,e)=>a+(e.net||0),0);
     const fyNet = fyI - fyE;
     if (fyNet < 0) priorLoss += Math.abs(fyNet);
     else priorLoss = Math.max(0, priorLoss - fyNet);
   }
 
-  // ── Taxable income & tax ─────────────────────────────
-  const lossUsed     = netThisFY > 0 ? Math.min(priorLoss, netThisFY) : 0;
-  const taxableInc   = Math.max(0, netThisFY - lossUsed);
-  const lossCFwd     = priorLoss - lossUsed + (netThisFY < 0 ? Math.abs(netThisFY) : 0);
-  const TAX_RATE     = 0.25;
-  const estimatedTax = taxableInc * TAX_RATE;
-  const isBRE        = true; // Noor Energy Pty Ltd — Base Rate Entity
-  const lodgeDue     = `31 October ${s+1}`;
+  // ── Section 7 ───────────────────────────────────────
+  const sec7R      = totalPL > 0 ? Math.min(priorLoss, totalPL) : 0; // R — Tax losses deducted
+  const taxableInc = Math.max(0, totalPL - sec7R);                    // T — Taxable income
+  const lossCFwd   = priorLoss - sec7R + (totalPL < 0 ? Math.abs(totalPL) : 0); // Section 13 U
+
+  // ── Tax ─────────────────────────────────────────────
+  const grossTax = taxableInc * 0.25;
+
+  // ── Excluded totals ──────────────────────────────────
+  const exclAUD = exclExp.filter(x=>x.total>0).reduce((a,x)=>a+x.total,0);
+  const exclSDG = exclExp.filter(x=>x.total===0).length;
 
   // ── KPI cards ────────────────────────────────────────
   document.getElementById('tax-kpi').innerHTML = `
-    <div class="sc tl"><div class="lb">Total assessable income</div><div class="vl">${aud(total6S)}</div><div class="sb">Ex-GST · full year ${FYL[aFY]}</div></div>
-    <div class="sc rd"><div class="lb">Total deductions</div><div class="vl">${aud(total7T)}</div><div class="sb">Ex-GST · approved expenses only</div></div>
-    <div class="sc ${taxableInc>0?'am':'gn'}"><div class="lb">Taxable income</div><div class="vl">${aud(taxableInc)}</div><div class="sb">${taxableInc===0?'Nil — losses applied':'Before offsets & credits'}</div></div>
-    <div class="sc ${estimatedTax>0?'rd':'gn'}"><div class="lb">Estimated tax payable</div><div class="vl">${aud(estimatedTax)}</div><div class="sb">${estimatedTax===0?'Nil this year':'@ 25% BRE rate'}</div></div>`;
+    <div class="sc tl"><div class="lb">Total income — 6S</div><div class="vl">${aud(total6S)}</div><div class="sb">Ex-GST · ${FYL[aFY]}</div></div>
+    <div class="sc rd"><div class="lb">Total expense — 6Q</div><div class="vl">${aud(total6Q)}</div><div class="sb">Ex-GST · approved only</div></div>
+    <div class="sc ${taxableInc>0?'am':'gn'}"><div class="lb">Taxable income — 7T</div><div class="vl">${aud(taxableInc)}</div><div class="sb">${taxableInc===0?'Nil — losses offset':'Before credits & offsets'}</div></div>
+    <div class="sc ${grossTax>0?'rd':'gn'}"><div class="lb">Tax payable — T5</div><div class="vl">${aud(grossTax)}</div><div class="sb">${grossTax===0?'Nil this year':'@ 25% BRE rate'}</div></div>`;
 
-  // ── Section 6: Income card ───────────────────────────
-  const salesRows = [
-    salesB.length ? `<div class="ato-row"><span class="ato-code">6A</span><div class="ato-row-lbl">Gross business income — services / sales<span class="ato-row-sub">${salesB.map(b=>b.desc).join(' · ')}</span></div><span class="ato-row-val">${aud(netSales)}</span></div>` : '',
-    cfB.length    ? `<div class="ato-row"><span class="ato-code">6A</span><div class="ato-row-lbl">Gross business income — procurement receipts<span class="ato-row-sub">${cfB.map(b=>b.desc).join(' · ')}</span></div><span class="ato-row-val">${aud(netCF)}</span></div>` : '',
-    !salesB.length && !cfB.length ? `<div class="ato-row"><span class="ato-code">6A</span><div class="ato-row-lbl" style="color:var(--muted)">No assessable income recorded for ${FYL[aFY]}</div><span class="ato-row-val">$0.00</span></div>` : '',
-  ].join('');
-
-  document.getElementById('tax-income-card').innerHTML = `
-    <div class="ato-card-hdr"><h3>Section 6 — Assessable Income</h3><span>All amounts ex-GST · AUD</span></div>
-    <div class="ato-sec-hdr"><span class="ato-sec-num">6</span><h4>Income items — ${FYL[aFY]}</h4></div>
-    ${salesRows}
-    <div class="ato-tot"><span class="ato-code">6S</span><div class="ato-row-lbl">Total assessable income</div><span class="ato-row-val">${aud(total6S)}</span></div>`;
-
-  // ── Section 7: Deductions card ───────────────────────
-  const dedCodes = Object.keys(groups).sort((a,b) => (ATO_DED_META[a]?.order||9) - (ATO_DED_META[b]?.order||9));
-  const dedRows = dedCodes.map(code => {
-    const g = groups[code];
-    const meta = ATO_DED_META[code] || {label:'Other deductions'};
-    const sub = g.items.map(x => `${x.supplier} ${aud(x.net)}`).join(' · ');
-    return `<div class="ato-row"><span class="ato-code">${code}</span><div class="ato-row-lbl">${meta.label}<span class="ato-row-sub">${sub}</span></div><span class="ato-row-val">${aud(g.total)}</span></div>`;
-  }).join('') || `<div class="ato-row"><span class="ato-code">7L</span><div class="ato-row-lbl" style="color:var(--muted)">No deductions recorded</div><span class="ato-row-val">$0.00</span></div>`;
-
-  document.getElementById('tax-ded-card').innerHTML = `
-    <div class="ato-card-hdr"><h3>Section 7 — Deductions</h3><span>All amounts ex-GST · AUD</span></div>
-    <div class="ato-sec-hdr"><span class="ato-sec-num">7</span><h4>Deduction items — ${FYL[aFY]}</h4></div>
-    ${dedRows}
-    <div class="ato-tot"><span class="ato-code">7T</span><div class="ato-row-lbl">Total deductions</div><span class="ato-row-val">${aud(total7T)}</span></div>`;
-
-  // ── Tax calculation card ─────────────────────────────
-  const priorLossRow = priorLoss > 0
-    ? `<div class="tax-calc-row am-bg"><span>Prior year losses available (carry-forward)</span><b style="color:var(--am)">(${aud(priorLoss)})</b></div>
-       <div class="tax-calc-row gn-bg"><span>Prior year losses applied this year</span><b style="color:var(--gn)">(${aud(lossUsed)})</b></div>`
-    : '';
-  const cfwdRow = lossCFwd > 0
-    ? `<div class="tax-calc-row am-bg" style="margin-top:4px"><span>Tax losses carried forward to next year</span><b style="color:var(--am)">${aud(lossCFwd)}</b></div>`
-    : '';
-
-  document.getElementById('tax-calc-card').innerHTML = `
-    <div class="ato-card-hdr"><h3>Tax Calculation</h3><span>Section 7D → Section 10</span></div>
-    <div class="tax-calc-row"><span>6S — Total assessable income</span><b>${aud(total6S)}</b></div>
-    <div class="tax-calc-row"><span>7T — Total deductions</span><b>(${aud(total7T)})</b></div>
-    <div class="tax-calc-row ${netThisFY<0?'rd-bg':'tl-bg'}" style="font-weight:600"><span>Net income / (loss) this year</span><b style="color:${netThisFY<0?'var(--rd)':'var(--tl)'}">${netThisFY<0?'('+aud(Math.abs(netThisFY))+')':aud(netThisFY)}</b></div>
-    ${priorLossRow}
-    <div class="tax-calc-row" style="font-weight:700;border-top:2px solid var(--border)"><span>7D — Taxable income</span><b>${aud(taxableInc)}</b></div>
-    <div class="tax-calc-row"><span>Tax rate — ${isBRE?'Base Rate Entity (BRE)':'Standard'}</span><b>${(TAX_RATE*100).toFixed(0)}%</b></div>
-    <div class="tax-calc-row ${estimatedTax>0?'rd-bg':'gn-bg'}" style="font-weight:700;font-size:14px"><span>Estimated tax payable</span><b style="color:${estimatedTax>0?'var(--rd)':'var(--gn)'}">${aud(estimatedTax)}</b></div>
-    ${cfwdRow}
-    <div style="padding:10px 20px;font-size:10.5px;color:var(--muted);border-top:1px solid var(--border)">
-      Base Rate Entity: aggregated turnover &lt; $50M · passive income &lt; 80%. Tax rate 25% from FY2021–22.<br>
-      Partner reimbursement expenses (Future Reimbursement status) are <strong>not included</strong> above — discuss with your tax agent.
+  // ── Row builder ──────────────────────────────────────
+  const row = (code, label, val, cls, note='') => {
+    const v = typeof val === 'number'
+      ? (val < 0 ? `(${aud(Math.abs(val))})` : aud(val))
+      : val;
+    const noteHtml = note ? `<span class="fas-note">${note}</span>` : '';
+    return `<div class="fas-row">
+      <span class="fas-lbl">${label}${noteHtml}</span>
+      <span class="fas-code">${code}</span>
+      <span class="fas-val ${cls}">${v}</span>
     </div>`;
+  };
+  const r0  = (code, label, note='')    => row(code, label, aud(0), 'z', note);
+  const rNZ = (code, label, val, note='') => row(code, label, val, typeof val==='number'&&val<0?'loss-v':'nz', note);
+  const rC  = (code, label, val)        => row(code, label, typeof val==='number'?(val<0?`(${aud(Math.abs(val))})`:aud(val)):val, 'calc');
 
-  // ── Lodgment info card ───────────────────────────────
-  const qDue = {Q1:'28 Oct',Q2:'28 Feb',Q3:'28 Apr',Q4:'28 Jul'};
-  document.getElementById('tax-lodge-card').innerHTML = `
-    <div class="ato-card-hdr"><h3>Lodgment &amp; Key Dates</h3><span>${FYL[aFY]}</span></div>
-    <div style="padding:16px 20px">
-      <div class="pr"><span>Income year end</span><span class="mono">30 June ${s+1}</span></div>
-      <div class="pr"><span>Company tax return due</span><span class="mono" style="color:var(--am);font-weight:600">${lodgeDue}</span></div>
-      <div class="pr"><span>Entity type</span><span class="mono">Australian resident company</span></div>
-      <div class="pr"><span>Tax rate</span><span class="mono">25% (Base Rate Entity)</span></div>
-      <div class="pr"><span>ABN</span><span class="mono">24 678 922 051</span></div>
-      <div class="dvd"></div>
-      <div class="pr sh">BAS / GST quarters</div>
-      ${['Q1','Q2','Q3','Q4'].map(q=>`<div class="pr i1"><span>${QD[q].l}</span><span class="mono">Due ${qDue[q]}</span></div>`).join('')}
-      <div class="dvd"></div>
-      <div class="al al-b" style="margin-bottom:0;font-size:11px">
-        Lodge your company tax return at <strong>ATO Online Services for Business</strong> (business.gov.au → ATO).
-        Carry-forward losses require continuity of ownership test (COT). Verify all figures with a registered tax agent.
+  const exclRows = exclExp.map(x => `
+    <div class="fas-excl">
+      <span class="fas-lbl">${x.desc}<span class="fas-note">${x.supplier} · future reimbursement — not yet paid by Noor Energy</span></span>
+      <span class="fas-code" style="background:#bbb">—</span>
+      <span class="fas-val" style="color:#bbb;text-decoration:line-through">${x.total===0?'SDG/Foreign':aud(x.total)}</span>
+    </div>`).join('');
+
+  // ── Build form ───────────────────────────────────────
+  document.getElementById('tax-fas-form').innerHTML = `
+
+    <!-- ── Header ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr" style="background:var(--coal)">
+        <span>FAS 3 — Company Tax Return ${yearOfReturn}</span>
+        <span class="fas-yr">1 Jul ${s} – 30 Jun ${s+1} &nbsp;|&nbsp; ${FYL[aFY]}</span>
+      </div>
+      <div class="fas-row"><span class="fas-lbl">Company name</span><span class="fas-val nz" style="font-size:13px">Noor Energy Pty Ltd</span></div>
+      <div class="fas-row"><span class="fas-lbl">ABN</span><span class="fas-val nz">24 678 922 051</span></div>
+      <div class="fas-row"><span class="fas-lbl">Tax File Number</span><span class="fas-val nz">661 230 492</span></div>
+      <div class="fas-row"><span class="fas-lbl">Bank — BSB / Account</span><span class="fas-val nz">067873 &nbsp;/&nbsp; xxx3737</span></div>
+    </div>
+
+    <!-- ── Section 3 ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">3</span><span>Status of Company — indicators already set in FAS 3</span></div>
+      ${row('C1-3','Status of Company – Residency','Resident','nz')}
+      ${row('D1-10','Status of Company – Company type','Australian Private Company','nz')}
+      ${row('E1-3','Status of Company – Business status','03 – Commenced Business','nz')}
+      ${row('F1','Small Business Entity Indicator','Yes','nil-v')}
+      ${row('F2','Base Rate Entity Indicator — tax rate 25%','Yes','nil-v')}
+      ${row('G1','Significant Global Entity Indicator','No','z')}
+    </div>
+
+    <!-- ── Section 6 Income ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">6</span><span>Calculation of Total Profit or Loss — Income</span></div>
+      <div class="fas-sub-hdr">Income</div>
+      ${r0('B','Gross payments subject to foreign resident withholding (excl. capital gains)')}
+      ${r0('A','Gross payment where ABN not quoted')}
+      ${inc6C > 0
+        ? rNZ('C','Other sales of goods and services', inc6C,
+            [salesB.length?`Services (ex-GST): ${aud(netSales)}`:'', cfB.length?`Procurement receipts: ${aud(netCF)}`:''].filter(Boolean).join(' · '))
+        : r0('C','Other sales of goods and services','No income recorded for this year')}
+      ${r0('D','Gross distribution from partnerships')}
+      ${r0('E','Gross distribution from trusts')}
+      ${r0('X','Forestry managed investment scheme income')}
+      ${r0('F','Gross interest')}
+      ${r0('G','Gross rent and other leasing and hiring income')}
+      ${r0('H','Total dividends')}
+      ${r0('I','Fringe benefit employee contributions')}
+      ${r0('Q','Assessable government industry payments')}
+      ${r0('J','Unrealised gains on revaluation of assets to fair value')}
+      ${r0('R','Other gross income')}
+      <div class="fas-tot">
+        <span class="fas-lbl">Total income</span>
+        <span class="fas-code" style="background:var(--tl);color:#fff">S</span>
+        <span class="fas-val ${total6S===0?'z':'profit-v'}">${aud(total6S)}</span>
+      </div>
+    </div>
+
+    <!-- ── Section 6 Expenses ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">6</span><span>Calculation of Total Profit or Loss — Expenses</span></div>
+      <div class="fas-sub-hdr">Expenses</div>
+      ${r0('B','Foreign resident withholding expenses (excl. capital gains)')}
+      ${exp6A > 0
+        ? rNZ('A','Cost of sales', exp6A, fasG['A']?.items.map(x=>`${x.supplier}: ${aud(x.net)}`).join(' · ')||'')
+        : r0('A','Cost of sales')}
+      ${exp6C > 0
+        ? rNZ('C','Contractor, sub-contractor & commission expenses', exp6C, fasG['C']?.items.map(x=>`${x.supplier}: ${aud(x.net)}`).join(' · ')||'')
+        : r0('C','Contractor, sub-contractor & commission expenses')}
+      ${r0('D','Superannuation expenses')}
+      ${r0('E','Bad debts')}
+      ${r0('F','Lease expenses within Australia')}
+      ${r0('I','Lease expenses overseas')}
+      ${r0('H','Rent expenses')}
+      ${r0('V','Interest expenses within Australia')}
+      ${r0('J','Interest expenses overseas')}
+      ${r0('W','Royalty expenses within Australia')}
+      ${r0('U','Royalty expenses overseas')}
+      ${r0('X','Depreciation expenses')}
+      ${r0('Y','Motor vehicle expenses')}
+      ${r0('Z','Repairs and maintenance')}
+      ${r0('G','Unrealised losses on revaluation of assets to fair value')}
+      ${exp6S > 0
+        ? rNZ('S','All other expenses', exp6S, fasG['S']?.items.map(x=>`${x.supplier}: ${aud(x.net)}`).join(' · ')||'')
+        : r0('S','All other expenses')}
+      <div class="fas-tot">
+        <span class="fas-lbl">Total expense</span>
+        <span class="fas-code" style="background:var(--rd);color:#fff">Q</span>
+        <span class="fas-val ${total6Q===0?'z':'nz'}">${aud(total6Q)}</span>
+      </div>
+      ${exclExp.length ? `
+        <div class="fas-sub-hdr" style="background:#fff8f0;color:var(--am)">
+          Excluded — Future Reimbursement · not deductible until paid by Noor Energy
+          (${exclExp.length} item${exclExp.length>1?'s':''} · AUD ${aud(exclAUD)}${exclSDG>0?` + ${exclSDG} SDG`:''})
+        </div>
+        ${exclRows}
+      ` : ''}
+    </div>
+
+    <!-- ── Total profit or loss ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">6</span><span>Total Profit or Loss</span></div>
+      <div class="fas-tot">
+        <span class="fas-lbl">Total profit or loss &nbsp;<span style="font-weight:400;font-size:11px;opacity:.7">(Total income 6S minus Total expense 6Q) — auto-calculated by FAS 3</span></span>
+        <span class="fas-code" style="background:var(--coal);color:var(--gold)">T</span>
+        <span class="fas-val ${totalPL<0?'loss-v':totalPL===0?'z':'profit-v'}">${totalPL<0?'('+aud(Math.abs(totalPL))+')':aud(totalPL)}</span>
+      </div>
+    </div>
+
+    <!-- ── Section 7 ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">7</span><span>Reconciliation to Taxable Income or Loss</span></div>
+      <div class="fas-sub-hdr">Add (increases to taxable income)</div>
+      ${r0('A','Net capital gain')}
+      ${r0('U','Non-deductible exempt income expenditure')}
+      ${r0('J','Franking credits')}
+      ${r0('C','Australian franking credits from a New Zealand company')}
+      ${r0('B','Other assessable income')}
+      ${r0('W','Non-deductible expenses')}
+      <div class="fas-sub-hdr">Less (reductions to taxable income)</div>
+      ${sec7R > 0
+        ? rNZ('R','Tax losses deducted', sec7R,
+            `Prior year losses available: ${aud(priorLoss)} — applying ${aud(sec7R)} this year${priorLoss>sec7R?' · '+aud(priorLoss-sec7R)+' remaining':''}`)
+        : r0('R','Tax losses deducted', priorLoss>0?`Prior year losses available: ${aud(priorLoss)} — none needed (no profit this year)`:'No prior year losses')}
+      ${r0('X','Other deductible expenses')}
+      <div class="fas-tot">
+        <span class="fas-lbl">Taxable/net income or loss &nbsp;<span style="font-weight:400;font-size:11px;opacity:.7">auto-calculated by FAS 3</span></span>
+        <span class="fas-code" style="background:var(--tl);color:#fff">T</span>
+        <span class="fas-val ${taxableInc===0?'nil-v':'pos-v'}">${aud(taxableInc)}</span>
+      </div>
+    </div>
+
+    <!-- ── Section 8 ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">8</span><span>Financial and Other Information</span></div>
+      ${r0('D','Total salary and wage expenses')}
+      ${r0('Q','Payments to associated persons')}
+      ${row('X','Aggregated turnover range','Under $2M','nz','Select in FAS 3 dropdown')}
+      ${rNZ('Y','Aggregated turnover amount', total6S, `Total assessable income — ${FYL[aFY]}`)}
+      <div class="fas-row" style="background:var(--bl-lt)">
+        <span class="fas-lbl" style="color:var(--bl);font-size:11px">
+          ⚠ Balance sheet items (total assets, trade debtors, trade creditors, total liabilities) are not tracked in BizBooks — enter manually in FAS 3 Section 8.
+        </span>
+      </div>
+    </div>
+
+    <!-- ── Section 10 ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">10</span><span>Small Business Entity Simplified Depreciation</span></div>
+      ${r0('A','Deduction for certain assets (instant asset write-off)', 'Not applicable — equipment classified as cost of sales')}
+      ${r0('B','Deduction for general small business pool')}
+    </div>
+
+    <!-- ── Section 13 ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">13</span><span>Losses Information</span></div>
+      ${lossCFwd > 0
+        ? rNZ('U','Tax losses carried forward to later income years', lossCFwd,
+            `${totalPL<0?FYL[aFY]+' loss '+aud(Math.abs(totalPL)):''}${totalPL<0&&(priorLoss-sec7R)>0?' + ':''} ${(priorLoss-sec7R)>0?'remaining prior loss '+aud(priorLoss-sec7R):''}`.trim())
+        : r0('U','Tax losses carried forward to later income years','No losses to carry forward')}
+      ${r0('V','Net capital losses carried forward to later income years')}
+    </div>
+
+    <!-- ── Calculation Statement ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr" style="background:#2d5a87"><span>Calculation Statement — all auto-calculated by FAS 3</span></div>
+      ${rC('A','Taxable/net income or loss', taxableInc)}
+      ${rC('T1',`Tax on taxable income — 25% (Base Rate Entity) × ${aud(taxableInc)}`, grossTax)}
+      ${rC('B','Gross tax', grossTax)}
+      ${rC('T5','Tax payable', grossTax)}
+      ${r0('K','PAYG instalments raised','Enter if registered for PAYG instalments')}
+      <div class="fas-tot">
+        <span class="fas-lbl">Amount due or refundable &nbsp;<span style="font-weight:400;font-size:11px;opacity:.7">auto-calculated by FAS 3</span></span>
+        <span class="fas-code" style="background:${grossTax>0?'var(--rd)':'var(--gn)'};color:#fff">S</span>
+        <span class="fas-val ${grossTax>0?'loss-v':'nil-v'}">${aud(grossTax)}</span>
+      </div>
+      <div style="padding:10px 16px;font-size:10.5px;line-height:1.7;border-top:1px solid var(--border);background:${grossTax===0?'var(--gn-lt)':'var(--rd-lt)'}; color:${grossTax===0?'var(--gn)':'var(--rd)'}">
+        ${grossTax===0
+          ? `✓ No tax payable for ${FYL[aFY]} — losses fully offset income.${lossCFwd>0?' Tax loss of '+aud(lossCFwd)+' carried forward to next year.':''}`
+          : `Tax payable: ${aud(grossTax)} at 25% BRE rate.`}
+        ${exclExp.length ? ` Future Reimbursement expenses (${aud(exclAUD)}) excluded — deductible when Noor Energy makes payment.` : ''}
+      </div>
+    </div>
+
+    <!-- ── Lodgment ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr" style="background:#555"><span>Lodgment via FAS 3</span></div>
+      <div class="fas-row"><span class="fas-lbl">How to lodge</span><span class="fas-val nz" style="font-size:11px;min-width:unset;text-align:left">FAS 3 → Tax compliance → Tax returns → Lodge</span></div>
+      <div class="fas-row"><span class="fas-lbl">Company tax return due date</span><span class="fas-code" style="display:none"></span><span class="fas-val pos-v">31 October ${yearOfReturn}</span></div>
+      <div class="fas-row" style="background:var(--am-lt)">
+        <span class="fas-lbl" style="color:var(--am);font-size:11px">⚠ FAS 3 charges $33 for business self-lodgment. Verify all figures with a registered tax agent before lodging.</span>
       </div>
     </div>`;
 }

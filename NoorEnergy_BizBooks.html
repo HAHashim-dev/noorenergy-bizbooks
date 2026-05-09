@@ -761,13 +761,13 @@ const BASE_EX = [
 ];
 const BASE_BK = [
   // ── FY2425 · Statement 1 (6 Dec 2024 – 31 Mar 2025) ──
-  {id:'b1',date:'2024-12-18',fy:'FY2425',desc:'Transfer from NetBank — HH Share (share capital injection)',type:'Credit',amount:1000,classification:'Share Capital',shareholder:'Hashim Alamin Hashim',matched:true,src:'BANK_FY2425_MAR__CBA',gst:0},
-  {id:'b2',date:'2025-02-06',fy:'FY2425',desc:'Transfer from CommBank app — Transfer (share capital injection)',type:'Credit',amount:800,classification:'Share Capital',shareholder:'Hashim Alamin Hashim',matched:true,src:'BANK_FY2425_MAR__CBA',gst:0},
+  {id:'b1',date:'2024-12-18',fy:'FY2425',desc:'Transfer from NetBank — HH Share (share capital injection)',type:'Credit',amount:1000,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAR__CBA',gst:0},
+  {id:'b2',date:'2025-02-06',fy:'FY2425',desc:'Transfer from CommBank app — Transfer (share capital injection)',type:'Credit',amount:800,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAR__CBA',gst:0},
   {id:'b3',date:'2025-02-18',fy:'FY2425',desc:'NRMA ADELAIDE AU — Card xx9281 (business insurance)',type:'Debit',amount:610.12,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2425_FEB_INSURANCE POLICY',gst:55.47},
   // ── FY2425 · Statement 2 (1 Apr – 17 May 2025) ──
-  {id:'b4',date:'2025-05-03',fy:'FY2425',desc:'Transfer from CommBank app — Transfer (share capital injection)',type:'Credit',amount:2000,classification:'Share Capital',shareholder:'Hashim Alamin Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
-  {id:'b5',date:'2025-05-03',fy:'FY2425',desc:'Fast Transfer From MOHAMMED ALBASHIER — Noor Energy (share capital)',type:'Credit',amount:5000,classification:'Share Capital',shareholder:'Mohammed Ahmed Magzoub Albashier',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
-  {id:'b6',date:'2025-05-16',fy:'FY2425',desc:'Transfer from CommBank app — Noor Enegry (share capital injection)',type:'Credit',amount:1810.12,classification:'Share Capital',shareholder:'Hashim Alamin Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
+  {id:'b4',date:'2025-05-03',fy:'FY2425',desc:'Transfer from CommBank app — Transfer (share capital injection)',type:'Credit',amount:2000,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
+  {id:'b5',date:'2025-05-03',fy:'FY2425',desc:'Fast Transfer From MOHAMMED MAGZOUB — Noor Energy (share capital)',type:'Credit',amount:5000,classification:'Share Capital',shareholder:'Mohammed Magzoub',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
+  {id:'b6',date:'2025-05-16',fy:'FY2425',desc:'Transfer from CommBank app — Noor Enegry (share capital injection)',type:'Credit',amount:1810.12,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
   // ── FY2526 · Statement 4 (1 Jul – 30 Sep 2025) ──
   {id:'b7',date:'2025-08-07',fy:'FY2526',desc:'LAWPATH — Essentials Plan annual subscription',type:'Debit',amount:468,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_AUG_LAW PATH SUBSCRIPTION',gst:42.54},
   {id:'b8',date:'2025-08-30',fy:'FY2526',desc:'ASIC BPAY — Noor Energy annual company registration renewal',type:'Debit',amount:329,classification:'Expense',shareholder:'',matched:true,src:'BANK_FY2526_SEP_CBA',gst:0},
@@ -782,10 +782,10 @@ const BASE_BK = [
   {id:'b16',date:'2026-03-30',fy:'FY2526',desc:'NRMA Business Insure BPAY — Renewal Policy 6807260',type:'Debit',amount:671.15,classification:'Expense',shareholder:'',matched:true,src:'BANK_FY2526_MAR_CBA',gst:61.01},
 ];
 const SHAREHOLDERS = [
-  'Mohammed Ahmed Magzoub Albashier',
-  'Yagoub Yousif Yagoub',
-  'Hashim Alamin Hashim',
-  'Merghani Khalil Ahmed',
+  {name: 'Hashim Hashim', shares: 25},
+  {name: 'Mohammed Magzoub', shares: 25},
+  {name: 'Yagoub Yagoub', shares: 25},
+  {name: 'Merghani Ahmed', shares: 25},
 ];
 const BASE_INV_IN = [
   {id:'ii1',date:'2026-02-17',fy:'FY2526',ref:'INV-IN_FY2526_FEB_EQUIPMENT PURCHASE-PAID',
@@ -1083,20 +1083,21 @@ function rShares() {
   const fySC  = DATA.bank.filter(b => b.fy === aFY && b.classification === 'Share Capital');
   const tot   = allSC.reduce((a,b) => a+b.amount, 0);
   const fyTot = fySC.reduce((a,b) => a+b.amount, 0);
+  const totalShares = SHAREHOLDERS.reduce((a,s)=>a+s.shares, 0);
 
   // Per-shareholder paid-up (all time)
-  const shData = SHAREHOLDERS.map(name => {
-    const pmts = allSC.filter(b => b.shareholder === name);
-    return {name, total: pmts.reduce((a,b)=>a+b.amount,0), count: pmts.length, payments: pmts};
+  const shData = SHAREHOLDERS.map(sh => {
+    const pmts = allSC.filter(b => b.shareholder === sh.name);
+    return {name: sh.name, shares: sh.shares, total: pmts.reduce((a,b)=>a+b.amount,0), count: pmts.length, payments: pmts};
   });
 
   document.getElementById('shs').innerHTML = shData.map(sh => {
-    const initials = sh.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const shareholding = ((sh.shares/totalShares)*100).toFixed(1);
     const color = sh.total > 0 ? 'var(--bl)' : 'var(--muted)';
-    return `<div class="sc bl" style="${sh.total===0?'--bl:var(--muted);--bl-lt:#f5f5f5':''}">
+    return `<div class="sc bl">
       <div class="lb">${sh.name}</div>
       <div class="vl" style="color:${color}">${aud(sh.total)}</div>
-      <div class="sb">${sh.count > 0 ? sh.count+' payment'+(sh.count>1?'s':'') : 'No payments recorded'}</div>
+      <div class="sb">${sh.shares} shares (${shareholding}%) · ${sh.count > 0 ? sh.count+' payment'+(sh.count>1?'s':'') : 'No payments recorded'}</div>
     </div>`;
   }).join('');
 
@@ -1106,6 +1107,7 @@ function rShares() {
   const registryRows = shData.map(sh => `
     <tr>
       <td style="font-weight:600">${sh.name}</td>
+      <td class="nr">${sh.shares} shares (${((sh.shares/totalShares)*100).toFixed(1)}%)</td>
       <td class="nr" style="color:${sh.total>0?'var(--bl)':'var(--muted)'}; font-family:var(--mono)">${aud(sh.total)}</td>
       <td>${sh.payments.map(p=>`<span class="b bbl" style="margin-right:4px;font-size:9px">${fd(p.date)} ${aud(p.amount)}</span>`).join('') || '<span class="sm muted">—</span>'}</td>
     </tr>`).join('');
@@ -1116,16 +1118,16 @@ function rShares() {
     <div style="padding:16px 18px 0">
       <div class="g4 mb">
         <div class="sc bl"><div class="lb">Total share capital</div><div class="vl">${aud(tot)}</div><div class="sb">All shareholders · all time</div></div>
-        <div class="sc bl"><div class="lb">Shareholders</div><div class="vl" style="font-size:18px">${SHAREHOLDERS.length}</div><div class="sb">Registered</div></div>
+        <div class="sc bl"><div class="lb">Total shares issued</div><div class="vl" style="font-size:18px">${totalShares}</div><div class="sb">${totalShares} shares @ 25% each</div></div>
         <div class="sc bl"><div class="lb">Paid up — ${FYL[aFY]}</div><div class="vl">${aud(fyTot)}</div><div class="sb">This financial year</div></div>
-        <div class="sc bl"><div class="lb">Unpaid capital</div><div class="vl">${aud(0)}</div><div class="sb">No calls outstanding</div></div>
+        <div class="sc bl"><div class="lb">Shareholders</div><div class="vl" style="font-size:18px">${SHAREHOLDERS.length}</div><div class="sb">Registered</div></div>
       </div>
     </div>
     <div class="ch" style="margin-top:4px"><h3>Shareholder registry</h3></div>
     <table>
-      <thead><tr><th>Shareholder</th><th class="thr">Paid-up capital</th><th>Payments</th></tr></thead>
+      <thead><tr><th>Shareholder</th><th class="thr">Shareholding</th><th class="thr">Paid-up capital</th><th>Payment history</th></tr></thead>
       <tbody>${registryRows}</tbody>
-      <tfoot><tr><td><strong>Total</strong></td><td class="nr" style="font-family:var(--mono)"><strong>${aud(tot)}</strong></td><td></td></tr></tfoot>
+      <tfoot><tr><td><strong>Total</strong></td><td class="nr"><strong>100%</strong></td><td class="nr" style="font-family:var(--mono)"><strong>${aud(tot)}</strong></td><td></td></tr></tfoot>
     </table>
     <div class="ch" style="margin-top:4px"><h3>All share capital transactions</h3></div>
     ${allTxns.length ? `<table>
@@ -1142,8 +1144,7 @@ function rShares() {
       <tfoot><tr><td colspan="3"><strong>Total</strong></td><td class="nr" style="font-family:var(--mono)"><strong>${aud(tot)}</strong></td><td></td></tr></tfoot>
     </table>` : `<div class="empty">No share capital transactions</div>`}
     <div style="padding:14px 18px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);line-height:1.7">
-      Share capital is equity — not income, not taxable. ASIC Form 484 must be lodged for all share allotments.
-      Yagoub Yousif Yagoub and Merghani Khalil Ahmed are registered shareholders with no paid-up capital recorded to date.
+      Share capital is equity — not income, not taxable. ASIC Form 484 must be lodged for all share allotments. Each shareholder holds 25% (25 shares each of 100 total).
     </div>`;
 }
 

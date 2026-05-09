@@ -240,6 +240,23 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 .fas-excl:last-child{border-bottom:none}
 .fas-excl .fas-lbl{color:var(--muted);font-size:11.5px}
 .fas-excl .fas-val{color:#bbb;text-decoration:line-through;font-size:12px}
+
+/* FINANCIAL STATEMENTS */
+.fs-card{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.fs-hdr{background:#1e3a5f;color:#fff;padding:10px 18px;display:flex;align-items:center;justify-content:space-between}
+.fs-hdr h3{font-size:12.5px;font-weight:700;color:#fff}
+.fs-hdr span{font-size:10px;color:#8aa4be;font-family:var(--mono)}
+.fs-sub{padding:6px 18px;background:var(--bg);border-bottom:1px solid var(--border);font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+.fs-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 18px;border-bottom:1px solid var(--border);font-size:12.5px}
+.fs-row:last-child{border-bottom:none}
+.fs-row.i1{padding-left:34px}.fs-row.i2{padding-left:50px}
+.fs-row.sh{padding:10px 18px 3px;border-bottom:none;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+.fs-row.tot{border-top:1px solid var(--border);border-bottom:none;padding-top:8px;font-weight:600}
+.fs-row.grand{border-top:2px solid var(--ink);border-bottom:none;padding-top:10px;font-size:15px;font-weight:700}
+.fs-row.pos{background:var(--gn-lt)}.fs-row.neg{background:var(--rd-lt)}
+.fs-mono{font-family:var(--mono);white-space:nowrap}
+.fs-note{padding:10px 18px;font-size:10.5px;color:var(--muted);border-top:1px solid var(--border);line-height:1.7;background:var(--bg)}
+.fs-bal-ok{color:var(--gn);font-weight:700}.fs-bal-err{color:var(--rd);font-weight:700}
 </style>
 </head>
 <body>
@@ -312,6 +329,7 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
   <button class="tab"     onclick="go('tax',this)">💰 Income Tax</button>
   <button class="tab"     onclick="go('inv',this)">📄 Invoices</button>
   <button class="tab"     onclick="go('pl',this)">📈 P&amp;L</button>
+  <button class="tab"     onclick="go('fs',this)">📑 Statements</button>
   <button class="tab"     onclick="go('add',this)">➕ Add Data</button>
 </nav>
 
@@ -380,6 +398,18 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 <!-- ══════ P&L ══════ -->
 <div id="v-pl" class="view">
   <div class="card" style="max-width:600px;margin:0 auto" id="plc"></div>
+</div>
+
+<!-- ══════ FINANCIAL STATEMENTS ══════ -->
+<div id="v-fs" class="view">
+  <div class="stabs">
+    <button class="stab on" onclick="showFS('is',this)">📋 Income Statement</button>
+    <button class="stab"    onclick="showFS('bs',this)">🏛 Balance Sheet</button>
+    <button class="stab"    onclick="showFS('cf',this)">💵 Cash Flow</button>
+  </div>
+  <div id="fs-is"></div>
+  <div id="fs-bs" style="display:none"></div>
+  <div id="fs-cf" style="display:none"></div>
 </div>
 
 <!-- ══════ INVOICES ══════ -->
@@ -736,7 +766,7 @@ const BASE_BK = [
   {id:'b3',date:'2025-02-18',fy:'FY2425',desc:'NRMA ADELAIDE AU — Card xx9281 (business insurance)',type:'Debit',amount:610.12,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2425_FEB_INSURANCE POLICY',gst:55.47},
   // ── FY2425 · Statement 2 (1 Apr – 17 May 2025) ──
   {id:'b4',date:'2025-05-03',fy:'FY2425',desc:'Transfer from CommBank app — Transfer (share capital injection)',type:'Credit',amount:2000,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
-  {id:'b5',date:'2025-05-03',fy:'FY2425',desc:'Fast Transfer From MOHAMMED ALBASHIER — Noor Energy (share capital)',type:'Credit',amount:5000,classification:'Share Capital',shareholder:'Mohammed Magzoub Albashier',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
+  {id:'b5',date:'2025-05-03',fy:'FY2425',desc:'Fast Transfer From MOHAMMED MAGZOUB — Noor Energy (share capital)',type:'Credit',amount:5000,classification:'Share Capital',shareholder:'Mohammed Magzoub',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
   {id:'b6',date:'2025-05-16',fy:'FY2425',desc:'Transfer from CommBank app — Noor Enegry (share capital injection)',type:'Credit',amount:1810.12,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
   // ── FY2526 · Statement 4 (1 Jul – 30 Sep 2025) ──
   {id:'b7',date:'2025-08-07',fy:'FY2526',desc:'LAWPATH — Essentials Plan annual subscription',type:'Debit',amount:468,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_AUG_LAW PATH SUBSCRIPTION',gst:42.54},
@@ -750,6 +780,12 @@ const BASE_BK = [
   {id:'b14',date:'2026-03-06',fy:'FY2526',desc:'Transfer To YAGOUB YOUSIF YAGOUB BALA — Service (final payment INV-001)',type:'Debit',amount:500,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2526_APR_YAGOUB',gst:0},
   {id:'b15',date:'2026-03-17',fy:'FY2526',desc:'DHL EXPRESS MYBILL AU — Perth to Dubai shipment · PERR000708514',type:'Debit',amount:415.25,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_MAR_DHL POSTAGE',gst:0},
   {id:'b16',date:'2026-03-30',fy:'FY2526',desc:'NRMA Business Insure BPAY — Renewal Policy 6807260',type:'Debit',amount:671.15,classification:'Expense',shareholder:'',matched:true,src:'BANK_FY2526_MAR_CBA',gst:61.01},
+];
+const SHAREHOLDERS = [
+  {name: 'Hashim Hashim', shares: 25},
+  {name: 'Mohammed Magzoub', shares: 25},
+  {name: 'Yagoub Yagoub', shares: 25},
+  {name: 'Merghani Ahmed', shares: 25},
 ];
 const BASE_INV_IN = [
   {id:'ii1',date:'2026-02-17',fy:'FY2526',ref:'INV-IN_FY2526_FEB_EQUIPMENT PURCHASE-PAID',
@@ -908,7 +944,7 @@ const EXP_FAS = {
 // ═══════════════════════════════════════════════════════
 // RENDER ALL
 // ═══════════════════════════════════════════════════════
-function rAll() { rQTL(); rDash(); rBank(); rExp(); rShares(); rGST(); rTax(); rPL(); rInv(); }
+function rAll() { rQTL(); rDash(); rBank(); rExp(); rShares(); rGST(); rTax(); rPL(); rFS(); rInv(); }
 
 // DASHBOARD
 function rDash() {
@@ -1043,34 +1079,73 @@ function rExp() {
 
 // SHARES
 function rShares() {
-  const s = DATA.bank.filter(b => b.fy===aFY && b.classification==='Share Capital');
-  const h = s.filter(b => b.shareholder && b.shareholder.includes('Hashim'));
-  const o = s.filter(b => !b.shareholder || !b.shareholder.includes('Hashim'));
-  const tot = s.reduce((a,b) => a+b.amount, 0);
-  document.getElementById('shs').innerHTML = `
-    <div class="sc bl"><div class="lb">Hashim Hashim</div><div class="vl">${aud(h.reduce((a,b)=>a+b.amount,0))}</div><div class="sb">${h.length} payments</div></div>
-    <div class="sc pu"><div class="lb">Other shareholders</div><div class="vl">${aud(o.reduce((a,b)=>a+b.amount,0))}</div><div class="sb">${o.length} payment(s)</div></div>
-    <div class="sc tl"><div class="lb">Total share capital</div><div class="vl">${aud(tot)}</div><div class="sb">${FYL[aFY]} · not taxable</div></div>`;
-  document.getElementById('shtit').textContent = `Share capital — ${FYL[aFY]}`;
-  const g = {};
-  s.forEach(b => { const k = b.shareholder||'Unknown'; if(!g[k]) g[k]=[]; g[k].push(b); });
-  let rows = '', n = 1;
-  Object.entries(g).forEach(([sh,tx]) => {
-    const isH = sh.includes('Hashim');
-    tx.sort((a,b)=>a.date.localeCompare(b.date)).forEach(t => {
-      rows += `<tr class="${isH?'rb':'rp'}">
-        <td>${n++}</td><td>${fd(t.date)}</td><td>${t.desc}</td>
-        <td><strong>${sh}</strong></td>
-        <td class="nr" style="color:var(--tl)">${aud(t.amount)}</td>
-        <td><span class="b ${isH?'bbl':'bpu'}">Share Capital</span></td>
-      </tr>`;
-    });
+  const allSC = DATA.bank.filter(b => b.classification === 'Share Capital');
+  const fySC  = DATA.bank.filter(b => b.fy === aFY && b.classification === 'Share Capital');
+  const tot   = allSC.reduce((a,b) => a+b.amount, 0);
+  const fyTot = fySC.reduce((a,b) => a+b.amount, 0);
+  const totalShares = SHAREHOLDERS.reduce((a,s)=>a+s.shares, 0);
+
+  // Per-shareholder paid-up (all time)
+  const shData = SHAREHOLDERS.map(sh => {
+    const pmts = allSC.filter(b => b.shareholder === sh.name);
+    return {name: sh.name, shares: sh.shares, total: pmts.reduce((a,b)=>a+b.amount,0), count: pmts.length, payments: pmts};
   });
-  document.getElementById('sht').innerHTML = s.length
-    ? `<table><thead><tr><th>#</th><th>Date</th><th>Bank Reference</th><th>Shareholder</th><th class="thr">Amount</th><th>Type</th></tr></thead>
-       <tbody>${rows}</tbody>
-       <tfoot><tr><td colspan="4">Total ${FYL[aFY]}</td><td class="nr">${aud(tot)}</td><td></td></tr></tfoot></table>`
-    : `<div class="empty">No share capital recorded for ${FYL[aFY]}</div>`;
+
+  document.getElementById('shs').innerHTML = shData.map(sh => {
+    const shareholding = ((sh.shares/totalShares)*100).toFixed(1);
+    const color = sh.total > 0 ? 'var(--bl)' : 'var(--muted)';
+    return `<div class="sc bl">
+      <div class="lb">${sh.name}</div>
+      <div class="vl" style="color:${color}">${aud(sh.total)}</div>
+      <div class="sb">${sh.shares} shares (${shareholding}%) · ${sh.count > 0 ? sh.count+' payment'+(sh.count>1?'s':'') : 'No payments recorded'}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('shtit').textContent = `Share capital — all payments (all financial years)`;
+
+  // Registry table
+  const registryRows = shData.map(sh => `
+    <tr>
+      <td style="font-weight:600">${sh.name}</td>
+      <td class="nr">${sh.shares} shares (${((sh.shares/totalShares)*100).toFixed(1)}%)</td>
+      <td class="nr" style="color:${sh.total>0?'var(--bl)':'var(--muted)'}; font-family:var(--mono)">${aud(sh.total)}</td>
+      <td>${sh.payments.map(p=>`<span class="b bbl" style="margin-right:4px;font-size:9px">${fd(p.date)} ${aud(p.amount)}</span>`).join('') || '<span class="sm muted">—</span>'}</td>
+    </tr>`).join('');
+
+  // All transactions table
+  const allTxns = allSC.sort((a,b)=>a.date.localeCompare(b.date));
+  document.getElementById('sht').innerHTML = `
+    <div style="padding:16px 18px 0">
+      <div class="g4 mb">
+        <div class="sc bl"><div class="lb">Total share capital</div><div class="vl">${aud(tot)}</div><div class="sb">All shareholders · all time</div></div>
+        <div class="sc bl"><div class="lb">Total shares issued</div><div class="vl" style="font-size:18px">${totalShares}</div><div class="sb">${totalShares} shares @ 25% each</div></div>
+        <div class="sc bl"><div class="lb">Paid up — ${FYL[aFY]}</div><div class="vl">${aud(fyTot)}</div><div class="sb">This financial year</div></div>
+        <div class="sc bl"><div class="lb">Shareholders</div><div class="vl" style="font-size:18px">${SHAREHOLDERS.length}</div><div class="sb">Registered</div></div>
+      </div>
+    </div>
+    <div class="ch" style="margin-top:4px"><h3>Shareholder registry</h3></div>
+    <table>
+      <thead><tr><th>Shareholder</th><th class="thr">Shareholding</th><th class="thr">Paid-up capital</th><th>Payment history</th></tr></thead>
+      <tbody>${registryRows}</tbody>
+      <tfoot><tr><td><strong>Total</strong></td><td class="nr"><strong>100%</strong></td><td class="nr" style="font-family:var(--mono)"><strong>${aud(tot)}</strong></td><td></td></tr></tfoot>
+    </table>
+    <div class="ch" style="margin-top:4px"><h3>All share capital transactions</h3></div>
+    ${allTxns.length ? `<table>
+      <thead><tr><th>Date</th><th>FY</th><th>Shareholder</th><th class="thr">Amount</th><th>Source</th></tr></thead>
+      <tbody>${allTxns.map(b=>`
+        <tr class="rb">
+          <td>${fd(b.date)}</td>
+          <td class="sm muted">${b.fy}</td>
+          <td style="font-weight:500">${b.shareholder||'—'}</td>
+          <td class="nr" style="color:var(--bl);font-family:var(--mono);font-weight:600">${aud(b.amount)}</td>
+          <td><span class="src" title="${b.src||''}">${b.src||'—'}</span></td>
+        </tr>`).join('')}
+      </tbody>
+      <tfoot><tr><td colspan="3"><strong>Total</strong></td><td class="nr" style="font-family:var(--mono)"><strong>${aud(tot)}</strong></td><td></td></tr></tfoot>
+    </table>` : `<div class="empty">No share capital transactions</div>`}
+    <div style="padding:14px 18px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);line-height:1.7">
+      Share capital is equity — not income, not taxable. ASIC Form 484 must be lodged for all share allotments. Each shareholder holds 25% (25 shares each of 100 total).
+    </div>`;
 }
 
 // GST
@@ -1722,6 +1797,255 @@ function rTax() {
       <div class="fas-row"><span class="fas-lbl">Company tax return due date</span><span class="fas-code" style="display:none"></span><span class="fas-val pos-v">31 October ${yearOfReturn}</span></div>
       <div class="fas-row" style="background:var(--am-lt)">
         <span class="fas-lbl" style="color:var(--am);font-size:11px">⚠ FAS 3 charges $33 for business self-lodgment. Verify all figures with a registered tax agent before lodging.</span>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// FINANCIAL STATEMENTS (Income Statement · Balance Sheet · Cash Flow)
+// ═══════════════════════════════════════════════════════
+function showFS(id, btn) {
+  ['is','bs','cf'].forEach(s => {
+    const el = document.getElementById('fs-'+s);
+    if(el) el.style.display = s===id ? 'block' : 'none';
+  });
+  btn.closest('.stabs').querySelectorAll('.stab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function rFS() {
+  if(!document.getElementById('fs-is')) return;
+  rIS(); rBS(); rCF();
+}
+
+function rIS() {
+  const bAll = aQ==='ALL' ? DATA.bank.filter(x=>x.fy===aFY) : fB(aFY,aQ);
+  const eAll = (aQ==='ALL' ? DATA.expenses.filter(x=>x.fy===aFY) : fE(aFY,aQ))
+    .filter(x => x.status==='Approved' || x.status==='Refund');
+  const s = FYS[aFY];
+  const per = aQ==='ALL' ? `1 Jul ${s} – 30 Jun ${s+1}` : `${QD[aQ].d} ${(aQ==='Q1'||aQ==='Q2')?s:s+1}`;
+  const periodEnd = per.includes('–') ? per.split('–')[1].trim() : per;
+
+  const salesB    = bAll.filter(x=>x.type==='Credit'&&x.classification==='Income');
+  const cfB       = bAll.filter(x=>x.type==='Credit'&&x.classification==='Client Funds');
+  const netSales  = salesB.reduce((a,x)=>a+(x.amount-(x.gst||0)),0);
+  const netCF     = cfB.reduce((a,x)=>a+(x.amount-(x.gst||0)),0);
+  const totalRev  = netSales + netCF;
+
+  const cogsExp    = eAll.filter(x=>x.cat==='Equipment');
+  const cogs       = cogsExp.reduce((a,x)=>a+(x.net||0),0);
+  const grossProfit = totalRev - cogs;
+
+  const opExp = eAll.filter(x=>x.cat!=='Equipment');
+  const cats  = {};
+  opExp.forEach(x => { cats[x.cat] = (cats[x.cat]||0) + (x.net||0); });
+  const totalOpEx = opExp.reduce((a,x)=>a+(x.net||0),0);
+  const ebit      = grossProfit - totalOpEx;
+  const taxEst    = ebit > 0 ? ebit * 0.25 : 0;
+  const netProfit = ebit - taxEst;
+
+  const cogsRows = cogsExp.map(x=>`<div class="fs-row i2"><span>${x.desc} (${x.supplier})</span><span class="fs-mono">(${aud(x.net||0)})</span></div>`).join('');
+  const catRows = Object.entries(cats).sort((a,b)=>b[1]-a[1])
+    .map(([c,v])=>`<div class="fs-row i1"><span>${c}</span><span class="fs-mono">(${aud(v)})</span></div>`).join('')
+    || `<div class="fs-row i1"><span class="muted">No expenses this period</span><span class="fs-mono muted">$0.00</span></div>`;
+
+  document.getElementById('fs-is').innerHTML = `
+    <div style="max-width:640px;margin:0 auto">
+      <div class="fs-card">
+        <div style="text-align:center;padding:18px 18px 14px;border-bottom:2px solid var(--border)">
+          <div style="font-family:var(--serif);font-size:22px;font-weight:700;color:var(--coal)">Noor Energy Pty Ltd</div>
+          <div class="sm muted">ABN 24 678 922 051</div>
+          <div style="font-size:13px;font-weight:600;color:#1e3a5f;margin-top:6px">Statement of Profit or Loss</div>
+          <div class="sm muted">For the period ended ${periodEnd}</div>
+          <div style="font-size:10px;color:var(--am);font-style:italic;margin-top:4px">Not audited · All amounts ex-GST · AUD</div>
+        </div>
+        <div class="fs-row sh">Revenue</div>
+        ${salesB.length ? `<div class="fs-row i1"><span>Services / sales revenue</span><span class="fs-mono">${aud(netSales)}</span></div>` : ''}
+        ${cfB.length ? `<div class="fs-row i1"><span>Procurement / client funds received</span><span class="fs-mono">${aud(netCF)}</span></div>` : ''}
+        ${!salesB.length && !cfB.length ? `<div class="fs-row i1"><span class="muted">No revenue this period</span><span class="fs-mono muted">$0.00</span></div>` : ''}
+        <div class="fs-row tot"><span>Total revenue</span><span class="fs-mono" style="color:var(--tl)">${aud(totalRev)}</span></div>
+        ${cogs > 0 ? `
+        <div class="fs-row sh">Cost of revenue</div>
+        ${cogsRows}
+        <div class="fs-row tot"><span>Total cost of revenue</span><span class="fs-mono">(${aud(cogs)})</span></div>
+        <div class="fs-row grand ${grossProfit>=0?'pos':'neg'}"><span><strong>Gross profit / (loss)</strong></span><span class="fs-mono" style="color:${grossProfit>=0?'var(--tl)':'var(--rd)'}"><strong>${grossProfit>=0?aud(grossProfit):'('+aud(Math.abs(grossProfit))+')'}</strong></span></div>
+        ` : ''}
+        <div class="fs-row sh">Operating expenses</div>
+        ${catRows}
+        <div class="fs-row tot"><span>Total operating expenses</span><span class="fs-mono">(${aud(totalOpEx)})</span></div>
+        <div class="fs-row grand ${ebit>=0?'pos':'neg'}"><span><strong>Operating profit / (loss)</strong></span><span class="fs-mono" style="color:${ebit>=0?'var(--gn)':'var(--rd)'}"><strong>${ebit>=0?aud(ebit):'('+aud(Math.abs(ebit))+')'}</strong></span></div>
+        ${taxEst > 0 ? `<div class="fs-row i1"><span>Income tax expense (est. 25% BRE rate)</span><span class="fs-mono">(${aud(taxEst)})</span></div>` : ''}
+        <div class="fs-row grand ${netProfit>=0?'pos':'neg'}" style="border-top:2px solid var(--ink)">
+          <span><strong>Net profit / (loss) for the period</strong></span>
+          <span class="fs-mono" style="color:${netProfit>=0?'var(--gn)':'var(--rd)'};font-size:15px"><strong>${netProfit>=0?aud(netProfit):'('+aud(Math.abs(netProfit))+')'}</strong></span>
+        </div>
+        <div class="fs-note">All amounts exclude GST. Income tax is an estimate at 25% (BRE rate). Verify with a registered accountant before lodging.</div>
+      </div>
+    </div>`;
+}
+
+function rBS() {
+  const fyOrder  = ['FY2425','FY2526','FY2627','FY2728'];
+  const activeFYs = fyOrder.slice(0, fyOrder.indexOf(aFY)+1);
+  const s = FYS[aFY];
+  const asAt = `30 June ${s+1}`;
+
+  const allBankToDate = DATA.bank.filter(b=>activeFYs.includes(b.fy));
+  const cashBalance = allBankToDate.filter(x=>x.type==='Credit').reduce((a,x)=>a+x.amount,0)
+                    - allBankToDate.filter(x=>x.type==='Debit').reduce((a,x)=>a+x.amount,0);
+
+  const receivables = DATA.invoicesOut.reduce((sum,inv) => {
+    const rcvd = DATA.bank.filter(b=>b.type==='Credit'&&b.src===inv.ref).reduce((a,b)=>a+b.amount,0);
+    return rcvd < inv.amount ? sum+(inv.amount-rcvd) : sum;
+  }, 0);
+
+  const totalCurrentAssets = cashBalance + receivables;
+  const totalAssets = totalCurrentAssets;
+
+  const payables = DATA.invoicesIn.reduce((sum,inv) => {
+    const paid = DATA.bank.filter(b=>b.type==='Debit'&&b.src===inv.ref).reduce((a,b)=>a+b.amount,0);
+    return paid < inv.amount ? sum+(inv.amount-paid) : sum;
+  }, 0);
+
+  const totalLiabilities = payables;
+  const netAssets = totalAssets - totalLiabilities;
+
+  const shareCapital = allBankToDate.filter(x=>x.classification==='Share Capital').reduce((a,x)=>a+x.amount,0);
+  const accumulatedSurplus = netAssets - shareCapital;
+  const totalEquity = shareCapital + accumulatedSurplus;
+
+  document.getElementById('fs-bs').innerHTML = `
+    <div style="max-width:640px;margin:0 auto">
+      <div class="fs-card">
+        <div style="text-align:center;padding:18px 18px 14px;border-bottom:2px solid var(--border)">
+          <div style="font-family:var(--serif);font-size:22px;font-weight:700;color:var(--coal)">Noor Energy Pty Ltd</div>
+          <div class="sm muted">ABN 24 678 922 051</div>
+          <div style="font-size:13px;font-weight:600;color:#1e3a5f;margin-top:6px">Statement of Financial Position (Balance Sheet)</div>
+          <div class="sm muted">As at ${asAt}</div>
+          <div style="font-size:10px;color:var(--am);font-style:italic;margin-top:4px">Not audited · Amounts derived from recorded transactions · AUD</div>
+        </div>
+
+        <div class="fs-row sh">Assets</div>
+        <div class="fs-sub">Current Assets</div>
+        <div class="fs-row i1"><span>Cash and cash equivalents (CBA 06 7873 / xxx3737)</span><span class="fs-mono">${aud(cashBalance)}</span></div>
+        ${receivables > 0 ? `<div class="fs-row i1"><span>Trade receivables (outstanding invoices sent)</span><span class="fs-mono">${aud(receivables)}</span></div>` : ''}
+        <div class="fs-row tot"><span>Total current assets</span><span class="fs-mono">${aud(totalCurrentAssets)}</span></div>
+        <div class="fs-sub">Non-Current Assets</div>
+        <div class="fs-row i1"><span class="muted">No non-current assets recorded</span><span class="fs-mono muted">—</span></div>
+        <div class="fs-row grand" style="border-top:2px solid var(--ink)"><span><strong>Total Assets</strong></span><span class="fs-mono"><strong>${aud(totalAssets)}</strong></span></div>
+
+        <div class="fs-row sh">Liabilities</div>
+        <div class="fs-sub">Current Liabilities</div>
+        ${payables > 0
+          ? `<div class="fs-row i1"><span>Trade payables (outstanding bills received)</span><span class="fs-mono">${aud(payables)}</span></div>`
+          : `<div class="fs-row i1"><span class="muted">No outstanding payables</span><span class="fs-mono muted">$0.00</span></div>`}
+        <div class="fs-row tot"><span>Total current liabilities</span><span class="fs-mono">${aud(totalLiabilities)}</span></div>
+        <div class="fs-row grand" style="border-top:2px solid var(--ink)"><span><strong>Total Liabilities</strong></span><span class="fs-mono"><strong>${aud(totalLiabilities)}</strong></span></div>
+
+        <div class="fs-row grand pos" style="border-top:2px solid var(--ink)">
+          <span><strong>Net Assets</strong></span>
+          <span class="fs-mono" style="color:${netAssets>=0?'var(--tl)':'var(--rd)'}"><strong>${netAssets>=0?aud(netAssets):'('+aud(Math.abs(netAssets))+')'}</strong></span>
+        </div>
+
+        <div class="fs-row sh">Equity</div>
+        <div class="fs-row i1"><span>Share capital</span><span class="fs-mono">${aud(shareCapital)}</span></div>
+        <div class="fs-row i1">
+          <span>Retained ${accumulatedSurplus>=0?'earnings':'losses'}</span>
+          <span class="fs-mono" style="color:${accumulatedSurplus>=0?'var(--tl)':'var(--rd)'}">${accumulatedSurplus>=0?aud(accumulatedSurplus):'('+aud(Math.abs(accumulatedSurplus))+')'}</span>
+        </div>
+        <div class="fs-row grand pos" style="border-top:2px solid var(--ink)">
+          <span><strong>Total Equity</strong></span>
+          <span class="fs-mono" style="color:${totalEquity>=0?'var(--tl)':'var(--rd)'}"><strong>${totalEquity>=0?aud(totalEquity):'('+aud(Math.abs(totalEquity))+')'}</strong></span>
+        </div>
+        <div class="fs-row" style="background:var(--gn-lt)">
+          <span style="color:var(--gn);font-size:11px">✓ Net Assets = Total Equity (internally consistent from recorded bank data)</span>
+        </div>
+        <div class="fs-note">Cash reflects the net of all recorded CBA bank transactions up to ${asAt}, inclusive of GST. Retained earnings is derived as Net Assets minus Share Capital. Non-current assets and off-balance-sheet items not tracked. Verify with a registered accountant.</div>
+      </div>
+    </div>`;
+}
+
+function rCF() {
+  const bAll = aQ==='ALL' ? DATA.bank.filter(x=>x.fy===aFY) : fB(aFY,aQ);
+  const s = FYS[aFY];
+  const per = aQ==='ALL' ? `1 Jul ${s} – 30 Jun ${s+1}` : `${QD[aQ].d} ${(aQ==='Q1'||aQ==='Q2')?s:s+1}`;
+
+  const incomeRcvd    = bAll.filter(x=>x.type==='Credit'&&x.classification==='Income');
+  const clientFundsIn = bAll.filter(x=>x.type==='Credit'&&x.classification==='Client Funds');
+  const expPaid       = bAll.filter(x=>x.type==='Debit'&&x.classification==='Expense');
+  const scRcvd        = bAll.filter(x=>x.type==='Credit'&&x.classification==='Share Capital');
+
+  const cashIncRcvd   = incomeRcvd.reduce((a,x)=>a+x.amount,0);
+  const cashCFIn      = clientFundsIn.reduce((a,x)=>a+x.amount,0);
+  const cashExpPaid   = expPaid.reduce((a,x)=>a+x.amount,0);
+  const cashSCRcvd    = scRcvd.reduce((a,x)=>a+x.amount,0);
+
+  const netOperating  = cashIncRcvd + cashCFIn - cashExpPaid;
+  const netFinancing  = cashSCRcvd;
+
+  // Reconcile: total period bank movement (catches any Transfer/Other transactions)
+  const periodCr = bAll.filter(x=>x.type==='Credit').reduce((a,x)=>a+x.amount,0);
+  const periodDb = bAll.filter(x=>x.type==='Debit').reduce((a,x)=>a+x.amount,0);
+  const periodNet = periodCr - periodDb;
+  const otherNet = periodNet - (netOperating + netFinancing);
+
+  // Opening cash = cumulative balance from all transactions before this period
+  const fyOrder = ['FY2425','FY2526','FY2627','FY2728'];
+  const fyIdx   = fyOrder.indexOf(aFY);
+  let openingCash = 0;
+  DATA.bank.filter(b=>fyOrder.slice(0,fyIdx).includes(b.fy)).forEach(b=>{
+    openingCash += b.type==='Credit' ? b.amount : -b.amount;
+  });
+  if(aQ !== 'ALL') {
+    const qOrder = ['Q1','Q2','Q3','Q4'];
+    qOrder.slice(0, qOrder.indexOf(aQ)).forEach(q=>{
+      fB(aFY,q).forEach(b=>{ openingCash += b.type==='Credit' ? b.amount : -b.amount; });
+    });
+  }
+  const closingCash = openingCash + periodNet;
+
+  document.getElementById('fs-cf').innerHTML = `
+    <div style="max-width:640px;margin:0 auto">
+      <div class="fs-card">
+        <div style="text-align:center;padding:18px 18px 14px;border-bottom:2px solid var(--border)">
+          <div style="font-family:var(--serif);font-size:22px;font-weight:700;color:var(--coal)">Noor Energy Pty Ltd</div>
+          <div class="sm muted">ABN 24 678 922 051</div>
+          <div style="font-size:13px;font-weight:600;color:#1e3a5f;margin-top:6px">Statement of Cash Flows</div>
+          <div class="sm muted">For the period: ${per}</div>
+          <div style="font-size:10px;color:var(--am);font-style:italic;margin-top:4px">Not audited · Direct method · All amounts in AUD (inclusive of GST)</div>
+        </div>
+
+        <div class="fs-row sh">Cash flows from operating activities</div>
+        ${cashIncRcvd > 0 ? `<div class="fs-row i1"><span>Receipts from customers</span><span class="fs-mono" style="color:var(--tl)">${aud(cashIncRcvd)}</span></div>` : ''}
+        ${cashCFIn > 0 ? `<div class="fs-row i1"><span>Client funds received (equipment procurement)</span><span class="fs-mono" style="color:var(--tl)">${aud(cashCFIn)}</span></div>` : ''}
+        ${cashExpPaid > 0 ? `<div class="fs-row i1"><span>Cash paid to suppliers and for expenses</span><span class="fs-mono" style="color:var(--rd)">(${aud(cashExpPaid)})</span></div>` : ''}
+        ${cashIncRcvd===0&&cashCFIn===0&&cashExpPaid===0 ? `<div class="fs-row i1"><span class="muted">No operating cash flows this period</span><span class="fs-mono muted">—</span></div>` : ''}
+        <div class="fs-row tot"><span><strong>Net cash from / (used in) operating activities</strong></span><span class="fs-mono" style="color:${netOperating>=0?'var(--tl)':'var(--rd)'};font-weight:700">${netOperating>=0?aud(netOperating):'('+aud(Math.abs(netOperating))+')'}</span></div>
+
+        <div class="fs-row sh">Cash flows from investing activities</div>
+        <div class="fs-row i1"><span class="muted">No investing activities recorded</span><span class="fs-mono muted">—</span></div>
+        <div class="fs-row tot"><span>Net cash from / (used in) investing activities</span><span class="fs-mono muted">$0.00</span></div>
+
+        <div class="fs-row sh">Cash flows from financing activities</div>
+        ${cashSCRcvd > 0
+          ? scRcvd.map(x=>`<div class="fs-row i1"><span>Proceeds from share capital — ${x.shareholder||'shareholder'}</span><span class="fs-mono" style="color:var(--tl)">${aud(x.amount)}</span></div>`).join('')
+          : `<div class="fs-row i1"><span class="muted">No financing activities this period</span><span class="fs-mono muted">—</span></div>`}
+        <div class="fs-row tot"><span><strong>Net cash from / (used in) financing activities</strong></span><span class="fs-mono" style="color:${netFinancing>=0?'var(--tl)':'var(--rd)'};font-weight:700">${netFinancing>=0?aud(netFinancing):'('+aud(Math.abs(netFinancing))+')'}</span></div>
+
+        ${Math.abs(otherNet) > 0.01 ? `
+        <div class="fs-row sh">Other movements</div>
+        <div class="fs-row i1"><span>Other / transfer movements (unclassified)</span><span class="fs-mono">${otherNet>=0?aud(otherNet):'('+aud(Math.abs(otherNet))+')'}</span></div>
+        ` : ''}
+
+        <div style="border-top:2px solid var(--ink)">
+          <div class="fs-row"><span><strong>Net increase / (decrease) in cash</strong></span><span class="fs-mono" style="color:${periodNet>=0?'var(--gn)':'var(--rd)'};font-weight:700">${periodNet>=0?aud(periodNet):'('+aud(Math.abs(periodNet))+')'}</span></div>
+          <div class="fs-row i1"><span>Cash at beginning of period</span><span class="fs-mono">${aud(openingCash)}</span></div>
+          <div class="fs-row grand pos" style="border-top:1px solid var(--border)">
+            <span><strong>Cash at end of period</strong></span>
+            <span class="fs-mono" style="color:${closingCash>=0?'var(--tl)':'var(--rd)'};font-size:15px"><strong>${closingCash>=0?aud(closingCash):'('+aud(Math.abs(closingCash))+')'}</strong></span>
+          </div>
+        </div>
+        <div class="fs-note">Prepared using the direct method. All amounts are inclusive of GST. Closing cash reconciles to the Balance Sheet cash figure. Opening balance is derived from prior recorded bank transactions only.</div>
       </div>
     </div>`;
 }

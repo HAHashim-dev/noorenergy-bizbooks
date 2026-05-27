@@ -1,6 +1,6 @@
 # BizBooks × Claude — Skills & Lessons Learned
 
-> Last updated: 15 May 2026
+> Last updated: 27 May 2026
 > Purpose: Reference guide for working with Claude Code on the NoorEnergy BizBooks HTML file
 
 ---
@@ -196,3 +196,69 @@ BAS_FY2526_JUL-SEP_ATO              ← BAS lodgement
 ```
 
 Month codes: `JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC`
+
+---
+
+## 11. Share Capital Refunds
+
+A return of capital is recorded as a **Debit** bank entry with `classification: 'Share Capital'`. Example:
+
+```js
+{id:'b17', date:'2026-05-27', fy:'FY2526',
+ desc:'Transfer To MOHAMMED MAGZOUB — Share capital refund',
+ type:'Debit', amount:2500, classification:'Share Capital',
+ shareholder:'Mohammed Magzoub', matched:false,
+ src:'BANK_FY2526_MAY_CBA', gst:0}
+```
+
+The `rShares()` function must use credit/debit-aware summation — not a plain `.reduce((a,b) => a+b.amount)`:
+
+```js
+const scAmt = b => b.type === 'Credit' ? b.amount : -b.amount;
+const tot = allSC.reduce((a,b) => a + scAmt(b), 0);
+```
+
+Set `matched: false` when the bank statement is not yet available. The `src` field should reference the expected bank statement filename so it auto-matches when that statement is added.
+
+---
+
+## 12. localStorage Merge Pattern
+
+`loadData()` uses a `mergeBase()` helper to ensure new hardcoded entries (added to BASE_BK/BASE_EX) always appear even when localStorage is already populated:
+
+```js
+function mergeBase(base, stored) {
+  if (!stored) return [...base];
+  const storedIds = new Set(stored.map(e => e.id));
+  const newBase = base.filter(e => !storedIds.has(e.id));
+  return [...stored, ...newBase];
+}
+```
+
+**Rule:** Sequential IDs (b1–b17, e1–e21, etc.) are used for hardcoded entries. The merge detects new IDs not present in localStorage and appends them. User-added entries get timestamp-based UIDs and are never displaced.
+
+**When this matters:** Any time a new entry is hardcoded into BASE_BK or BASE_EX, it will automatically appear in existing installs without requiring a localStorage reset.
+
+---
+
+## 13. Charts, Filters, and Collapse/Expand (Session 2)
+
+### Chart.js integration
+- CDN: `<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>` in `<head>`
+- Registry: `const CHARTS = {};` — always call `CHARTS.key.destroy()` before recreating to avoid "canvas already in use" error
+- Colour palette: `const CP = ['#0f9b8e','#2a6ee8','#f0b429','#1a7a5e','#c0392b','#d4750a','#6d28d9','#6e7a8a']`
+- Canvas elements live in static HTML inside view divs; chart JS runs at the end of each `rXxx()` render function
+
+### Table filters
+- `fRow(cols)` helper generates `<tr class="frow">` with `<input oninput="filterTbl(this)">` per column
+- Pass `''` for numeric/badge columns where text filtering isn't useful
+- `filterTbl(input)` walks up to the table and hides rows that don't match all filter inputs
+
+### Collapse/expand
+- Add `data-card-key="unique-key"` to each `<div class="card">`
+- Replace `<div class="ch"><h3>Title</h3></div>` with `<div class="ch"><h3>Title</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div>`
+- `toggleCard(btn)` toggles `.collapsed` class and persists state in `sessionStorage` (prefix: `ne_card_`)
+- `restoreCards()` must be called after `rAll()` and inside the tab-restore IIFE
+
+### CSS classes added
+`.ch`, `.collapse-btn`, `.card.collapsed > :not(.ch)`, `tr.frow`, `tr.frow input`, `.chart-wrap` (240px), `.chart-wrap-sm` (180px)

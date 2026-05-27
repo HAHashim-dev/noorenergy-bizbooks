@@ -825,6 +825,7 @@ const BASE_BK = [
   {id:'b14',date:'2026-03-06',fy:'FY2526',desc:'Transfer To YAGOUB YOUSIF YAGOUB BALA — Service (final payment INV-001)',type:'Debit',amount:500,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2526_APR_YAGOUB',gst:0},
   {id:'b15',date:'2026-03-17',fy:'FY2526',desc:'DHL EXPRESS MYBILL AU — Perth to Dubai shipment · PERR000708514',type:'Debit',amount:415.25,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_MAR_DHL POSTAGE',gst:0},
   {id:'b16',date:'2026-03-30',fy:'FY2526',desc:'NRMA Business Insure BPAY — Renewal Policy 6807260',type:'Debit',amount:671.15,classification:'Expense',shareholder:'',matched:true,src:'BANK_FY2526_MAR_CBA',gst:61.01},
+  {id:'b17',date:'2026-05-27',fy:'FY2526',desc:'Transfer To MOHAMMED MAGZOUB — Share capital refund (return of excess contribution over agreed $2,500)',type:'Debit',amount:2500,classification:'Share Capital',shareholder:'Mohammed Magzoub',matched:false,src:'BANK_FY2526_MAY_CBA',gst:0},
 ];
 const SHAREHOLDERS = [
   {name: 'Hashim Hashim', shares: 25},
@@ -890,6 +891,12 @@ const ATO_ACT_DATA = {
 // ═══════════════════════════════════════════════════════
 // LOCALSTORAGE DATA STORE
 // ═══════════════════════════════════════════════════════
+function mergeBase(base, stored) {
+  if (!stored) return [...base];
+  const storedIds = new Set(stored.map(e => e.id));
+  const newBase = base.filter(e => !storedIds.has(e.id));
+  return [...stored, ...newBase];
+}
 function loadData() {
   try {
     const ex = JSON.parse(localStorage.getItem('ne_expenses') || 'null');
@@ -897,10 +904,10 @@ function loadData() {
     const ii = JSON.parse(localStorage.getItem('ne_inv_in') || 'null');
     const io = JSON.parse(localStorage.getItem('ne_inv_out') || 'null');
     return {
-      expenses: ex || [...BASE_EX],
-      bank: bk || [...BASE_BK],
-      invoicesIn: ii || [...BASE_INV_IN],
-      invoicesOut: io || [...BASE_INV_OUT],
+      expenses:    mergeBase(BASE_EX,      ex),
+      bank:        mergeBase(BASE_BK,      bk),
+      invoicesIn:  mergeBase(BASE_INV_IN,  ii),
+      invoicesOut: mergeBase(BASE_INV_OUT, io),
     };
   } catch(e) {
     return { expenses: [...BASE_EX], bank: [...BASE_BK], invoicesIn: [...BASE_INV_IN], invoicesOut: [...BASE_INV_OUT] };
@@ -1240,15 +1247,16 @@ const AGREED_CONTRIBUTION = 2500;
 function rShares() {
   const allSC      = DATA.bank.filter(b => b.classification === 'Share Capital');
   const fySC       = DATA.bank.filter(b => b.fy === aFY && b.classification === 'Share Capital');
-  const tot        = allSC.reduce((a,b) => a+b.amount, 0);
-  const fyTot      = fySC.reduce((a,b) => a+b.amount, 0);
+  const scAmt = b => b.type === 'Credit' ? b.amount : -b.amount;
+  const tot        = allSC.reduce((a,b) => a+scAmt(b), 0);
+  const fyTot      = fySC.reduce((a,b) => a+scAmt(b), 0);
   const totalShares = SHAREHOLDERS.reduce((a,s) => a+s.shares, 0);
   const agreedTotal = SHAREHOLDERS.length * AGREED_CONTRIBUTION;  // 10,000
 
   // Per-shareholder paid-up (all time)
   const shData = SHAREHOLDERS.map(sh => {
     const pmts = allSC.filter(b => b.shareholder === sh.name);
-    const paid = pmts.reduce((a,b) => a+b.amount, 0);
+    const paid = pmts.reduce((a,b) => a+scAmt(b), 0);
     return { name: sh.name, shares: sh.shares, total: paid, count: pmts.length, payments: pmts };
   });
 
@@ -1324,7 +1332,7 @@ function rShares() {
       <td class="nr" style="font-family:var(--mono);color:${sh.total>0?'var(--bl)':'var(--muted)'};font-weight:600">${aud(sh.total)}</td>
       <td class="nr">${varTxt}</td>
       <td class="nr"><span style="font-family:var(--mono);font-weight:700;font-size:12.5px;color:var(--tl)">${profPct}%</span> ${deltaTxt}</td>
-      <td style="font-size:10px">${sh.payments.map(p=>`<span class="b bbl" style="margin-right:3px;font-size:9px">${fd(p.date)} ${aud(p.amount)}</span>`).join('')||'<span class="sm muted">—</span>'}</td>
+      <td style="font-size:10px">${sh.payments.map(p=>{const r=p.type==='Debit';return `<span class="b ${r?'bam':'bbl'}" style="margin-right:3px;font-size:9px">${r?'↩ ':''} ${fd(p.date)} ${r?'-':''}${aud(p.amount)}</span>`;}).join('')||'<span class="sm muted">—</span>'}</td>
     </tr>`;
   }).join('');
 

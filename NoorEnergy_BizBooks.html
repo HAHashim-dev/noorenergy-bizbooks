@@ -257,7 +257,22 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 .fs-mono{font-family:var(--mono);white-space:nowrap}
 .fs-note{padding:10px 18px;font-size:10.5px;color:var(--muted);border-top:1px solid var(--border);line-height:1.7;background:var(--bg)}
 .fs-bal-ok{color:var(--gn);font-weight:700}.fs-bal-err{color:var(--rd);font-weight:700}
+/* ── Collapse toggle ── */
+.ch { display:flex; align-items:center; gap:8px; }
+.ch h3 { flex:1; margin:0; }
+.collapse-btn { background:none; border:1px solid var(--border); border-radius:6px; padding:2px 8px; cursor:pointer; font-size:11px; color:var(--muted); line-height:1.6; }
+.collapse-btn:hover { border-color:var(--tl); color:var(--tl); }
+.card.collapsed > :not(.ch) { display:none !important; }
+/* ── Table filter row ── */
+tr.frow th { padding:4px 6px !important; background:var(--bg); }
+tr.frow input { width:100%; box-sizing:border-box; border:1px solid var(--border); border-radius:4px; padding:3px 6px; font-size:11px; font-family:var(--mono); background:var(--white); color:var(--ink); }
+tr.frow input:focus { outline:none; border-color:var(--tl); }
+tr.frow input::placeholder { color:var(--muted); font-style:italic; }
+/* ── Chart containers ── */
+.chart-wrap { position:relative; height:240px; padding:8px 4px 4px; }
+.chart-wrap-sm { position:relative; height:180px; padding:8px 4px 4px; }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -345,6 +360,10 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
   <div class="g4 mb" id="ds"></div>
   <div class="g2 mb" id="ds2"></div>
   <div class="g2 mb">
+    <div class="card" data-card-key="dash-donut"><div class="ch"><h3>Income vs Expenses (FY)</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap-sm"><canvas id="chart-dash-donut"></canvas></div></div>
+    <div class="card" data-card-key="dash-bar"><div class="ch"><h3>Cash Flow by Quarter</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap-sm"><canvas id="chart-dash-bar"></canvas></div></div>
+  </div>
+  <div class="g2 mb">
     <div class="card"><div class="ch"><h3>Expenses this period</h3></div><div id="de"></div></div>
     <div class="card"><div class="ch"><h3>Bank this period</h3></div><div id="db"></div></div>
   </div>
@@ -358,6 +377,7 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
     <button class="btn btn-tl btn-sm" onclick="openModal('bank')">+ Add transaction</button>
   </div>
   <div class="g3 mb" id="bks"></div>
+  <div class="card mb" data-card-key="bank-bar"><div class="ch"><h3>Credits vs Debits by Quarter</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap"><canvas id="chart-bank-bar"></canvas></div></div>
   <div class="card"><div id="bkt"></div></div>
 </div>
 
@@ -368,6 +388,10 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
     <button class="btn btn-tl btn-sm" onclick="openModal('expense')">+ Add expense</button>
   </div>
   <div class="g3 mb" id="exs"></div>
+  <div class="g2 mb">
+    <div class="card" data-card-key="exp-cat"><div class="ch"><h3>Expenses by Category</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap"><canvas id="chart-exp-cat"></canvas></div></div>
+    <div class="card" data-card-key="exp-q"><div class="ch"><h3>Expenses by Quarter</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap"><canvas id="chart-exp-q"></canvas></div></div>
+  </div>
   <div class="card"><div id="ext"></div></div>
 </div>
 
@@ -375,12 +399,17 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 <div id="v-shares" class="view">
   <div class="al al-b mb">Share capital is <strong>not income</strong> — no GST, no income tax. Recorded as equity. Ensure ASIC Form 484 is lodged for all allotments.</div>
   <div class="g3 mb" id="shs"></div>
+  <div class="g2 mb">
+    <div class="card" data-card-key="shares-bar"><div class="ch"><h3>Capital Paid vs Agreed</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap"><canvas id="chart-shares-bar"></canvas></div></div>
+    <div class="card" data-card-key="shares-donut"><div class="ch"><h3>Profit Share Distribution</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap"><canvas id="chart-shares-donut"></canvas></div></div>
+  </div>
   <div class="card"><div class="ch"><h3 id="shtit">Share capital — all payments</h3></div><div id="sht"></div></div>
 </div>
 
 <!-- ══════ GST & BAS ══════ -->
 <div id="v-gst" class="view">
   <div class="al al-a mb">Estimates only. Verify with a registered tax agent before lodging. Due dates: Q1=28 Oct · Q2=28 Feb · Q3=28 Apr · Q4=28 Jul.</div>
+  <div class="card mb" data-card-key="gst-bar"><div class="ch"><h3>GST Position by Quarter</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap"><canvas id="chart-gst-q"></canvas></div></div>
   <div class="g3 mb" id="gss"></div>
   <div class="g2 mb">
     <div class="card"><div class="ch"><h3>GST credits (1B) — breakdown</h3></div><div class="cb" id="gc"></div></div>
@@ -400,13 +429,15 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 <div id="v-ato" class="view">
   <div class="al al-b mb">Sourced from lodged ATO documents — Activity Statement 002 (processed 08 May 2026) and Company Income Tax Return (lodged 15 May 2026). Account balance as at 27 May 2026.</div>
   <div class="g4 mb" id="ato-kpi"></div>
-  <div class="card mb"><div class="ch"><h3>BAS Lodge Register</h3></div><div id="ato-bas"></div></div>
-  <div class="card mb"><div class="ch"><h3>Income Tax Returns</h3></div><div id="ato-tax"></div></div>
-  <div class="card"><div class="ch"><h3>ATO Activity Statement — Account 002</h3><span class="sm muted" style="margin-left:8px">All transactions processed 08 May 2026</span></div><div id="ato-act"></div></div>
+  <div class="card mb" data-card-key="ato-bar"><div class="ch"><h3>BAS Net Result by Period</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap-sm"><canvas id="chart-ato-bas"></canvas></div></div>
+  <div class="card mb" data-card-key="ato-bas-tbl"><div class="ch"><h3>BAS Lodge Register</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-bas"></div></div>
+  <div class="card mb" data-card-key="ato-tax-tbl"><div class="ch"><h3>Income Tax Returns</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-tax"></div></div>
+  <div class="card" data-card-key="ato-act-tbl"><div class="ch"><h3>ATO Activity Statement — Account 002</h3><span class="sm muted" style="margin-left:8px">All transactions processed 08 May 2026</span><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-act"></div></div>
 </div>
 
 <!-- ══════ P&L ══════ -->
 <div id="v-pl" class="view">
+  <div class="card mb" data-card-key="pl-bar"><div class="ch"><h3>Income vs Expenses by FY</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap"><canvas id="chart-pl-bar"></canvas></div></div>
   <div class="card" style="max-width:600px;margin:0 auto" id="plc"></div>
 </div>
 
@@ -801,6 +832,8 @@ const SHAREHOLDERS = [
   {name: 'Yagoub Yagoub', shares: 25},
   {name: 'Merghani Ahmed', shares: 25},
 ];
+const CHARTS = {};
+const CP = ['#0f9b8e','#2a6ee8','#f0b429','#1a7a5e','#c0392b','#d4750a','#6d28d9','#6e7a8a'];
 const BASE_INV_IN = [
   {id:'ii1',date:'2026-02-17',fy:'FY2526',ref:'INV-IN_FY2526_FEB_EQUIPMENT PURCHASE-PAID',
    desc:'4× Minelab Gold Monster 2000 (Quote 26-00000789)',
@@ -1070,6 +1103,33 @@ function rDash() {
         </div>
       </div>
     </div>`;
+
+  // Dashboard charts
+  if(document.getElementById('chart-dash-donut')) {
+    const fyExp = DATA.expenses.filter(e => e.fy === aFY && e.status !== 'Future Reimbursement');
+    const fyInc = DATA.bank.filter(b => b.fy === aFY && b.classification === 'Income').reduce((s,b)=>s+b.amount,0);
+    const fyExpTot = fyExp.reduce((s,e)=>s+e.total,0);
+    if(CHARTS.dashDonut) CHARTS.dashDonut.destroy();
+    CHARTS.dashDonut = new Chart(document.getElementById('chart-dash-donut'), {
+      type:'doughnut',
+      data:{ labels:['Income','Expenses'], datasets:[{ data:[fyInc, fyExpTot], backgroundColor:['#0f9b8e','#c0392b'], hoverOffset:4 }]},
+      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }, tooltip:{ callbacks:{ label: ctx => ' $' + ctx.parsed.toLocaleString('en-AU',{minimumFractionDigits:2}) }}}}
+    });
+  }
+  if(document.getElementById('chart-dash-bar')) {
+    const quarters = ['Q1','Q2','Q3','Q4'];
+    const qCredits = quarters.map(q => DATA.bank.filter(b=>b.fy===aFY&&b.type==='Credit'&&b.classification!=='Client Funds'&&QD[q].m.includes(gm(b.date))).reduce((s,b)=>s+b.amount,0));
+    const qDebits  = quarters.map(q => DATA.bank.filter(b=>b.fy===aFY&&b.type==='Debit'&&QD[q].m.includes(gm(b.date))).reduce((s,b)=>s+b.amount,0));
+    if(CHARTS.dashBar) CHARTS.dashBar.destroy();
+    CHARTS.dashBar = new Chart(document.getElementById('chart-dash-bar'), {
+      type:'bar',
+      data:{ labels: quarters.map(q=>QD[q].l), datasets:[
+        { label:'Credits', data:qCredits, backgroundColor:'#0f9b8e' },
+        { label:'Debits',  data:qDebits,  backgroundColor:'#c0392b' }
+      ]},
+      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }}, scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
+    });
+  }
 }
 
 // BANK
@@ -1083,7 +1143,8 @@ function rBank() {
     <div class="sc ${cr-db>=0?'gn':'rd'}"><div class="lb">Net</div><div class="vl">${aud(cr-db)}</div><div class="sb">This period</div></div>`;
   document.getElementById('btit').textContent = `Bank — ${aQ==='ALL'?'Full Year':QD[aQ].l} ${FYL[aFY]}`;
   document.getElementById('bkt').innerHTML = b.length
-    ? `<table><thead><tr><th>Date</th><th>Description</th><th class="thr">Debit</th><th class="thr">Credit</th><th>Classification</th><th>Shareholder / Note</th><th>Document</th><th>Matched</th><th></th></tr></thead>
+    ? `<table><thead><tr><th>Date</th><th>Description</th><th class="thr">Debit</th><th class="thr">Credit</th><th>Classification</th><th>Shareholder / Note</th><th>Document</th><th>Matched</th><th></th></tr>
+       ${fRow(['date','description','','','classification','shareholder','document','',''])}</thead>
        <tbody>${b.sort((a,c)=>a.date.localeCompare(c.date)).map(x=>`
          <tr class="${x.classification==='Share Capital'?(x.shareholder&&x.shareholder.includes('Mohammed')?'rp':'rb'):x.classification==='Client Funds'?'ra':(x.type==='Debit'?'rg':'')}">
            <td>${fd(x.date)}</td>
@@ -1099,6 +1160,21 @@ function rBank() {
        </tbody>
        <tfoot><tr><td colspan="2">Totals</td><td class="nr" style="color:var(--rd)">${aud(db)}</td><td class="nr" style="color:var(--tl)">${aud(cr)}</td><td colspan="5"></td></tr></tfoot></table>`
     : `<div class="empty">No bank transactions for this period</div>`;
+
+  if(document.getElementById('chart-bank-bar')) {
+    const quarters = ['Q1','Q2','Q3','Q4'];
+    const qCr = quarters.map(q => DATA.bank.filter(b=>b.fy===aFY&&b.type==='Credit'&&b.classification!=='Client Funds'&&QD[q].m.includes(gm(b.date))).reduce((s,b)=>s+b.amount,0));
+    const qDr = quarters.map(q => DATA.bank.filter(b=>b.fy===aFY&&b.type==='Debit'&&QD[q].m.includes(gm(b.date))).reduce((s,b)=>s+b.amount,0));
+    if(CHARTS.bankBar) CHARTS.bankBar.destroy();
+    CHARTS.bankBar = new Chart(document.getElementById('chart-bank-bar'), {
+      type:'bar',
+      data:{ labels: quarters.map(q=>QD[q].l), datasets:[
+        { label:'Credits', data:qCr, backgroundColor:'rgba(15,155,142,0.8)' },
+        { label:'Debits',  data:qDr, backgroundColor:'rgba(192,57,43,0.8)' }
+      ]},
+      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }}, scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
+    });
+  }
 }
 
 // EXPENSES
@@ -1114,7 +1190,8 @@ function rExp() {
     <div class="sc am"><div class="lb">Net (ex-GST)</div><div class="vl">${aud(nT)}</div><div class="sb">Deductible for tax</div></div>`;
   document.getElementById('etit').textContent = `Expenses — ${aQ==='ALL'?'Full Year':QD[aQ].l} ${FYL[aFY]}`;
   document.getElementById('ext').innerHTML = e.length
-    ? `<table><thead><tr><th>Date</th><th>Supplier</th><th>Description</th><th>Category</th><th class="thr">Ex-GST</th><th class="thr">GST</th><th class="thr">Total</th><th>Status</th><th>Source</th><th></th></tr></thead>
+    ? `<table><thead><tr><th>Date</th><th>Supplier</th><th>Description</th><th>Category</th><th class="thr">Ex-GST</th><th class="thr">GST</th><th class="thr">Total</th><th>Status</th><th>Source</th><th></th></tr>
+       ${fRow(['date','supplier','description','category','','','','status','',''])}</thead>
        <tbody>${e.sort((a,b)=>a.date.localeCompare(b.date)).map(x=>`
          <tr class="${x.status==='Refund'?'rg':x.status==='Future Reimbursement'?'rp':'ra'}">
            <td>${fd(x.date)}</td>
@@ -1131,6 +1208,29 @@ function rExp() {
        </tbody>
        <tfoot><tr><td colspan="4">Net total</td><td class="nr">${aud(nT)}</td><td class="nr">${aud(gT)}</td><td class="nr">${aud(tE)}</td><td colspan="3"></td></tr></tfoot></table>`
     : `<div class="empty">No expenses for this period. Use <strong>Add Data</strong> to record expenses.</div>`;
+
+  if(document.getElementById('chart-exp-cat')) {
+    const fyEx = DATA.expenses.filter(e=>e.fy===aFY&&e.total>0);
+    const catMap = {};
+    fyEx.forEach(e=>{ catMap[e.cat]=(catMap[e.cat]||0)+e.total; });
+    const cats = Object.keys(catMap).sort((a,b)=>catMap[b]-catMap[a]);
+    if(CHARTS.expCat) CHARTS.expCat.destroy();
+    CHARTS.expCat = new Chart(document.getElementById('chart-exp-cat'), {
+      type:'doughnut',
+      data:{ labels:cats, datasets:[{ data:cats.map(c=>catMap[c]), backgroundColor:CP }]},
+      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'right', labels:{ boxWidth:12, font:{ size:11 }}}, tooltip:{ callbacks:{ label: ctx => ' $'+ctx.parsed.toLocaleString('en-AU',{minimumFractionDigits:2}) }}}}
+    });
+  }
+  if(document.getElementById('chart-exp-q')) {
+    const quarters = ['Q1','Q2','Q3','Q4'];
+    const qTotals = quarters.map(q => DATA.expenses.filter(e=>e.fy===aFY&&e.total>0&&QD[q].m.includes(gm(e.date))).reduce((s,e)=>s+e.total,0));
+    if(CHARTS.expQ) CHARTS.expQ.destroy();
+    CHARTS.expQ = new Chart(document.getElementById('chart-exp-q'), {
+      type:'bar',
+      data:{ labels: quarters.map(q=>QD[q].l), datasets:[{ label:'Expenses', data:qTotals, backgroundColor:CP.slice(0,4) }]},
+      options:{ indexAxis:'y', maintainAspectRatio:false, plugins:{ legend:{ display:false }}, scales:{ x:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
+    });
+  }
 }
 
 // SHARES
@@ -1280,7 +1380,8 @@ function rShares() {
 
     <div class="ch" style="margin-top:4px"><h3>All share capital transactions</h3></div>
     ${allTxns.length ? `<table>
-      <thead><tr><th>Date</th><th>FY</th><th>Shareholder</th><th class="thr">Amount</th><th>Source</th></tr></thead>
+      <thead><tr><th>Date</th><th>FY</th><th>Shareholder</th><th class="thr">Amount</th><th>Source</th></tr>
+      ${fRow(['date','FY','shareholder','','source'])}</thead>
       <tbody>${allTxns.map(b=>`
         <tr class="rb">
           <td>${fd(b.date)}</td>
@@ -1295,6 +1396,32 @@ function rShares() {
     <div style="padding:14px 18px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);line-height:1.7">
       Share capital is equity — not income, not taxable. ASIC Form 484 must be lodged for all share allotments.
     </div>`;
+
+  if(document.getElementById('chart-shares-bar')) {
+    const allSC = DATA.bank.filter(b=>b.classification==='Share Capital');
+    const shData = SHAREHOLDERS.map(sh => ({
+      name: sh.name.split(' ')[0],
+      paid: allSC.filter(b=>b.shareholder===sh.name).reduce((s,b)=>s+b.amount,0)
+    }));
+    if(CHARTS.sharesBar) CHARTS.sharesBar.destroy();
+    CHARTS.sharesBar = new Chart(document.getElementById('chart-shares-bar'), {
+      type:'bar',
+      data:{ labels: shData.map(s=>s.name), datasets:[
+        { label:'Paid-up', data: shData.map(s=>s.paid), backgroundColor:'rgba(15,155,142,0.8)' },
+        { label:'Agreed ($'+(AGREED_CONTRIBUTION).toLocaleString()+')', data: shData.map(()=>AGREED_CONTRIBUTION), backgroundColor:'rgba(42,110,232,0.3)', borderColor:'rgba(42,110,232,0.8)', borderWidth:1 }
+      ]},
+      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }}, scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
+    });
+  }
+  if(document.getElementById('chart-shares-donut')) {
+    const totalShares = SHAREHOLDERS.reduce((a,s)=>a+s.shares,0);
+    if(CHARTS.sharesDonut) CHARTS.sharesDonut.destroy();
+    CHARTS.sharesDonut = new Chart(document.getElementById('chart-shares-donut'), {
+      type:'doughnut',
+      data:{ labels: SHAREHOLDERS.map(s=>s.name.split(' ')[0]), datasets:[{ data: SHAREHOLDERS.map(s=>s.shares/totalShares*100), backgroundColor:CP }]},
+      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ boxWidth:12 }}, tooltip:{ callbacks:{ label: ctx => ' '+ctx.parsed.toFixed(1)+'%' }}}}
+    });
+  }
 }
 
 // GST
@@ -1343,9 +1470,27 @@ function rGST() {
   const ae = DATA.expenses.filter(x=>x.fy===aFY&&x.total>0&&x.status==='Approved');
   const fyG = ae.reduce((a,x)=>a+(x.gst||0),0), fyP = ae.reduce((a,x)=>a+x.total,0);
   document.getElementById('gsq').innerHTML = `
-    <table><thead><tr><th>Quarter</th><th>Period</th><th>BAS due</th><th class="thr">GST sales</th><th class="thr">GST credits</th><th class="thr">Purchases</th><th class="thr">Net position</th><th>Status</th></tr></thead>
+    <table><thead><tr><th>Quarter</th><th>Period</th><th>BAS due</th><th class="thr">GST sales</th><th class="thr">GST credits</th><th class="thr">Purchases</th><th class="thr">Net position</th><th>Status</th></tr>
+    ${fRow(['quarter','','','','','','','status'])}</thead>
     <tbody>${qr}</tbody>
     <tfoot><tr><td colspan="3"><strong>Full year ${FYL[aFY]}</strong></td><td class="nr">$0.00</td><td class="nr" style="color:var(--gn)">${aud(fyG)}</td><td class="nr">${aud(fyP)}</td><td class="nr" style="color:var(--gn)"><strong>${fyG>0?'('+aud(fyG)+') Refund':'$0.00'}</strong></td><td></td></tr></tfoot></table>`;
+
+  if(document.getElementById('chart-gst-q')) {
+    const quarters = ['Q1','Q2','Q3','Q4'];
+    const q1A = quarters.map(q => DATA.bank.filter(b=>b.fy===aFY&&b.type==='Credit'&&b.classification==='Income'&&QD[q].m.includes(gm(b.date))).reduce((s,b)=>s+(b.gst||0),0));
+    const q1B = quarters.map(q => DATA.expenses.filter(e=>e.fy===aFY&&e.gst>0&&QD[q].m.includes(gm(e.date))).reduce((s,e)=>s+e.gst,0));
+    const qNet = quarters.map((_,i)=>q1B[i]-q1A[i]);
+    if(CHARTS.gstQ) CHARTS.gstQ.destroy();
+    CHARTS.gstQ = new Chart(document.getElementById('chart-gst-q'), {
+      type:'bar',
+      data:{ labels: quarters.map(q=>QD[q].l), datasets:[
+        { label:'1A GST on Sales', data:q1A, backgroundColor:'rgba(192,57,43,0.7)' },
+        { label:'1B Input Credits', data:q1B, backgroundColor:'rgba(15,155,142,0.7)' },
+        { label:'Net (CR=refund)', data:qNet, backgroundColor: qNet.map(v=>v>=0?'rgba(26,122,94,0.7)':'rgba(240,180,41,0.7)'), type:'bar' }
+      ]},
+      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }}, scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
+    });
+  }
 }
 
 // P&L
@@ -1403,6 +1548,22 @@ function rPL() {
       GST amounts are excluded from all figures. Verify with a registered accountant before lodging.
     </div>
   </div>`;
+
+  if(document.getElementById('chart-pl-bar')) {
+    const fys = ['FY2425','FY2526'];
+    const fyLabels = fys.map(f=>FYL[f]||f);
+    const incomes  = fys.map(f => DATA.bank.filter(b=>b.fy===f&&b.classification==='Income').reduce((s,b)=>s+b.amount,0));
+    const expenses = fys.map(f => DATA.expenses.filter(e=>e.fy===f&&e.total>0&&e.status!=='Future Reimbursement').reduce((s,e)=>s+e.total,0));
+    if(CHARTS.plBar) CHARTS.plBar.destroy();
+    CHARTS.plBar = new Chart(document.getElementById('chart-pl-bar'), {
+      type:'bar',
+      data:{ labels:fyLabels, datasets:[
+        { label:'Income',   data:incomes,  backgroundColor:'rgba(15,155,142,0.8)' },
+        { label:'Expenses', data:expenses, backgroundColor:'rgba(192,57,43,0.8)' }
+      ]},
+      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }}, scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
+    });
+  }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1575,7 +1736,8 @@ function rInv() {
       <td><button class="btn btn-sm" style="color:var(--rd);border-color:var(--rd-lt)" onclick="delInvIn('${x.id}')">Del</button></td>
     </tr>`).join('');
   document.getElementById('inv-in-tbl').innerHTML = invInCalc.length
-    ? `<table><thead><tr><th>Date</th><th>Supplier</th><th>Description</th><th>Reference</th><th class="thr">GST</th><th class="thr">Amount</th><th>Status</th><th>Paid date</th><th></th></tr></thead>
+    ? `<table><thead><tr><th>Date</th><th>Supplier</th><th>Description</th><th>Reference</th><th class="thr">GST</th><th class="thr">Amount</th><th>Status</th><th>Paid date</th><th></th></tr>
+       ${fRow(['date','supplier','description','ref','','','status','',''])}</thead>
        <tbody>${invInRows}</tbody>
        <tfoot><tr><td colspan="5"><strong>Total</strong></td><td class="nr"><strong>${aud(inTotal)}</strong></td><td colspan="3"></td></tr></tfoot></table>`
     : `<div class="empty">No bills recorded for ${FYL[aFY]}. Click <strong>+ Add Bill</strong> to record an invoice received.</div>`;
@@ -1604,7 +1766,8 @@ function rInv() {
       <td><button class="btn btn-sm" style="color:var(--rd);border-color:var(--rd-lt)" onclick="delInvOut('${x.id}')">Del</button></td>
     </tr>`).join('');
   document.getElementById('inv-out-tbl').innerHTML = invOutCalc.length
-    ? `<table><thead><tr><th>Date</th><th>Client</th><th>Description</th><th>Reference</th><th class="thr">GST</th><th class="thr">Amount</th><th>Status</th><th>Received</th><th></th></tr></thead>
+    ? `<table><thead><tr><th>Date</th><th>Client</th><th>Description</th><th>Reference</th><th class="thr">GST</th><th class="thr">Amount</th><th>Status</th><th>Received</th><th></th></tr>
+       ${fRow(['date','client','description','ref','','','status','',''])}</thead>
        <tbody>${invOutRows}</tbody>
        <tfoot><tr><td colspan="5"><strong>Total</strong></td><td class="nr"><strong>${aud(outTotal)}</strong></td><td colspan="3"></td></tr></tfoot></table>`
     : `<div class="empty">No invoices sent recorded for ${FYL[aFY]}. Click <strong>+ Add Invoice</strong> to record an outgoing invoice.</div>`;
@@ -1629,7 +1792,8 @@ function rInv() {
     </tr>`).join('');
   document.getElementById('reimb-content').innerHTML = reimb.length
     ? `<div class="card"><div class="ch"><h3>All partner-paid expenses — pending reimbursement</h3></div>
-       <table><thead><tr><th>Date</th><th>FY</th><th>Supplier / Recipient</th><th>Description</th><th>Category</th><th class="thr">Amount (AUD)</th><th>Source</th></tr></thead>
+       <table><thead><tr><th>Date</th><th>FY</th><th>Supplier / Recipient</th><th>Description</th><th>Category</th><th class="thr">Amount (AUD)</th><th>Source</th></tr>
+       ${fRow(['date','FY','supplier','description','category','','source'])}</thead>
        <tbody>${reimbRows}</tbody>
        <tfoot><tr><td colspan="5"><strong>Total AUD outstanding</strong></td>
          <td class="nr" style="color:var(--pu)"><strong>${aud(reimbAUD)}</strong></td>
@@ -2328,7 +2492,8 @@ function rATO() {
         <th>Due Date</th>
         <th>Status</th>
         <th>Notes</th>
-      </tr></thead>
+      </tr>
+      ${fRow(['period','FY','doc ID','','','','','due date','status','notes'])}</thead>
       <tbody>
         ${ATO_BAS_DATA.map(r=>`
         <tr class="${rowClass(r)}">
@@ -2365,7 +2530,8 @@ function rATO() {
         <th class="thr">Amount Due</th>
         <th>Status</th>
         <th>Notes</th>
-      </tr></thead>
+      </tr>
+      ${fRow(['FY','','','','','','','','status','notes'])}</thead>
       <tbody>
         ${ATO_TAX_DATA.map(r=>`
         <tr class="${r.lodged?'rb':'ra'}">
@@ -2399,7 +2565,8 @@ function rATO() {
         <th class="thr">Debit (DR)</th>
         <th class="thr">Credit (CR)</th>
         <th class="thr">Running Balance</th>
-      </tr></thead>
+      </tr>
+      ${fRow(['date','description','','',''])}</thead>
       <tbody>
         ${ATO_ACT_DATA.transactions.map(t=>`
         <tr class="${t.credit>0?'rb':''}">
@@ -2421,6 +2588,20 @@ function rATO() {
         <td class="nr"><strong style="color:var(--gn)">$${ATO_ACT_DATA.balance.toLocaleString('en-AU',{minimumFractionDigits:2})} CR</strong></td>
       </tr></tfoot>
     </table>`;
+
+  if(document.getElementById('chart-ato-bas')) {
+    const lodged = ATO_BAS_DATA.filter(r=>r.result!=='pending');
+    if(CHARTS.atoBar) CHARTS.atoBar.destroy();
+    CHARTS.atoBar = new Chart(document.getElementById('chart-ato-bas'), {
+      type:'bar',
+      data:{ labels: lodged.map(r=>r.label), datasets:[{
+        label:'Net GST (CR = refund to Noor Energy)',
+        data: lodged.map(r=>r.net),
+        backgroundColor: lodged.map(r=>r.net>0?'rgba(15,155,142,0.8)':r.result==='nofile'?'rgba(110,122,138,0.4)':'rgba(42,110,232,0.4)')
+      }]},
+      options:{ maintainAspectRatio:false, plugins:{ legend:{ display:false }}, scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
+    });
+  }
 }
 
 function rIS() {
@@ -2681,6 +2862,35 @@ function clearAllData() {
 }
 
 // NAV
+function fRow(cols) {
+  return `<tr class="frow">${cols.map(c => `<th>${c ? `<input type="text" placeholder="${c}…" oninput="filterTbl(this)">` : ''}</th>`).join('')}</tr>`;
+}
+function filterTbl(input) {
+  const frow = input.closest('tr.frow');
+  const table = frow.closest('table');
+  const filters = Array.from(frow.children).map(th => (th.querySelector('input')?.value || '').toLowerCase());
+  Array.from(table.querySelectorAll('tbody tr')).forEach(row => {
+    const show = filters.every((f, i) => !f || (row.children[i]?.textContent || '').toLowerCase().includes(f));
+    row.style.display = show ? '' : 'none';
+  });
+}
+function toggleCard(btn) {
+  const card = btn.closest('.card');
+  const collapsed = card.classList.toggle('collapsed');
+  btn.textContent = collapsed ? '▼ Show' : '▲ Hide';
+  const key = card.dataset.cardKey;
+  if(key) sessionStorage.setItem('ne_card_' + key, collapsed ? '1' : '0');
+}
+function restoreCards() {
+  document.querySelectorAll('.card[data-card-key]').forEach(card => {
+    const key = card.dataset.cardKey;
+    if(sessionStorage.getItem('ne_card_' + key) === '1') {
+      card.classList.add('collapsed');
+      const btn = card.querySelector('.collapse-btn');
+      if(btn) btn.textContent = '▼ Show';
+    }
+  });
+}
 function go(id, btn) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
@@ -2742,7 +2952,7 @@ document.getElementById('m-ae-dt').value = today();
 document.getElementById('m-ab-dt').value = today();
 updB();
 rAll();
-// Restore last active tab on refresh; new session (new tab/window) always opens on Dashboard
+restoreCards();
 (function() {
   const saved = sessionStorage.getItem('ne_active_tab');
   const valid = ['dash','bank','exp','shares','gst','tax','inv','pl','fs','add','ato'];
@@ -2750,7 +2960,7 @@ rAll();
     const btn = Array.from(document.querySelectorAll('.tab')).find(b =>
       (b.getAttribute('onclick') || '').includes("'" + saved + "'")
     );
-    if (btn) go(saved, btn);
+    if (btn) { go(saved, btn); restoreCards(); }
   }
 })();
 </script>

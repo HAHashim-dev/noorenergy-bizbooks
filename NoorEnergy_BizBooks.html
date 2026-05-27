@@ -1,4 +1,4 @@
-w<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -330,6 +330,7 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
   <button class="tab"     onclick="go('inv',this)">📄 Invoices</button>
   <button class="tab"     onclick="go('pl',this)">📈 P&amp;L</button>
   <button class="tab"     onclick="go('fs',this)">📑 Statements</button>
+  <button class="tab"     onclick="go('ato',this)">🏛 ATO Obligations</button>
   <button class="tab"     onclick="go('add',this)">➕ Add Data</button>
 </nav>
 
@@ -393,6 +394,15 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
   <div class="al al-a mb">Estimates only — verify with a registered tax agent before lodging. This tab mirrors the FAS 3 company tax return form — copy each value into the matching field code in FAS 3. Always full-year view regardless of quarter selected.</div>
   <div class="g4 mb" id="tax-kpi"></div>
   <div class="fas-wrap" id="tax-fas-form"></div>
+</div>
+
+<!-- ══════ ATO OBLIGATIONS ══════ -->
+<div id="v-ato" class="view">
+  <div class="al al-b mb">Sourced from lodged ATO documents — Activity Statement 002 (processed 08 May 2026) and Company Income Tax Return (lodged 15 May 2026). Account balance as at 27 May 2026.</div>
+  <div class="g4 mb" id="ato-kpi"></div>
+  <div class="card mb"><div class="ch"><h3>BAS Lodge Register</h3></div><div id="ato-bas"></div></div>
+  <div class="card mb"><div class="ch"><h3>Income Tax Returns</h3></div><div id="ato-tax"></div></div>
+  <div class="card"><div class="ch"><h3>ATO Activity Statement — Account 002</h3><span class="sm muted" style="margin-left:8px">All transactions processed 08 May 2026</span></div><div id="ato-act"></div></div>
 </div>
 
 <!-- ══════ P&L ══════ -->
@@ -812,6 +822,39 @@ const BASE_INV_OUT = [
 ];
 
 // ═══════════════════════════════════════════════════════
+// ATO OBLIGATIONS — STATIC (sourced from lodged ATO docs)
+// ═══════════════════════════════════════════════════════
+const ATO_BAS_DATA = [
+  {fy:'FY2425',period:'Q1',label:'Jul–Sep 2024',docId:'—',  gstToATO:0,   gstByATO:0,    sales:0,    net:0,    result:'nofile',  dueDate:'28 Oct 2024',  lodged:false, lodgedDate:'',            notes:'Not on file — no GST activity recorded for this period'},
+  {fy:'FY2425',period:'Q2',label:'Oct–Dec 2024',docId:'54921324596',gstToATO:0,gstByATO:0,sales:0,net:0,result:'nil',dueDate:'28 Feb 2025',lodged:true,lodgedDate:'07 May 2026',notes:'No GST activity · No amount payable'},
+  {fy:'FY2425',period:'Q3',label:'Jan–Mar 2025',docId:'55148270477',gstToATO:0,gstByATO:55,sales:0,net:55,result:'credit',dueDate:'12 May 2025',lodged:true,lodgedDate:'07 May 2026',notes:'GST refund on insurance premium (1B $55) · Refundable'},
+  {fy:'FY2425',period:'Q4',label:'Apr–Jun 2025',docId:'57379384084',gstToATO:0,gstByATO:0,sales:0,net:0,result:'nil',dueDate:'11 Aug 2025',lodged:true,lodgedDate:'07 May 2026',notes:'No GST activity · No amount payable'},
+  {fy:'FY2526',period:'Q1',label:'Jul–Sep 2025',docId:'58433653513',gstToATO:0,gstByATO:43,sales:0,net:43,result:'credit',dueDate:'11 Nov 2025',lodged:true,lodgedDate:'07 May 2026',notes:'GST refund — input credits (Lawpath subscription) · 1B $43'},
+  {fy:'FY2526',period:'Q2',label:'Oct–Dec 2025',docId:'58675768425',gstToATO:0,gstByATO:0,sales:0,net:0,result:'nil',dueDate:'03 Mar 2026',lodged:true,lodgedDate:'07 May 2026',notes:'No GST activity · No amount payable'},
+  {fy:'FY2526',period:'Q3',label:'Jan–Mar 2026',docId:'59719991714',gstToATO:135,gstByATO:1152,sales:1485,net:1017,result:'credit',dueDate:'12 May 2026',lodged:true,lodgedDate:'07 May 2026',notes:'GST refund — 1A $135 (income GST) vs 1B $1,152 (input credits) · net $1,017 CR · Refundable'},
+  {fy:'FY2526',period:'Q4',label:'Apr–Jun 2026',docId:'—',  gstToATO:0,   gstByATO:0,    sales:0,    net:0,    result:'pending', dueDate:'28 Jul 2026',  lodged:false, lodgedDate:'',            notes:'Not yet due — period ends 30 Jun 2026'},
+];
+const ATO_TAX_DATA = [
+  {fy:'FY2425',label:'FY 2024–25',lodged:true, lodgedDate:'15 May 2026',totalIncome:0,totalExpenses:1152,netPL:-1152,taxableIncome:0,taxPayable:0,amountDue:0,lossCfwd:1152,docId:'TFN on file',notes:'Net loss $1,152 carried forward · No tax payable · Signed by Hashim Hashim 15 May 2026'},
+  {fy:'FY2526',label:'FY 2025–26',lodged:false,lodgedDate:'',           totalIncome:null,totalExpenses:null,netPL:null,taxableIncome:null,taxPayable:null,amountDue:null,lossCfwd:null,docId:'',notes:'Not yet due — FY ends 30 Jun 2026 · due by 31 Oct 2026'},
+];
+const ATO_ACT_DATA = {
+  account:'Activity statement 002',
+  entity:'NOOR ENERGY PTY LTD',
+  asOf:'27 May 2026',
+  balance:1115,
+  balanceType:'CR',
+  transactions:[
+    {effective:'12 May 2026',desc:'BAS period ending 31 Mar 2026 (FY2526 Q3)',debit:0,credit:1017,balance:1115,balType:'CR'},
+    {effective:'11 Nov 2025',desc:'BAS period ending 30 Sep 2025 (FY2526 Q1)',debit:0,credit:43, balance:98,  balType:'CR'},
+    {effective:'03 Mar 2026',desc:'BAS period ending 31 Dec 2025 (FY2526 Q2)',debit:0,credit:0,  balance:98,  balType:'CR'},
+    {effective:'11 Aug 2025',desc:'BAS period ending 30 Jun 2025 (FY2425 Q4)',debit:0,credit:0,  balance:55,  balType:'CR'},
+    {effective:'12 May 2025',desc:'BAS period ending 31 Mar 2025 (FY2425 Q3)',debit:0,credit:55, balance:55,  balType:'CR'},
+    {effective:'28 Feb 2025',desc:'BAS period ending 31 Dec 2024 (FY2425 Q2)',debit:0,credit:0,  balance:0,   balType:'nil'},
+  ],
+};
+
+// ═══════════════════════════════════════════════════════
 // LOCALSTORAGE DATA STORE
 // ═══════════════════════════════════════════════════════
 function loadData() {
@@ -957,7 +1000,7 @@ const EXP_FAS = {
 // ═══════════════════════════════════════════════════════
 // RENDER ALL
 // ═══════════════════════════════════════════════════════
-function rAll() { rQTL(); rDash(); rBank(); rExp(); rShares(); rGST(); rTax(); rPL(); rFS(); rInv(); }
+function rAll() { rQTL(); rDash(); rBank(); rExp(); rShares(); rGST(); rTax(); rPL(); rFS(); rInv(); rATO(); }
 
 // DASHBOARD
 function rDash() {
@@ -2220,6 +2263,166 @@ function rFS() {
   rIS(); rBS(); rCF();
 }
 
+// ═══════════════════════════════════════════════════════
+// ATO OBLIGATIONS TAB
+// ═══════════════════════════════════════════════════════
+function rATO() {
+  // ── KPI cards ──────────────────────────────────────────
+  const lodgedBAS  = ATO_BAS_DATA.filter(r => r.lodged).length;
+  const totalBAS   = ATO_BAS_DATA.filter(r => r.result !== 'pending').length;
+  const pendingBAS = ATO_BAS_DATA.filter(r => r.result === 'pending');
+  const nextAction = pendingBAS.length ? pendingBAS[0].label + ' BAS due ' + pendingBAS[0].dueDate : 'All current BAS lodged';
+  const taxLodged  = ATO_TAX_DATA.filter(r => r.lodged).length;
+  const bal        = ATO_ACT_DATA.balance;
+  const balType    = ATO_ACT_DATA.balanceType;
+
+  document.getElementById('ato-kpi').innerHTML = `
+    <div class="sc ${balType==='CR'?'gn':balType==='DR'?'rd':'gy'}">
+      <div class="lb">ATO Account Balance</div>
+      <div class="vl">$${bal.toLocaleString('en-AU',{minimumFractionDigits:2})}</div>
+      <div class="sb">${balType==='CR'?'Credit — ATO owes Noor Energy':balType==='DR'?'Debit — Noor Energy owes ATO':'Nil balance'} · as at ${ATO_ACT_DATA.asOf}</div>
+    </div>
+    <div class="sc bl">
+      <div class="lb">BAS Lodged</div>
+      <div class="vl">${lodgedBAS} / ${totalBAS}</div>
+      <div class="sb">Periods with a lodged statement · 1 not on file (Q1 FY2425)</div>
+    </div>
+    <div class="sc tl">
+      <div class="lb">Income Tax Returns</div>
+      <div class="vl">${taxLodged} lodged</div>
+      <div class="sb">FY2425 lodged 15 May 2026 · FY2526 due Oct 2026 · Loss c/fwd $1,152</div>
+    </div>
+    <div class="sc am">
+      <div class="lb">Next Action</div>
+      <div class="vl" style="font-size:14px;line-height:1.3">${pendingBAS.length ? pendingBAS[0].label+' BAS' : 'FY2526 Tax Return'}</div>
+      <div class="sb">Due ${pendingBAS.length ? pendingBAS[0].dueDate : '31 Oct 2026'}</div>
+    </div>`;
+
+  // ── BAS table ──────────────────────────────────────────
+  const resultBadge = r => {
+    if(r.result==='credit')  return `<span class="b btl">$${r.net.toFixed(2)} CR</span>`;
+    if(r.result==='nil')     return `<span class="b bgy">$0.00 nil</span>`;
+    if(r.result==='pending') return `<span class="b bam">Pending</span>`;
+    return `<span class="b" style="background:var(--muted);color:#fff">Not on file</span>`;
+  };
+  const lodgeBadge = r => {
+    if(r.lodged) return `<span class="b bgl" style="background:var(--gn-lt);color:var(--gn)">✓ Lodged ${r.lodgedDate}</span>`;
+    if(r.result==='pending') return `<span class="b bam">Not yet due</span>`;
+    return `<span class="b" style="background:#fdf1f0;color:var(--rd)">No file</span>`;
+  };
+  const rowClass = r => {
+    if(r.result==='credit')  return 'rb';
+    if(r.result==='pending') return 'ra';
+    if(r.result==='nofile')  return 'rg';
+    return '';
+  };
+
+  document.getElementById('ato-bas').innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Period</th><th>FY</th><th>Document ID</th>
+        <th class="thr">G1 Total Sales</th>
+        <th class="thr">1A Owed to ATO</th>
+        <th class="thr">1B Owed by ATO</th>
+        <th class="thr">Net Result</th>
+        <th>Due Date</th>
+        <th>Status</th>
+        <th>Notes</th>
+      </tr></thead>
+      <tbody>
+        ${ATO_BAS_DATA.map(r=>`
+        <tr class="${rowClass(r)}">
+          <td style="font-weight:600">${r.label}</td>
+          <td><span class="sm muted">${r.fy}</span></td>
+          <td><span style="font-family:var(--mono);font-size:11px">${r.docId}</span></td>
+          <td class="nr">${r.result==='nofile'||r.result==='pending'?'—':'$'+r.sales.toFixed(2)}</td>
+          <td class="nr">${r.result==='nofile'||r.result==='pending'?'—':'$'+r.gstToATO.toFixed(2)}</td>
+          <td class="nr">${r.result==='nofile'||r.result==='pending'?'—':'$'+r.gstByATO.toFixed(2)}</td>
+          <td class="nr">${resultBadge(r)}</td>
+          <td class="sm">${r.dueDate}</td>
+          <td>${lodgeBadge(r)}</td>
+          <td class="sm muted">${r.notes}</td>
+        </tr>`).join('')}
+      </tbody>
+      <tfoot><tr>
+        <td colspan="6"><strong>Total GST refunds (credits)</strong></td>
+        <td class="nr"><strong>$${ATO_BAS_DATA.filter(r=>r.result==='credit').reduce((s,r)=>s+r.net,0).toFixed(2)} CR</strong></td>
+        <td colspan="3"></td>
+      </tr></tfoot>
+    </table>`;
+
+  // ── Income Tax table ───────────────────────────────────
+  document.getElementById('ato-tax').innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Financial Year</th>
+        <th class="thr">Total Income</th>
+        <th class="thr">Total Expenses</th>
+        <th class="thr">Net P&amp;L</th>
+        <th class="thr">Taxable Income</th>
+        <th class="thr">Tax Payable</th>
+        <th class="thr">Loss C/Fwd</th>
+        <th class="thr">Amount Due</th>
+        <th>Status</th>
+        <th>Notes</th>
+      </tr></thead>
+      <tbody>
+        ${ATO_TAX_DATA.map(r=>`
+        <tr class="${r.lodged?'rb':'ra'}">
+          <td style="font-weight:600">${r.label}</td>
+          <td class="nr">${r.totalIncome===null?'—':'$'+r.totalIncome.toFixed(2)}</td>
+          <td class="nr">${r.totalExpenses===null?'—':'$'+r.totalExpenses.toFixed(2)}</td>
+          <td class="nr" style="color:${r.netPL<0?'var(--rd)':r.netPL>0?'var(--gn)':'inherit'}">${r.netPL===null?'—':(r.netPL<0?'-':'')+'$'+Math.abs(r.netPL||0).toFixed(2)}</td>
+          <td class="nr">${r.taxableIncome===null?'—':'$'+r.taxableIncome.toFixed(2)}</td>
+          <td class="nr">${r.taxPayable===null?'—':'$'+r.taxPayable.toFixed(2)}</td>
+          <td class="nr">${r.lossCfwd===null?'—':'$'+r.lossCfwd.toFixed(2)}</td>
+          <td class="nr">${r.amountDue===null?'—':r.amountDue===0?'$0.00 nil':'$'+r.amountDue.toFixed(2)}</td>
+          <td>${r.lodged
+            ? `<span class="b" style="background:var(--gn-lt);color:var(--gn)">✓ Lodged ${r.lodgedDate}</span>`
+            : `<span class="b bam">Not yet due</span>`}</td>
+          <td class="sm muted">${r.notes}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+
+  // ── Activity Statement table ───────────────────────────
+  document.getElementById('ato-act').innerHTML = `
+    <div class="al al-b" style="margin-bottom:12px">
+      <strong>${ATO_ACT_DATA.entity}</strong> · ${ATO_ACT_DATA.account} ·
+      Current balance: <strong style="color:var(--gn)">$${ATO_ACT_DATA.balance.toLocaleString('en-AU',{minimumFractionDigits:2})} ${ATO_ACT_DATA.balanceType}</strong>
+      (ATO owes Noor Energy this amount — may be refunded or offset against future obligations)
+    </div>
+    <table>
+      <thead><tr>
+        <th>Effective Date</th>
+        <th>Description</th>
+        <th class="thr">Debit (DR)</th>
+        <th class="thr">Credit (CR)</th>
+        <th class="thr">Running Balance</th>
+      </tr></thead>
+      <tbody>
+        ${ATO_ACT_DATA.transactions.map(t=>`
+        <tr class="${t.credit>0?'rb':''}">
+          <td>${t.effective}</td>
+          <td>${t.desc}</td>
+          <td class="nr muted">${t.debit>0?'$'+t.debit.toFixed(2):'—'}</td>
+          <td class="nr" style="${t.credit>0?'color:var(--gn);font-weight:600':''}">
+            ${t.credit>0?'$'+t.credit.toFixed(2):'$0.00'}
+          </td>
+          <td class="nr">
+            ${t.balType==='CR'?`<strong style="color:var(--gn)">$${t.balance.toFixed(2)} CR</strong>`:
+              t.balType==='DR'?`<strong style="color:var(--rd)">$${t.balance.toFixed(2)} DR</strong>`:
+              '<span class="muted">$0.00</span>'}
+          </td>
+        </tr>`).join('')}
+      </tbody>
+      <tfoot><tr>
+        <td colspan="4"><strong>Current account balance (as at ${ATO_ACT_DATA.asOf})</strong></td>
+        <td class="nr"><strong style="color:var(--gn)">$${ATO_ACT_DATA.balance.toLocaleString('en-AU',{minimumFractionDigits:2})} CR</strong></td>
+      </tr></tfoot>
+    </table>`;
+}
+
 function rIS() {
   const bAll = aQ==='ALL' ? DATA.bank.filter(x=>x.fy===aFY) : fB(aFY,aQ);
   const eAll = (aQ==='ALL' ? DATA.expenses.filter(x=>x.fy===aFY) : fE(aFY,aQ))
@@ -2542,7 +2745,7 @@ rAll();
 // Restore last active tab on refresh; new session (new tab/window) always opens on Dashboard
 (function() {
   const saved = sessionStorage.getItem('ne_active_tab');
-  const valid = ['dash','bank','exp','shares','gst','tax','inv','pl','fs','add'];
+  const valid = ['dash','bank','exp','shares','gst','tax','inv','pl','fs','add','ato'];
   if (saved && valid.includes(saved)) {
     const btn = Array.from(document.querySelectorAll('.tab')).find(b =>
       (b.getAttribute('onclick') || '').includes("'" + saved + "'")

@@ -2484,6 +2484,7 @@ function go(id, btn) {
   document.getElementById('v-'+id).classList.add('on');
   btn.classList.add('on');
   window.scrollTo(0,0);
+  sessionStorage.setItem('ne_active_tab', id);
 }
 function goInv(sub) {
   const tabBtn = Array.from(document.querySelectorAll('.tab')).find(b => (b.getAttribute('onclick')||'').includes("'inv'"));
@@ -2538,6 +2539,17 @@ document.getElementById('m-ae-dt').value = today();
 document.getElementById('m-ab-dt').value = today();
 updB();
 rAll();
+// Restore last active tab on refresh; new session (new tab/window) always opens on Dashboard
+(function() {
+  const saved = sessionStorage.getItem('ne_active_tab');
+  const valid = ['dash','bank','exp','shares','gst','tax','inv','pl','fs','add'];
+  if (saved && valid.includes(saved)) {
+    const btn = Array.from(document.querySelectorAll('.tab')).find(b =>
+      (b.getAttribute('onclick') || '').includes("'" + saved + "'")
+    );
+    if (btn) go(saved, btn);
+  }
+})();
 </script>
 </body>
 </html>

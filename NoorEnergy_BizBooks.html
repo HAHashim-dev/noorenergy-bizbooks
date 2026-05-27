@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+w<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -214,8 +214,8 @@ tfoot td{padding:10px 12px;font-weight:600;background:var(--bg);border-top:2px s
 .sc:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(26,26,46,.1)}
 
 /* FAS 3 INCOME TAX FORM */
-.fas-wrap{max-width:860px;margin:0 auto}
-.fas-section{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.fas-wrap{max-width:1080px;margin:0 auto}
+.fas-section{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:14px}
 .fas-sec-hdr{background:#2c5282;color:#fff;padding:8px 16px;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.4px}
 .fas-sec-hdr .fas-num{background:rgba(255,255,255,.22);padding:1px 9px;border-radius:10px;font-size:10px;font-family:var(--mono);flex-shrink:0}
 .fas-sec-hdr .fas-yr{margin-left:auto;font-family:var(--mono);font-size:10px;opacity:.8}
@@ -743,12 +743,14 @@ const BASE_EX = [
   {id:'e3',date:'2024-10-21',fy:'FY2425',desc:'ASIC Refund — Business Name fee returned',supplier:'ASIC',cat:'Registration & Licences',total:-102,gst:0,net:-102,src:'RECEIPT_FY2425_OCT_ASIC REFUND',status:'Refund',notes:'Receipt H238303181389 · Card xx5566'},
   {id:'e4',date:'2025-02-13',fy:'FY2425',desc:'NRMA Business Insurance — Policy 6807260 (effective 1 Mar 2025)',supplier:'NRMA Insurance',cat:'Insurance',total:610.12,gst:55.47,net:554.65,src:'RECEIPT_FY2425_FEB_INSURANCE POLICY',status:'Approved',notes:'Receipt #74549585 · Card xx9281 · matched to bank 18 Feb 2025'},
   // ── FY2425 · Partner-Paid Expenses — Future Reimbursement ──
-  {id:'e5',date:'2024-07-08',fy:'FY2425',desc:'Website Design — noorenergy.com.au development (500,000 SDG · AUD equiv. TBD)',supplier:'Mustafa Anwer Mohammed Hussien',cat:'Marketing & Website',total:0,gst:0,net:0,src:'EXPENSE_FY2425_JUL_WEBSITE DESIGN TRANSFER [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid via Bank of Khartoum · Trx.ID 20012470002 · 500,000 SDG · AUD equiv. to be confirmed at reimbursement'},
-  {id:'e6',date:'2024-08-02',fy:'FY2425',desc:'Logo & Website Design — additional payment (290,000 SDG · AUD $155 equiv.)',supplier:'Mustafa Anwer Mohammed Hussien',cat:'Marketing & Website',total:155,gst:0,net:155,src:'EXPENSE_FY2425_AUG_LOGO DESIGN TRANSFER [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid via Bank of Khartoum · Trx.ID 20012890191 · 290,000 SDG = AUD $155 equiv.'},
-  {id:'e7',date:'2024-08-31',fy:'FY2425',desc:'Document Postage to ATO — Canada Post international express (CAD $120.35)',supplier:'Canada Post',cat:'Postage & Freight',total:120.35,gst:0,net:120.35,src:'EXPENSE_FY2425_SEP_DOCS POSTAGE [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid · Receipt CC104632 · Destination: Australian Taxation Office · No AU GST (foreign purchase)'},
+  {id:'e5',date:'2024-07-08',fy:'FY2425',desc:'Website Design — noorenergy.com.au development (500,000 SDG · AUD $443.70 equiv.)',supplier:'Mustafa Anwer Mohammed Hussien',cat:'Marketing & Website',total:443.70,gst:0,net:443.70,src:'EXPENSE_FY2425_JUL_WEBSITE DESIGN TRANSFER [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid via Bank of Khartoum · Trx.ID 20012470002 · 500,000 SDG · AUD $443.70 equiv. per Excel expense log'},
+  {id:'e6',date:'2024-08-02',fy:'FY2425',desc:'Logo & Website Design — additional payment (290,000 SDG · AUD $232.50 equiv.)',supplier:'Mustafa Anwer Mohammed Hussien',cat:'Marketing & Website',total:232.50,gst:0,net:232.50,src:'EXPENSE_FY2425_AUG_LOGO DESIGN TRANSFER [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid via Bank of Khartoum · Trx.ID 20012890191 · 290,000 SDG = AUD $232.50 equiv. per Excel expense log'},
+  {id:'e7',date:'2024-08-31',fy:'FY2425',desc:'Document Postage to ATO — Canada Post international express (CAD $120.35 · AUD $131.85 equiv.)',supplier:'Canada Post',cat:'Postage & Freight',total:131.85,gst:0,net:131.85,src:'EXPENSE_FY2425_SEP_DOCS POSTAGE [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Merghani Ahmed · Receipt CC104632 · Destination: Australian Taxation Office · No AU GST (foreign purchase) · AUD $131.85 per Excel expense log'},
+  {id:'e20',date:'2024-08-31',fy:'FY2425',desc:'Documents Notarization — company and bank registration paperwork (CAD $200 · AUD $219.12 equiv.)',supplier:'Rajvir Sindhu Notary Public',cat:'Professional Services',total:219.12,gst:0,net:219.12,src:'EXPENSE_FY2425_AUG_DOCS NOTARIZATION [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Merghani Ahmed · CAD $200 = AUD $219.12 equiv. · cash payment · no receipt (vendor requested cash)'},
   {id:'e8',date:'2025-01-02',fy:'FY2425',desc:'Business Card Printing — 100 standard cards (Vistaprint)',supplier:'Vistaprint Australia',cat:'Office Supplies',total:44.98,gst:4.09,net:40.89,src:'EXPENSE-FY2425_JAN_BUSINESS CARD PRINTING [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Yagoub Bala · Invoice #0223975009 · delivered to 428B Great Eastern Hwy Woodbridge'},
   {id:'e9',date:'2024-07-08',fy:'FY2425',desc:'Domain Registration noorenergy.com.au + Microsoft 365 Email Essentials 1yr (actual payment 26 May 2024)',supplier:'GoDaddy',cat:'Software & Subscriptions',total:142.10,gst:12.92,net:129.18,src:'EXPENSE_FY2425_MAY_DOMAIN EXPENSES [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Mohammed Albashier · Receipt #3098273852 · emails: jacob@, hashim@, mo@noorenergy.com.au'},
   {id:'e10',date:'2025-05-15',fy:'FY2425',desc:'Domain Renewal noorenergy.com.au + Ownership Protection (1yr)',supplier:'GoDaddy',cat:'Software & Subscriptions',total:42.59,gst:3.87,net:38.72,src:'EXPENSE_FY2425_MAY_DOMAIN RENEWAL [FUTURE]',status:'Future Reimbursement',notes:'Partner-paid by Mohammed Albashier · Receipt #3747492349'},
+  {id:'e19',date:'2025-05-16',fy:'FY2425',desc:'Partner Capital Advance — excess over agreed $5,000 share contribution (general business expenses)',supplier:'Hashim Hashim',cat:'Other',total:610.12,gst:0,net:610.12,src:'BANK_FY2425_MAY_CBA',status:'Future Reimbursement',notes:'Part of $1,810.12 bank transfer on 16 May 2025 · $1,200 allocated to share capital · remaining $610.12 owed back to Hashim as a business expense advance'},
   // ── FY2526 · Company Expenses ──
   {id:'e11',date:'2025-08-07',fy:'FY2526',desc:'Lawpath Essentials Plan — legal & compliance subscription',supplier:'Lawpath',cat:'Software & Subscriptions',total:468,gst:42.54,net:425.46,src:'RECEIPT_FY2526_AUG_LAW PATH SUBSCRIPTION',status:'Approved',notes:'Invoice #77PB4EC8-0002 · matched to bank debit 07 Aug 2025'},
   {id:'e12',date:'2025-08-30',fy:'FY2526',desc:'ASIC Annual Company Registration Renewal — Noor Energy PTY LTD',supplier:'ASIC',cat:'Registration & Licences',total:329,gst:0,net:329,src:'BANK_FY2526_SEP_CBA',status:'Approved',notes:'BPAY Ref 2296789220516 · paid via CommBank app · no GST on government fees'},
@@ -758,6 +760,8 @@ const BASE_EX = [
   {id:'e16',date:'2026-03-30',fy:'FY2526',desc:'NRMA Business Insurance Renewal — Policy 6807260',supplier:'NRMA Business Insurance',cat:'Insurance',total:671.15,gst:61.01,net:610.14,src:'BANK_FY2526_MAR_CBA',status:'Approved',notes:'BPAY Ref 07940416001 · Renewal BP 6807260 · matched to bank debit 30 Mar 2026'},
   // ── FY2526 · Partner-Paid Expenses — Future Reimbursement ──
   {id:'e17',date:'2026-04-15',fy:'FY2526',desc:'Site Survey Expenses — Halfawi site visit (AUD $500 · 1,000,000 SDG equiv.)',supplier:'Mosab Ahmed Osman Ahmed / M Osman',cat:'Travel',total:500,gst:0,net:500,src:'EXPENSE_FY2526_APR_SITE SURVEY EXPENSES [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid: AUD $500 via PayID (Smart Access acct on file, Receipt N441569044793) · equivalent 1,000,000 SDG via Bank of Khartoum (Trx.ID 20024607574)'},
+  // ── FY2526 · Q4 Company Expenses ──
+  {id:'e18',date:'2026-05-14',fy:'FY2526',desc:'Business License Fee — Self-Lodgement of 2025 Income Tax Return',supplier:'Free Accounting Software',cat:'Professional Services',total:33,gst:3,net:30,src:'RECEIPT_FY2526_MAY_INCOME TAX FEE',status:'Approved',notes:'Invoice S9008 · ABN 38 111 951 645 · freeaccountingsoftware.com.au · bank debit pending Q4 FY2526 statement'},
 ];
 const BASE_BK = [
   // ── FY2425 · Statement 1 (6 Dec 2024 – 31 Mar 2025) ──
@@ -767,12 +771,12 @@ const BASE_BK = [
   // ── FY2425 · Statement 2 (1 Apr – 17 May 2025) ──
   {id:'b4',date:'2025-05-03',fy:'FY2425',desc:'Transfer from CommBank app — Transfer (share capital injection)',type:'Credit',amount:2000,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
   {id:'b5',date:'2025-05-03',fy:'FY2425',desc:'Fast Transfer From MOHAMMED MAGZOUB — Noor Energy (share capital)',type:'Credit',amount:5000,classification:'Share Capital',shareholder:'Mohammed Magzoub',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
-  {id:'b6',date:'2025-05-16',fy:'FY2425',desc:'Transfer from CommBank app — Noor Enegry (share capital injection)',type:'Credit',amount:1810.12,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
+  {id:'b6',date:'2025-05-16',fy:'FY2425',desc:'Transfer from CommBank app — Noor Energy (share capital injection · $1,200 of $1,810.12 transfer)',type:'Credit',amount:1200,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
   // ── FY2526 · Statement 4 (1 Jul – 30 Sep 2025) ──
   {id:'b7',date:'2025-08-07',fy:'FY2526',desc:'LAWPATH — Essentials Plan annual subscription',type:'Debit',amount:468,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_AUG_LAW PATH SUBSCRIPTION',gst:42.54},
   {id:'b8',date:'2025-08-30',fy:'FY2526',desc:'ASIC BPAY — Noor Energy annual company registration renewal',type:'Debit',amount:329,classification:'Expense',shareholder:'',matched:true,src:'BANK_FY2526_SEP_CBA',gst:0},
   // ── FY2526 · Statement 6 (1 Jan – 31 Mar 2026) ──
-  {id:'b9',date:'2026-01-13',fy:'FY2526',desc:'Fast Transfer From HASIBULLAH NOORY — 247 Transport · INV260001',type:'Credit',amount:1485,classification:'Income',shareholder:'',matched:true,src:'RECEIPT_FY2526_JAN_CONSTRUCTION JOB PAYMENT',gst:135},
+  {id:'b9',date:'2026-01-13',fy:'FY2526',desc:'Fast Transfer From HASIBULLAH NOORY — 247 Transport · INV260001',type:'Credit',amount:1485,classification:'Income',shareholder:'',matched:true,src:'INV-OUT_FY2526_JAN_CONSTRUCTION JOB',gst:135},
   {id:'b10',date:'2026-02-17',fy:'FY2526',desc:'Fast Transfer From ABDALKARIM ALBORNO — Test (equipment purchase test transfer)',type:'Credit',amount:10,classification:'Client Funds',shareholder:'Abdalkarim AlBorno on behalf of Mogahid Altayeb',matched:true,src:'EQUIPMENT-PURCHASE-EVIDENCE',gst:0},
   {id:'b11',date:'2026-02-18',fy:'FY2526',desc:'Fast Transfer From ABDALKARIM ALBORNO — Gift (equipment purchase funds for Mogahid Altayeb)',type:'Credit',amount:14400,classification:'Client Funds',shareholder:'Abdalkarim AlBorno on behalf of Mogahid Altayeb',matched:true,src:'EQUIPMENT-PURCHASE-EVIDENCE',gst:0},
   {id:'b12',date:'2026-02-19',fy:'FY2526',desc:'Transfer To RADDOCK PTY LTD — 4× Minelab Gold Monster 2000 · Q 26-00000789',type:'Debit',amount:11996,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2526_FEB_EQUIPMENT PURCHASE-PAID',gst:1090.56},
@@ -800,7 +804,7 @@ const BASE_INV_IN = [
    notes:'Invoice INV-001 · paid $1,500 on 25 Feb 2026 + $500 on 06 Mar 2026'},
 ];
 const BASE_INV_OUT = [
-  {id:'io1',date:'2025-12-20',fy:'FY2526',ref:'INV-OUT_FY2526_JAN_CONSTRUCTION JOB',
+  {id:'io1',date:'2026-01-12',fy:'FY2526',ref:'INV-OUT_FY2526_JAN_CONSTRUCTION JOB',
    desc:'Construction site services — project payment (INV260001)',
    client:'Hasibullah Noory / 247 Transport',
    amount:1485,gst:135,net:1350,
@@ -838,7 +842,16 @@ let DATA = loadData();
 // ═══════════════════════════════════════════════════════
 // CONSTANTS
 // ═══════════════════════════════════════════════════════
-let aFY = 'FY2425', aQ = 'Q1';
+let aFY, aQ;
+(function() {
+  const now = new Date();
+  const yr  = now.getFullYear(), mo = now.getMonth() + 1;
+  const fyStart = mo >= 7 ? yr : yr - 1;
+  const code    = 'FY' + String(fyStart).slice(2) + String(fyStart + 1).slice(2);
+  const valid   = ['FY2425','FY2526','FY2627','FY2728'];
+  aFY = valid.includes(code) ? code : valid[valid.length - 1];
+  aQ  = (mo >= 7 && mo <= 9) ? 'Q1' : (mo >= 10) ? 'Q2' : (mo <= 3) ? 'Q3' : 'Q4';
+})();
 const QD = {
   Q1:{m:[7,8,9],  l:'Q1 Jul–Sep', d:'1 Jul – 30 Sep'},
   Q2:{m:[10,11,12],l:'Q2 Oct–Dec', d:'1 Oct – 31 Dec'},
@@ -1078,57 +1091,150 @@ function rExp() {
 }
 
 // SHARES
+// Agreed contribution per shareholder (AUD)
+const AGREED_CONTRIBUTION = 2500;
+
 function rShares() {
-  const allSC = DATA.bank.filter(b => b.classification === 'Share Capital');
-  const fySC  = DATA.bank.filter(b => b.fy === aFY && b.classification === 'Share Capital');
-  const tot   = allSC.reduce((a,b) => a+b.amount, 0);
-  const fyTot = fySC.reduce((a,b) => a+b.amount, 0);
-  const totalShares = SHAREHOLDERS.reduce((a,s)=>a+s.shares, 0);
+  const allSC      = DATA.bank.filter(b => b.classification === 'Share Capital');
+  const fySC       = DATA.bank.filter(b => b.fy === aFY && b.classification === 'Share Capital');
+  const tot        = allSC.reduce((a,b) => a+b.amount, 0);
+  const fyTot      = fySC.reduce((a,b) => a+b.amount, 0);
+  const totalShares = SHAREHOLDERS.reduce((a,s) => a+s.shares, 0);
+  const agreedTotal = SHAREHOLDERS.length * AGREED_CONTRIBUTION;  // 10,000
 
   // Per-shareholder paid-up (all time)
   const shData = SHAREHOLDERS.map(sh => {
     const pmts = allSC.filter(b => b.shareholder === sh.name);
-    return {name: sh.name, shares: sh.shares, total: pmts.reduce((a,b)=>a+b.amount,0), count: pmts.length, payments: pmts};
+    const paid = pmts.reduce((a,b) => a+b.amount, 0);
+    return { name: sh.name, shares: sh.shares, total: paid, count: pmts.length, payments: pmts };
   });
 
+  // Profit share % — based on actual paid / total paid
+  // If nobody paid anything, fall back to equal shares
+  const totalPaid = shData.reduce((a,s) => a+s.total, 0);
+  const profitPct = sh => totalPaid > 0
+    ? (sh.total / totalPaid * 100)
+    : (sh.shares / totalShares * 100);
+
+  // ── Per-shareholder KPI cards ────────────────────────
   document.getElementById('shs').innerHTML = shData.map(sh => {
-    const shareholding = ((sh.shares/totalShares)*100).toFixed(1);
-    const color = sh.total > 0 ? 'var(--bl)' : 'var(--muted)';
-    return `<div class="sc bl">
+    const legalPct   = (sh.shares / totalShares * 100).toFixed(1);
+    const profPct    = profitPct(sh).toFixed(2);
+    const delta      = (profitPct(sh) - 25).toFixed(2);
+    const variance   = sh.total - AGREED_CONTRIBUTION;
+    const statusCls  = variance >= 0 ? 'bgn' : 'bam';
+    const statusTxt  = variance > 0
+      ? `+${aud(variance)} above agreed`
+      : variance < 0
+        ? `${aud(Math.abs(variance))} outstanding`
+        : 'Fully paid (agreed target)';
+    const deltaSign  = delta > 0 ? '+' : '';
+    const deltaColor = delta > 0 ? 'var(--gn)' : delta < 0 ? 'var(--rd)' : 'var(--muted)';
+
+    return `<div class="sc ${sh.total > 0 ? 'bl' : 'am'}" style="min-height:120px">
       <div class="lb">${sh.name}</div>
-      <div class="vl" style="color:${color}">${aud(sh.total)}</div>
-      <div class="sb">${sh.shares} shares (${shareholding}%) · ${sh.count > 0 ? sh.count+' payment'+(sh.count>1?'s':'') : 'No payments recorded'}</div>
+      <div class="vl" style="color:${sh.total>0?'var(--bl)':'var(--muted)'}">${aud(sh.total)}</div>
+      <div class="sb" style="margin-top:4px">
+        <span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--tl)">${profPct}% profit share</span>
+        <span style="font-family:var(--mono);font-size:10px;color:${deltaColor};margin-left:6px">(${deltaSign}${delta}% vs 25% base)</span>
+      </div>
+      <div class="sb" style="margin-top:3px">
+        ${sh.shares} shares · ${legalPct}% legal &nbsp;·&nbsp;
+        <span class="b ${statusCls}" style="font-size:9px">${statusTxt}</span>
+      </div>
     </div>`;
   }).join('');
 
   document.getElementById('shtit').textContent = `Share capital — all payments (all financial years)`;
 
-  // Registry table
-  const registryRows = shData.map(sh => `
-    <tr>
-      <td style="font-weight:600">${sh.name}</td>
-      <td class="nr">${sh.shares} shares (${((sh.shares/totalShares)*100).toFixed(1)}%)</td>
-      <td class="nr" style="color:${sh.total>0?'var(--bl)':'var(--muted)'}; font-family:var(--mono)">${aud(sh.total)}</td>
-      <td>${sh.payments.map(p=>`<span class="b bbl" style="margin-right:4px;font-size:9px">${fd(p.date)} ${aud(p.amount)}</span>`).join('') || '<span class="sm muted">—</span>'}</td>
-    </tr>`).join('');
+  // ── Profit-share explanation banner ─────────────────
+  const allAgreed = shData.every(s => s.total >= AGREED_CONTRIBUTION);
+  const anyOver   = shData.some(s => s.total > AGREED_CONTRIBUTION);
+  const bannerCls = anyOver ? 'al-t' : allAgreed ? 'al-g' : 'al-a';
+  const bannerMsg = anyOver
+    ? `Profit is distributed proportionally based on actual paid-up capital. Shareholders who contributed beyond the agreed AUD ${AGREED_CONTRIBUTION.toLocaleString()} receive a larger share of profits in proportion to their total capital contributed.`
+    : allAgreed
+      ? `All shareholders have met their agreed contribution of AUD ${AGREED_CONTRIBUTION.toLocaleString()}. Profit distribution is equal at 25% each.`
+      : `Some shareholders have not yet met their agreed contribution of AUD ${AGREED_CONTRIBUTION.toLocaleString()}. Profit share percentages below reflect actual capital contributed to date.`;
 
-  // All transactions table
-  const allTxns = allSC.sort((a,b)=>a.date.localeCompare(b.date));
+  // ── Summary KPI strip ────────────────────────────────
+  const agreedRemaining = Math.max(0, agreedTotal - totalPaid);
+  const excessCapital   = Math.max(0, totalPaid - agreedTotal);
+
+  // ── Registry table ───────────────────────────────────
+  const registryRows = shData.map(sh => {
+    const legalPct  = (sh.shares / totalShares * 100).toFixed(1);
+    const profPct   = profitPct(sh).toFixed(2);
+    const variance  = sh.total - AGREED_CONTRIBUTION;
+    const varColor  = variance >= 0 ? 'var(--gn)' : 'var(--rd)';
+    const varTxt    = variance === 0 ? '<span class="b bgn">✓ Met</span>'
+                    : variance > 0   ? `<span class="b bgn">+${aud(variance)}</span>`
+                    :                  `<span class="b bam">(${aud(Math.abs(variance))})</span>`;
+    const delta     = (profitPct(sh) - 25).toFixed(2);
+    const deltaTxt  = delta > 0 ? `<span style="color:var(--gn);font-size:10px">▲ +${delta}%</span>`
+                    : delta < 0 ? `<span style="color:var(--rd);font-size:10px">▼ ${delta}%</span>`
+                    :             `<span style="color:var(--muted);font-size:10px">= 25%</span>`;
+    return `<tr>
+      <td style="font-weight:600">${sh.name}</td>
+      <td class="nr">${sh.shares} shares &nbsp;<span class="sm muted">(${legalPct}% legal)</span></td>
+      <td class="nr" style="font-family:var(--mono)">${aud(AGREED_CONTRIBUTION)}</td>
+      <td class="nr" style="font-family:var(--mono);color:${sh.total>0?'var(--bl)':'var(--muted)'};font-weight:600">${aud(sh.total)}</td>
+      <td class="nr">${varTxt}</td>
+      <td class="nr"><span style="font-family:var(--mono);font-weight:700;font-size:12.5px;color:var(--tl)">${profPct}%</span> ${deltaTxt}</td>
+      <td style="font-size:10px">${sh.payments.map(p=>`<span class="b bbl" style="margin-right:3px;font-size:9px">${fd(p.date)} ${aud(p.amount)}</span>`).join('')||'<span class="sm muted">—</span>'}</td>
+    </tr>`;
+  }).join('');
+
+  // ── All transactions table ────────────────────────────
+  const allTxns = [...allSC].sort((a,b) => a.date.localeCompare(b.date));
+
   document.getElementById('sht').innerHTML = `
     <div style="padding:16px 18px 0">
       <div class="g4 mb">
-        <div class="sc bl"><div class="lb">Total share capital</div><div class="vl">${aud(tot)}</div><div class="sb">All shareholders · all time</div></div>
-        <div class="sc bl"><div class="lb">Total shares issued</div><div class="vl" style="font-size:18px">${totalShares}</div><div class="sb">${totalShares} shares @ 25% each</div></div>
-        <div class="sc bl"><div class="lb">Paid up — ${FYL[aFY]}</div><div class="vl">${aud(fyTot)}</div><div class="sb">This financial year</div></div>
-        <div class="sc bl"><div class="lb">Shareholders</div><div class="vl" style="font-size:18px">${SHAREHOLDERS.length}</div><div class="sb">Registered</div></div>
+        <div class="sc bl"><div class="lb">Total paid-up capital</div><div class="vl">${aud(tot)}</div><div class="sb">All shareholders · all time</div></div>
+        <div class="sc bl"><div class="lb">Agreed total target</div><div class="vl">${aud(agreedTotal)}</div><div class="sb">${SHAREHOLDERS.length} × AUD ${AGREED_CONTRIBUTION.toLocaleString()}</div></div>
+        <div class="sc ${excessCapital>0?'gn':'am'}"><div class="lb">${excessCapital>0?'Excess capital':'Outstanding'}</div><div class="vl">${aud(excessCapital>0?excessCapital:agreedRemaining)}</div><div class="sb">${excessCapital>0?'Above agreed total':'Yet to be contributed'}</div></div>
+        <div class="sc tl"><div class="lb">Paid-up — ${FYL[aFY]}</div><div class="vl">${aud(fyTot)}</div><div class="sb">This financial year only</div></div>
       </div>
+      <div class="al ${bannerCls} mb" style="font-size:12px;line-height:1.6">${bannerMsg}</div>
     </div>
-    <div class="ch" style="margin-top:4px"><h3>Shareholder registry</h3></div>
+
+    <div class="ch" style="margin-top:4px"><h3>Shareholder capital &amp; profit-share register</h3></div>
     <table>
-      <thead><tr><th>Shareholder</th><th class="thr">Shareholding</th><th class="thr">Paid-up capital</th><th>Payment history</th></tr></thead>
+      <thead>
+        <tr>
+          <th>Shareholder</th>
+          <th class="thr">Legal shares</th>
+          <th class="thr">Agreed (AUD)</th>
+          <th class="thr">Actual paid</th>
+          <th class="thr">Variance</th>
+          <th class="thr">Profit share %</th>
+          <th>Payment history</th>
+        </tr>
+      </thead>
       <tbody>${registryRows}</tbody>
-      <tfoot><tr><td><strong>Total</strong></td><td class="nr"><strong>100%</strong></td><td class="nr" style="font-family:var(--mono)"><strong>${aud(tot)}</strong></td><td></td></tr></tfoot>
+      <tfoot>
+        <tr>
+          <td><strong>Total</strong></td>
+          <td class="nr"><strong>100 shares (100%)</strong></td>
+          <td class="nr" style="font-family:var(--mono)"><strong>${aud(agreedTotal)}</strong></td>
+          <td class="nr" style="font-family:var(--mono)"><strong>${aud(tot)}</strong></td>
+          <td></td>
+          <td class="nr" style="font-family:var(--mono);font-weight:700">100.00%</td>
+          <td></td>
+        </tr>
+      </tfoot>
     </table>
+
+    <div class="ch" style="margin-top:16px"><h3>Profit-share calculation basis</h3></div>
+    <div style="padding:14px 18px;font-size:11.5px;line-height:1.9;border-bottom:1px solid var(--border)">
+      <strong>Formula:</strong> Each shareholder's profit share % = <em>their total paid-up capital ÷ total capital paid by all shareholders × 100</em><br>
+      <strong>Agreed base:</strong> AUD ${AGREED_CONTRIBUTION.toLocaleString()} per shareholder (AUD ${agreedTotal.toLocaleString()} total). If all shareholders pay exactly their agreed amount, profit is split equally at 25% each.<br>
+      <strong>Additional capital:</strong> Any amount paid above AUD ${AGREED_CONTRIBUTION.toLocaleString()} increases that shareholder's profit share proportionally. The total always sums to 100%.<br>
+      <strong>Unpaid contributions:</strong> A shareholder who has not yet paid their agreed amount has a lower profit share until payment is made.<br>
+      <strong>Note:</strong> Legal share ownership (ASIC register) remains at 25% each. Profit distribution is a separate shareholder agreement. ASIC Form 484 must be lodged for any change to legal shareholding.
+    </div>
+
     <div class="ch" style="margin-top:4px"><h3>All share capital transactions</h3></div>
     ${allTxns.length ? `<table>
       <thead><tr><th>Date</th><th>FY</th><th>Shareholder</th><th class="thr">Amount</th><th>Source</th></tr></thead>
@@ -1141,10 +1247,10 @@ function rShares() {
           <td><span class="src" title="${b.src||''}">${b.src||'—'}</span></td>
         </tr>`).join('')}
       </tbody>
-      <tfoot><tr><td colspan="3"><strong>Total</strong></td><td class="nr" style="font-family:var(--mono)"><strong>${aud(tot)}</strong></td><td></td></tr></tfoot>
-    </table>` : `<div class="empty">No share capital transactions</div>`}
+      <tfoot><tr><td colspan="3"><strong>Total paid-up capital</strong></td><td class="nr" style="font-family:var(--mono)"><strong>${aud(tot)}</strong></td><td></td></tr></tfoot>
+    </table>` : `<div class="empty">No share capital transactions recorded.</div>`}
     <div style="padding:14px 18px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);line-height:1.7">
-      Share capital is equity — not income, not taxable. ASIC Form 484 must be lodged for all share allotments. Each shareholder holds 25% (25 shares each of 100 total).
+      Share capital is equity — not income, not taxable. ASIC Form 484 must be lodged for all share allotments.
     </div>`;
 }
 
@@ -1523,6 +1629,61 @@ function delInvIn(id){DATA.invoicesIn=DATA.invoicesIn.filter(x=>x.id!==id);saveD
 function delInvOut(id){DATA.invoicesOut=DATA.invoicesOut.filter(x=>x.id!==id);saveData();rInv();}
 
 // ═══════════════════════════════════════════════════════
+// SHARED BALANCE SHEET CALCULATOR
+// ═══════════════════════════════════════════════════════
+function computeBS(fy) {
+  const fyOrder   = ['FY2425','FY2526','FY2627','FY2728'];
+  const activeFYs = fyOrder.slice(0, fyOrder.indexOf(fy)+1);
+  const allBankToDate = DATA.bank.filter(b => activeFYs.includes(b.fy));
+
+  const cashBalance = allBankToDate.filter(x=>x.type==='Credit').reduce((a,x)=>a+x.amount,0)
+                    - allBankToDate.filter(x=>x.type==='Debit').reduce((a,x)=>a+x.amount,0);
+
+  const tradeDebtors = DATA.invoicesOut.filter(x=>activeFYs.includes(x.fy)).reduce((sum,inv) => {
+    const rcvd = DATA.bank.filter(b=>b.type==='Credit'&&b.src===inv.ref).reduce((a,b)=>a+b.amount,0);
+    return rcvd < inv.amount ? sum+(inv.amount-rcvd) : sum;
+  }, 0);
+
+  const tradeCreditors = DATA.invoicesIn.filter(x=>activeFYs.includes(x.fy)).reduce((sum,inv) => {
+    const paid = DATA.bank.filter(b=>b.type==='Debit'&&b.src===inv.ref).reduce((a,b)=>a+b.amount,0);
+    return paid < inv.amount ? sum+(inv.amount-paid) : sum;
+  }, 0);
+
+  const shareCapitalCash = allBankToDate.filter(x=>x.classification==='Share Capital').reduce((a,x)=>a+x.amount,0);
+  const operatingCash    = cashBalance - shareCapitalCash;
+
+  // ── Tax payable: apply prior-year loss offsets (mirrors rTax logic) ───────
+  const fyIdxBS   = fyOrder.indexOf(fy);
+  let priorLossBS = 0;
+  for (let i = 0; i < fyIdxBS; i++) {
+    const prevFy = fyOrder[i];
+    const prevI  = DATA.bank.filter(b=>b.fy===prevFy&&b.type==='Credit'&&(b.classification==='Income'||b.classification==='Client Funds')).reduce((a,b)=>a+(b.amount-(b.gst||0)),0);
+    const prevE  = DATA.expenses.filter(e=>e.fy===prevFy&&(e.status==='Approved'||e.status==='Refund')).reduce((a,e)=>a+(e.net||0),0);
+    const prevNet = prevI - prevE;
+    if (prevNet < 0) priorLossBS += Math.abs(prevNet);
+    else priorLossBS = Math.max(0, priorLossBS - prevNet);
+  }
+  const fyBankInc    = DATA.bank.filter(b=>b.fy===fy&&b.type==='Credit'&&(b.classification==='Income'||b.classification==='Client Funds')).reduce((a,b)=>a+(b.amount-(b.gst||0)),0);
+  const fyExpNet     = DATA.expenses.filter(e=>e.fy===fy&&(e.status==='Approved'||e.status==='Refund')).reduce((a,e)=>a+(e.net||0),0);
+  const fyPL         = fyBankInc - fyExpNet;
+  const fyLossUsed   = fyPL > 0 ? Math.min(priorLossBS, fyPL) : 0;
+  const fyTaxableInc = Math.max(0, fyPL - fyLossUsed);
+  const taxPayable   = fyTaxableInc * 0.25;
+
+  const totalCurrentAssets = cashBalance + tradeDebtors;
+  const totalAssets        = totalCurrentAssets;
+  const totalCurrentLiab   = tradeCreditors + taxPayable;
+  const totalLiabilities   = totalCurrentLiab;
+  const netAssets          = totalAssets - totalLiabilities;
+  const shareCapital       = shareCapitalCash;
+  const retainedEarnings   = netAssets - shareCapital;
+
+  return { cashBalance, operatingCash, shareCapitalCash, tradeDebtors, tradeCreditors, taxPayable,
+           totalCurrentAssets, totalAssets, totalCurrentLiab, totalLiabilities,
+           netAssets, shareCapital, retainedEarnings };
+}
+
+// ═══════════════════════════════════════════════════════
 // INCOME TAX
 // ═══════════════════════════════════════════════════════
 function rTax() {
@@ -1570,39 +1731,60 @@ function rTax() {
   }
 
   // ── Section 7 ───────────────────────────────────────
-  const sec7R      = totalPL > 0 ? Math.min(priorLoss, totalPL) : 0; // R — Tax losses deducted
-  const taxableInc = Math.max(0, totalPL - sec7R);                    // T — Taxable income
-  const lossCFwd   = priorLoss - sec7R + (totalPL < 0 ? Math.abs(totalPL) : 0); // Section 13 U
+  const sec7R        = totalPL > 0 ? Math.min(priorLoss, totalPL) : 0;
+  const sec7Total    = totalPL - sec7R;          // actual taxable income or loss — can be negative
+  const taxableInc   = Math.max(0, sec7Total);   // for tax calc only — never negative
+  const lossCFwd     = priorLoss - sec7R + (totalPL < 0 ? Math.abs(totalPL) : 0);
 
-  // ── Tax ─────────────────────────────────────────────
-  const grossTax = taxableInc * 0.25;
+  // ── Tax ──────────────────────────────────────────────
+  const grossTax   = taxableInc * 0.25;
+  const taxPayable = grossTax;
 
-  // ── Excluded totals ──────────────────────────────────
+  // ── Balance sheet data for Section 8 (auto-populated) ─
+  const bs = computeBS(aFY);
+
+  // ── Payments to associated persons for Section 8Q ─────
+  const assocAmount = (fasG['C']?.items||[]).filter(x =>
+    ['Yagoub','Bala','Hashim','Magzoub','Merghani'].some(n => (x.supplier+x.desc).includes(n))
+  ).reduce((a,x) => a+(x.net||0), 0);
+
+  // ── Excluded totals ───────────────────────────────────
   const exclAUD = exclExp.filter(x=>x.total>0).reduce((a,x)=>a+x.total,0);
   const exclSDG = exclExp.filter(x=>x.total===0).length;
 
-  // ── KPI cards ────────────────────────────────────────
+  // ── Share capital (NOT assessable income — equity only) ─
+  const fyShareCap  = allBank.filter(b=>b.classification==='Share Capital').reduce((a,b)=>a+b.amount,0);
+  const allShareCap = DATA.bank.filter(b=>b.classification==='Share Capital').reduce((a,b)=>a+b.amount,0);
+
+  // ── KPI cards ─────────────────────────────────────────
   document.getElementById('tax-kpi').innerHTML = `
     <div class="sc tl"><div class="lb">Total income — 6S</div><div class="vl">${aud(total6S)}</div><div class="sb">Ex-GST · ${FYL[aFY]}</div></div>
     <div class="sc rd"><div class="lb">Total expense — 6Q</div><div class="vl">${aud(total6Q)}</div><div class="sb">Ex-GST · approved only</div></div>
-    <div class="sc ${taxableInc>0?'am':'gn'}"><div class="lb">Taxable income — 7T</div><div class="vl">${aud(taxableInc)}</div><div class="sb">${taxableInc===0?'Nil — losses offset':'Before credits & offsets'}</div></div>
-    <div class="sc ${grossTax>0?'rd':'gn'}"><div class="lb">Tax payable — T5</div><div class="vl">${aud(grossTax)}</div><div class="sb">${grossTax===0?'Nil this year':'@ 25% BRE rate'}</div></div>`;
+    <div class="sc ${sec7Total<0?'bl':taxableInc>0?'am':'gn'}"><div class="lb">Taxable income / loss — 7T</div><div class="vl" style="font-size:${sec7Total<0?'18':'22'}px">${sec7Total<0?'('+aud(Math.abs(sec7Total))+') loss':aud(taxableInc)}</div><div class="sb">${sec7Total<0?'Net loss — carried forward':taxableInc===0?'Nil — prior losses offset':'@ 25% BRE rate'}</div></div>
+    <div class="sc ${taxPayable>0?'rd':'gn'}"><div class="lb">Tax payable — T5/T6</div><div class="vl">${aud(taxPayable)}</div><div class="sb">${taxPayable===0?'Nil this year':'@ 25% BRE rate'}</div></div>`;
 
-  // ── Row builder ──────────────────────────────────────
-  const row = (code, label, val, cls, note='') => {
+  // ── Row builders ─────────────────────────────────────
+  const row = (code, label, val, cls='nz', note='') => {
     const v = typeof val === 'number'
-      ? (val < 0 ? `(${aud(Math.abs(val))})` : aud(val))
-      : val;
-    const noteHtml = note ? `<span class="fas-note">${note}</span>` : '';
+      ? (val === 0 ? '$0.00' : val < 0 ? `(${aud(Math.abs(val))})` : aud(val))
+      : (val || '$0.00');
     return `<div class="fas-row">
-      <span class="fas-lbl">${label}${noteHtml}</span>
+      <span class="fas-lbl">${label}${note?`<span class="fas-note">${note}</span>`:''}
+      </span>
       <span class="fas-code">${code}</span>
-      <span class="fas-val ${cls}">${v}</span>
+      <span class="fas-val ${typeof val==='number'&&val===0?'z':cls}">${v}</span>
     </div>`;
   };
-  const r0  = (code, label, note='')    => row(code, label, aud(0), 'z', note);
+  const r0  = (code, label, note='')      => row(code, label, 0, 'z', note);
   const rNZ = (code, label, val, note='') => row(code, label, val, typeof val==='number'&&val<0?'loss-v':'nz', note);
-  const rC  = (code, label, val)        => row(code, label, typeof val==='number'?(val<0?`(${aud(Math.abs(val))})`:aud(val)):val, 'calc');
+  const rC  = (code, label, val)          => row(code, label, val, 'calc');
+  const field = (label, value, note='') => `<div class="fas-row">
+    <span class="fas-lbl">${label}${note?`<span class="fas-note">${note}</span>`:''}</span>
+    <span class="fas-val nz" style="min-width:unset;text-align:left;flex:1">${value}</span>
+  </div>`;
+  const yn = (label, v) => field(label, v
+    ? `<span class="b bgn" style="font-size:11px">Yes</span>`
+    : `<span class="b bgy" style="font-size:11px">No</span>`);
 
   const exclRows = exclExp.map(x => `
     <div class="fas-excl">
@@ -1614,39 +1796,146 @@ function rTax() {
   // ── Build form ───────────────────────────────────────
   document.getElementById('tax-fas-form').innerHTML = `
 
-    <!-- ── Header ── -->
+    <!-- ── Non-Assessable Exclusions Banner ── -->
+    <div style="background:var(--gn-lt);border:1px solid #a3d9c8;border-radius:8px;padding:12px 16px;margin-bottom:12px;display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:18px;line-height:1">✓</div>
+      <div>
+        <div style="font-weight:700;font-size:12.5px;color:var(--gn);margin-bottom:4px">Share capital excluded — not assessable income</div>
+        <div style="font-size:11.5px;color:#1a5940;line-height:1.7">
+          <strong>Total share capital received (all time): ${aud(allShareCap)}</strong>${fyShareCap > 0 ? ` &nbsp;·&nbsp; This year (${FYL[aFY]}): ${aud(fyShareCap)}` : ''}<br>
+          Share capital is <strong>equity</strong> — it is not income, not GST-applicable, and is completely excluded from all Section 6 income calculations, Section 7 taxable income, and the tax payable figure below.
+          It does appear in the Balance Sheet (Section 8 Total Assets) as part of the cash at bank — this is correct balance sheet treatment only.
+        </div>
+      </div>
+    </div>
+    ${exclExp.length ? `
+    <div style="background:var(--pu-lt);border:1px solid #c4b5fd;border-radius:8px;padding:10px 16px;margin-bottom:12px;font-size:11.5px;color:#4c1d95;line-height:1.7">
+      <strong>Future Reimbursement expenses excluded (${exclExp.length} item${exclExp.length>1?'s':''}): ${aud(exclAUD)}${exclSDG>0?` + ${exclSDG} SDG/foreign item${exclSDG>1?'s':''}`:''}</strong><br>
+      These expenses were paid by partners on behalf of Noor Energy and have not yet been reimbursed by the company. They are not deductible until Noor Energy makes payment — at that point they should be recorded as company expenses.
+    </div>` : ''}
+
+    <!-- ── FAS Header ── -->
     <div class="fas-section">
       <div class="fas-sec-hdr" style="background:var(--coal)">
-        <span>FAS 3 — Company Tax Return ${yearOfReturn}</span>
-        <span class="fas-yr">1 Jul ${s} – 30 Jun ${s+1} &nbsp;|&nbsp; ${FYL[aFY]}</span>
+        <span style="flex:1">FAS 3 — Company Tax Return ${yearOfReturn} · ${FYL[aFY]}</span>
+        <span class="fas-yr">1 Jul ${s} – 30 Jun ${s+1}</span>
       </div>
-      <div class="fas-row"><span class="fas-lbl">Company name</span><span class="fas-val nz" style="font-size:13px">Noor Energy Pty Ltd</span></div>
-      <div class="fas-row"><span class="fas-lbl">ABN</span><span class="fas-val nz">24 678 922 051</span></div>
-      <div class="fas-row"><span class="fas-lbl">Tax File Number</span><span class="fas-val nz">661 230 492</span></div>
-      <div class="fas-row"><span class="fas-lbl">Bank — BSB / Account</span><span class="fas-val nz">067873 &nbsp;/&nbsp; xxx3737</span></div>
+      <div class="g3" style="padding:14px 16px;gap:16px">
+        <div style="border-right:1px solid var(--border);padding-right:16px">
+          ${field('FAS tax return number','1')}
+          ${field('Tax return type','Company tax return')}
+          ${field('Status','Created')}
+          ${field('Amendment indicator','No')}
+        </div>
+        <div style="border-right:1px solid var(--border);padding-right:16px">
+          ${field('Year of return', String(s))}
+          ${field('Start date', `01 Jul ${s}`)}
+          ${field('End date', `30 Jun ${s+1}`)}
+        </div>
+        <div>
+          ${field('Business Entity TFN','661 230 492')}
+          ${field('ABN','24 678 922 051')}
+          ${field('Current name','Noor Energy Pty Ltd')}
+          ${field('Final tax return','No')}
+        </div>
+      </div>
     </div>
 
-    <!-- ── Section 3 ── -->
+    <!-- ── Addresses & Bank ── -->
     <div class="fas-section">
-      <div class="fas-sec-hdr"><span class="fas-num">3</span><span>Status of Company — indicators already set in FAS 3</span></div>
-      ${row('C1-3','Status of Company – Residency','Resident','nz')}
-      ${row('D1-10','Status of Company – Company type','Australian Private Company','nz')}
-      ${row('E1-3','Status of Company – Business status','03 – Commenced Business','nz')}
-      ${row('F1','Small Business Entity Indicator','Yes','nil-v')}
-      ${row('F2','Base Rate Entity Indicator — tax rate 25%','Yes','nil-v')}
-      ${row('G1','Significant Global Entity Indicator','No','z')}
+      <div class="fas-sec-hdr"><span>Addresses, Previous Company Information &amp; Bank Account</span></div>
+      <div class="g3" style="padding:14px 16px;gap:16px">
+        <div style="border-right:1px solid var(--border);padding-right:16px">
+          <div class="fas-sub-hdr" style="padding:0 0 6px;border:none;background:none">Current Postal Address</div>
+          ${field('Line 1','23 Kaburua Rd')}
+          ${field('Suburb','Clarkson')}
+          ${field('State','WA')}
+          ${field('Postcode','6030')}
+          ${field('Country','AUSTRALIA')}
+        </div>
+        <div style="border-right:1px solid var(--border);padding-right:16px">
+          <div class="fas-sub-hdr" style="padding:0 0 6px;border:none;background:none">Previous Company / Business Address</div>
+          ${field('Previous name','Noor Energy Pty Ltd')}
+          ${field('Previous ACN','6 789 220 51')}
+          ${field('Previous address line 1','23 Kaburua Rd')}
+          ${field('Previous suburb','Clarkson WA 6030')}
+          ${field('In Liquidation','No')}
+        </div>
+        <div>
+          <div class="fas-sub-hdr" style="padding:0 0 6px;border:none;background:none">Bank Account &amp; Holding Companies</div>
+          ${field('BSB','067-873')}
+          ${field('Account number','xxx3737')}
+          ${field('Account name','Noor Energy Pty Ltd')}
+          ${field('Ultimate holding company','N/A')}
+          ${field('Immediate holding company','N/A')}
+        </div>
+      </div>
     </div>
 
-    <!-- ── Section 6 Income ── -->
+    <!-- ── Section 2: Business Activity ── -->
     <div class="fas-section">
-      <div class="fas-sec-hdr"><span class="fas-num">6</span><span>Calculation of Total Profit or Loss — Income</span></div>
+      <div class="fas-sec-hdr"><span class="fas-num">2</span><span>Description of Main Business Activity</span></div>
+      <div class="g2" style="padding:14px 16px;gap:16px">
+        <div style="border-right:1px solid var(--border);padding-right:16px">
+          ${field('Description of main business activity','Energy system consultant and installer')}
+          ${field('Industry code','69230 — Engineering Design and Engineering Consultancy Services')}
+        </div>
+        <div>
+          ${field('Percentage of foreign shareholding','0%')}
+          ${field('State/Territory of incorporation','WA')}
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Section 3: Status of Company ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">3</span><span>Status of Company</span></div>
+      ${row('C','Residency status','Resident','nil-v')}
+      ${row('D','Type of company','Private company (Pty Ltd)','nz')}
+      ${row('E','Business commencement status','03 — Commenced Business','nz')}
+      ${row('F1','Small Business Entity (SBE) — turnover &lt; $10M','Yes','nil-v')}
+      ${row('F2','Base Rate Entity (BRE) — 25% tax rate applies','Yes','nil-v')}
+      ${row('G','Significant Global Entity (SGE)','No','z')}
+      ${row('H','Closely held company (4 shareholders @ 25% each)','Yes','nil-v')}
+      ${row('Z','Country by Country Reporting Entity','No','z')}
+    </div>
+
+    <!-- ── Section 4: Interposed Entity Election ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">4</span><span>Interposed Entity Election Status</span></div>
+      <div style="padding:10px 16px">
+        ${field('Interposed Entity Election Status','N/A — not applicable')}
+        ${field('Specified Income Year','')}
+        ${field('Interposed Entity Election Revocation Code','')}
+      </div>
+    </div>
+
+    <!-- ── Section 5: Country by Country ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">5</span><span>Country by Country Reporting Entity</span></div>
+      <div class="g2" style="padding:14px 16px;gap:16px">
+        <div style="border-right:1px solid var(--border);padding-right:16px">
+          ${yn('Lodged a general purpose financial statement with ASIC this year?', false)}
+          ${yn('Will lodge a general purpose financial statement with ASIC this year?', false)}
+        </div>
+        <div>
+          ${field('Functional Currency Translation Rate','N/A')}
+          ${field('Functional currency','AUD')}
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Section 6: Income ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr" style="background:#1e3a5f"><span class="fas-num">6</span><span>Information Statement — Calculation of Total Profit or Loss · Income</span></div>
       <div class="fas-sub-hdr">Income</div>
       ${r0('B','Gross payments subject to foreign resident withholding (excl. capital gains)')}
       ${r0('A','Gross payment where ABN not quoted')}
       ${inc6C > 0
         ? rNZ('C','Other sales of goods and services', inc6C,
-            [salesB.length?`Services (ex-GST): ${aud(netSales)}`:'', cfB.length?`Procurement receipts: ${aud(netCF)}`:''].filter(Boolean).join(' · '))
-        : r0('C','Other sales of goods and services','No income recorded for this year')}
+            [salesB.length?`Services revenue (ex-GST): ${aud(netSales)}`:'',
+             cfB.length?`Client procurement funds (ex-GST): ${aud(netCF)}`:''].filter(Boolean).join(' · '))
+        : r0('C','Other sales of goods and services','No income recorded this year')}
       ${r0('D','Gross distribution from partnerships')}
       ${r0('E','Gross distribution from trusts')}
       ${r0('X','Forestry managed investment scheme income')}
@@ -1658,24 +1947,24 @@ function rTax() {
       ${r0('J','Unrealised gains on revaluation of assets to fair value')}
       ${r0('R','Other gross income')}
       <div class="fas-tot">
-        <span class="fas-lbl">Total income</span>
+        <span class="fas-lbl">Total income &nbsp;<span style="font-weight:400;font-size:11px;opacity:.7">sum of all income items above — auto-calculated</span></span>
         <span class="fas-code" style="background:var(--tl);color:#fff">S</span>
         <span class="fas-val ${total6S===0?'z':'profit-v'}">${aud(total6S)}</span>
       </div>
     </div>
 
-    <!-- ── Section 6 Expenses ── -->
+    <!-- ── Section 6: Expenses ── -->
     <div class="fas-section">
-      <div class="fas-sec-hdr"><span class="fas-num">6</span><span>Calculation of Total Profit or Loss — Expenses</span></div>
+      <div class="fas-sec-hdr" style="background:#1e3a5f"><span class="fas-num">6</span><span>Information Statement — Expenses</span></div>
       <div class="fas-sub-hdr">Expenses</div>
       ${r0('B','Foreign resident withholding expenses (excl. capital gains)')}
       ${exp6A > 0
-        ? rNZ('A','Cost of sales', exp6A, fasG['A']?.items.map(x=>`${x.supplier}: ${aud(x.net)}`).join(' · ')||'')
+        ? rNZ('A','Cost of sales', exp6A, (fasG['A']?.items||[]).map(x=>`${x.supplier}: ${aud(x.net)}`).join(' · '))
         : r0('A','Cost of sales')}
       ${exp6C > 0
-        ? rNZ('C','Contractor, sub-contractor & commission expenses', exp6C, fasG['C']?.items.map(x=>`${x.supplier}: ${aud(x.net)}`).join(' · ')||'')
-        : r0('C','Contractor, sub-contractor & commission expenses')}
-      ${r0('D','Superannuation expenses')}
+        ? rNZ('C','Contractor, sub-contractor &amp; commission expenses', exp6C, (fasG['C']?.items||[]).map(x=>`${x.supplier}: ${aud(x.net)}`).join(' · '))
+        : r0('C','Contractor, sub-contractor &amp; commission expenses')}
+      ${r0('D','Superannuation expenses','No employees')}
       ${r0('E','Bad debts')}
       ${r0('F','Lease expenses within Australia')}
       ${r0('I','Lease expenses overseas')}
@@ -1689,10 +1978,10 @@ function rTax() {
       ${r0('Z','Repairs and maintenance')}
       ${r0('G','Unrealised losses on revaluation of assets to fair value')}
       ${exp6S > 0
-        ? rNZ('S','All other expenses', exp6S, fasG['S']?.items.map(x=>`${x.supplier}: ${aud(x.net)}`).join(' · ')||'')
+        ? rNZ('S','All other expenses', exp6S, (fasG['S']?.items||[]).map(x=>`${x.supplier}: ${aud(x.net)}`).join(' · '))
         : r0('S','All other expenses')}
       <div class="fas-tot">
-        <span class="fas-lbl">Total expense</span>
+        <span class="fas-lbl">Total expense &nbsp;<span style="font-weight:400;font-size:11px;opacity:.7">sum of all expense items above — auto-calculated</span></span>
         <span class="fas-code" style="background:var(--rd);color:#fff">Q</span>
         <span class="fas-val ${total6Q===0?'z':'nz'}">${aud(total6Q)}</span>
       </div>
@@ -1705,98 +1994,211 @@ function rTax() {
       ` : ''}
     </div>
 
-    <!-- ── Total profit or loss ── -->
+    <!-- ── Section 6: Total P/L ── -->
     <div class="fas-section">
-      <div class="fas-sec-hdr"><span class="fas-num">6</span><span>Total Profit or Loss</span></div>
+      <div class="fas-sec-hdr" style="background:#1e3a5f"><span class="fas-num">6T</span><span>Total Profit or Loss</span></div>
       <div class="fas-tot">
-        <span class="fas-lbl">Total profit or loss &nbsp;<span style="font-weight:400;font-size:11px;opacity:.7">(Total income 6S minus Total expense 6Q) — auto-calculated by FAS 3</span></span>
+        <span class="fas-lbl">Total profit or loss &nbsp;<span style="font-weight:400;font-size:11px;opacity:.7">(6S income minus 6Q expense) — auto-calculated</span></span>
         <span class="fas-code" style="background:var(--coal);color:var(--gold)">T</span>
         <span class="fas-val ${totalPL<0?'loss-v':totalPL===0?'z':'profit-v'}">${totalPL<0?'('+aud(Math.abs(totalPL))+')':aud(totalPL)}</span>
       </div>
     </div>
 
-    <!-- ── Section 7 ── -->
+    <!-- ── Section 7: Reconciliation ── -->
     <div class="fas-section">
       <div class="fas-sec-hdr"><span class="fas-num">7</span><span>Reconciliation to Taxable Income or Loss</span></div>
       <div class="fas-sub-hdr">Add (increases to taxable income)</div>
       ${r0('A','Net capital gain')}
-      ${r0('U','Non-deductible exempt income expenditure')}
-      ${r0('J','Franking credits')}
+      ${r0('B','Other assessable income not included in total profit or loss')}
       ${r0('C','Australian franking credits from a New Zealand company')}
-      ${r0('B','Other assessable income')}
-      ${r0('W','Non-deductible expenses')}
+      ${r0('J','Franking credits on dividends')}
+      ${r0('U','Non-deductible exempt income expenditure')}
+      ${r0('W','Non-deductible expenses (fines, penalties, entertainment)')}
+      ${r0('E','Income from cancelled debts (commercial debt forgiveness)')}
+      ${r0('M','Section 40-880 blackhole expenditure add-back')}
       <div class="fas-sub-hdr">Less (reductions to taxable income)</div>
+      ${r0('D','Non-assessable non-exempt income')}
+      ${r0('F','Deduction for decline in value — Div 40 (cross-ref Sec 9 total)')}
+      ${r0('G','Capital works deduction — Div 43')}
+      ${r0('N','Research and development deduction')}
+      ${r0('X','Other deductible amounts')}
       ${sec7R > 0
-        ? rNZ('R','Tax losses deducted', sec7R,
+        ? rNZ('R','Tax losses deducted this income year', sec7R,
             `Prior year losses available: ${aud(priorLoss)} — applying ${aud(sec7R)} this year${priorLoss>sec7R?' · '+aud(priorLoss-sec7R)+' remaining':''}`)
-        : r0('R','Tax losses deducted', priorLoss>0?`Prior year losses available: ${aud(priorLoss)} — none needed (no profit this year)`:'No prior year losses')}
-      ${r0('X','Other deductible expenses')}
+        : r0('R','Tax losses deducted this income year', priorLoss>0?`Prior year losses: ${aud(priorLoss)} — not needed (no taxable profit this year)`:'No prior year losses')}
       <div class="fas-tot">
-        <span class="fas-lbl">Taxable/net income or loss &nbsp;<span style="font-weight:400;font-size:11px;opacity:.7">auto-calculated by FAS 3</span></span>
+        <span class="fas-lbl">Taxable income or loss &nbsp;<span style="font-weight:400;font-size:11px;opacity:.7">auto-calculated</span></span>
         <span class="fas-code" style="background:var(--tl);color:#fff">T</span>
-        <span class="fas-val ${taxableInc===0?'nil-v':'pos-v'}">${aud(taxableInc)}</span>
+        <span class="fas-val ${sec7Total===0?'nil-v':sec7Total<0?'loss-v':'pos-v'}">${sec7Total<0?'('+aud(Math.abs(sec7Total))+')':aud(sec7Total)}</span>
       </div>
     </div>
 
-    <!-- ── Section 8 ── -->
+    <!-- ── Section 8: Financial & Other Information ── -->
     <div class="fas-section">
       <div class="fas-sec-hdr"><span class="fas-num">8</span><span>Financial and Other Information</span></div>
-      ${r0('D','Total salary and wage expenses')}
-      ${r0('Q','Payments to associated persons')}
+      <div class="fas-sub-hdr">Trading Stock</div>
+      ${r0('A','Opening value of trading stock','N/A — service business, no trading stock held')}
+      ${r0('B','Closing value of trading stock','N/A — service business, no trading stock held')}
+      ${r0('C','Trading stock on hand — net movement')}
+      <div class="fas-sub-hdr">Salary, Wages &amp; Payments to Associated Persons</div>
+      ${r0('D','Total salary and wage expenses','$0 — no employees; all services via contractors')}
+      ${assocAmount > 0
+        ? rNZ('Q','Payments to associated persons', assocAmount, (fasG['C']?.items||[]).map(x=>`${x.supplier}: ${aud(x.net)}`).join(', '))
+        : r0('Q','Payments to associated persons')}
+      <div class="fas-sub-hdr">Aggregated Turnover</div>
       ${row('X','Aggregated turnover range','Under $2M','nz','Select in FAS 3 dropdown')}
-      ${rNZ('Y','Aggregated turnover amount', total6S, `Total assessable income — ${FYL[aFY]}`)}
-      <div class="fas-row" style="background:var(--bl-lt)">
-        <span class="fas-lbl" style="color:var(--bl);font-size:11px">
-          ⚠ Balance sheet items (total assets, trade debtors, trade creditors, total liabilities) are not tracked in BizBooks — enter manually in FAS 3 Section 8.
-        </span>
+      ${rNZ('Y','Aggregated turnover amount', total6S, `Assessable income only — share capital ${aud(allShareCap)} excluded (equity, not income)`)}
+      <div class="fas-sub-hdr">Balance Sheet items — auto-populated · share capital is equity, not income</div>
+      <div style="padding:6px 16px;background:#fffaf5;border-bottom:1px solid #f4d49a;font-size:11px;color:#7a4300">
+        Total assets (R) includes the company cash balance which contains share capital contributions of <strong>${aud(bs.shareCapitalCash)}</strong>.
+        Share capital is equity on the balance sheet — it is <strong>not income</strong> and is <strong>not included</strong> in the assessable income figures above.
+      </div>
+      ${rNZ('R','Total assets (balance sheet)', bs.totalAssets,
+        `Cash at bank: ${aud(bs.cashBalance)} (incl. ${aud(bs.shareCapitalCash)} share capital equity + ${aud(bs.operatingCash < 0 ? 0 : bs.operatingCash)} operating cash)${bs.tradeDebtors>0?' · Trade debtors: '+aud(bs.tradeDebtors):''}`)}
+      ${bs.tradeDebtors > 0
+        ? rNZ('S','Trade debtors (outstanding invoices sent)', bs.tradeDebtors, 'From Invoices tab — not yet received')
+        : r0('S','Trade debtors','Nil')}
+      ${bs.tradeCreditors > 0
+        ? rNZ('T','Trade creditors (outstanding bills)', bs.tradeCreditors, 'From Invoices tab — not yet paid')
+        : r0('T','Trade creditors','Nil')}
+      ${rNZ('U','Total liabilities', bs.totalLiabilities,
+        `Trade creditors: ${aud(bs.tradeCreditors)}${bs.taxPayable>0?' · Est. income tax payable: '+aud(bs.taxPayable):''}`)}
+      <div class="fas-sub-hdr">Other (all nil for Noor Energy this year)</div>
+      ${r0('V','Closing franking account balance','Nil')}
+      ${r0('F','Net foreign income','Nil')}
+      ${r0('P','Total dividends paid','Nil')}
+    </div>
+
+    <!-- ── Section 9: Capital Allowances ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">9</span><span>Capital Allowances — Depreciating Assets</span></div>
+      <div style="padding:8px 16px 10px;font-size:11.5px;color:var(--muted)">
+        Equipment purchased for resale / client delivery is expensed as Cost of Sales (Section 6A). No separate depreciating assets held this year.
+        If business-use assets are acquired (laptops, tools, vehicles), enter them here and cross-reference to Section 7 label F.
+      </div>
+      ${r0('X','Total decline in value of depreciating assets (→ Section 7 label F)','Nil this year')}
+    </div>
+
+    <!-- ── Section 20: SBE Simplified Depreciation ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">20</span><span>Small Business Entity (SBE) Simplified Depreciation</span></div>
+      ${r0('A','Instant asset write-off — certain assets','Equipment expensed as cost of sales in Section 6A — no separate SBE write-off')}
+      ${r0('B','General small business pool deduction','Nil')}
+    </div>
+
+    <!-- ── Section 23: Losses Information ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">23</span><span>Losses Information</span></div>
+      ${lossCFwd > 0
+        ? rNZ('U','Tax losses carried forward to later income years', lossCFwd,
+            (`${totalPL<0?FYL[aFY]+' loss: '+aud(Math.abs(totalPL)):''}${totalPL<0&&(priorLoss-sec7R)>0?' + ':''}`+`${(priorLoss-sec7R)>0?'remaining prior losses: '+aud(priorLoss-sec7R):''}`).trim())
+        : r0('U','Tax losses carried forward to later income years','Nil — no losses to carry forward')}
+      ${r0('V','Net capital losses carried forward','Nil')}
+    </div>
+
+    <!-- ── Section 24: Personal Services Income ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr"><span class="fas-num">24</span><span>Personal Services Income (PSI) — Compliance Check</span></div>
+      <div style="padding:8px 16px;font-size:11.5px;color:var(--muted)">
+        PSI rules apply if an individual's services are the source of 50%+ of income. Noor Energy earns project and procurement income across multiple clients — PSI rules do not apply.
+      </div>
+      ${yn('Does income include an individual\'s personal services income?', false)}
+      ${r0('A','Total PSI','Nil — not applicable')}
+    </div>
+
+    <!-- ── Sections Not Applicable (N/A for Noor Energy) ── -->
+    <div class="fas-section">
+      <div class="fas-sec-hdr" style="background:#6b7280"><span>Sections Not Applicable to Noor Energy — All NIL</span></div>
+      <div style="padding:10px 16px;font-size:11.5px;color:var(--muted);line-height:1.9">
+        The following FAS 3 sections have been reviewed and confirmed <strong>not applicable</strong> to Noor Energy Pty Ltd for ${FYL[aFY]}.
+        All fields are $0 / No / Nil. These sections are omitted from this summary to reduce clutter — confirm each in FAS 3 when lodging.<br><br>
+        <strong>Sec 10</strong> — Thin Capitalisation &nbsp;·&nbsp;
+        <strong>Sec 11</strong> — Consolidation Deductions &nbsp;·&nbsp;
+        <strong>Sec 12</strong> — Rights to Future Income &nbsp;·&nbsp;
+        <strong>Sec 13</strong> — NRAS &nbsp;·&nbsp;
+        <strong>Sec 14</strong> — Licensed Clubs &nbsp;·&nbsp;
+        <strong>Sec 15</strong> — Pooled Development Funds &nbsp;·&nbsp;
+        <strong>Sec 16</strong> — Retirement Savings Accounts &nbsp;·&nbsp;
+        <strong>Sec 17</strong> — Foreign Income Tax Offset &nbsp;·&nbsp;
+        <strong>Sec 18</strong> — ESVCL Tax Offset &nbsp;·&nbsp;
+        <strong>Sec 19</strong> — Early Stage Investor Tax Offset &nbsp;·&nbsp;
+        <strong>Sec 21</strong> — R&amp;D Tax Incentive &nbsp;·&nbsp;
+        <strong>Sec 22</strong> — Digital Games Tax Offset &nbsp;·&nbsp;
+        <strong>Sec 22A</strong> — Reportable Tax Position &nbsp;·&nbsp;
+        <strong>Sec 25</strong> — International Related Party Dealings &nbsp;·&nbsp;
+        <strong>Sec 26</strong> — Overseas Interests &nbsp;·&nbsp;
+        <strong>Sec 27</strong> — Thin Capitalisation (Detailed) &nbsp;·&nbsp;
+        <strong>Sec 28</strong> — Transactions with Specified Countries &nbsp;·&nbsp;
+        <strong>Sec 29</strong> — Privacy (authorised: Yes)
       </div>
     </div>
 
-    <!-- ── Section 10 ── -->
+    <!-- ── Public Officer's Declaration ── -->
     <div class="fas-section">
-      <div class="fas-sec-hdr"><span class="fas-num">10</span><span>Small Business Entity Simplified Depreciation</span></div>
-      ${r0('A','Deduction for certain assets (instant asset write-off)', 'Not applicable — equipment classified as cost of sales')}
-      ${r0('B','Deduction for general small business pool')}
-    </div>
-
-    <!-- ── Section 13 ── -->
-    <div class="fas-section">
-      <div class="fas-sec-hdr"><span class="fas-num">13</span><span>Losses Information</span></div>
-      ${lossCFwd > 0
-        ? rNZ('U','Tax losses carried forward to later income years', lossCFwd,
-            `${totalPL<0?FYL[aFY]+' loss '+aud(Math.abs(totalPL)):''}${totalPL<0&&(priorLoss-sec7R)>0?' + ':''} ${(priorLoss-sec7R)>0?'remaining prior loss '+aud(priorLoss-sec7R):''}`.trim())
-        : r0('U','Tax losses carried forward to later income years','No losses to carry forward')}
-      ${r0('V','Net capital losses carried forward to later income years')}
+      <div class="fas-sec-hdr" style="background:#2c5282"><span>Public Officer's Declaration</span></div>
+      <div style="padding:8px 16px;background:var(--am-lt);border-bottom:1px solid #f4d49a">
+        <span style="font-size:11.5px;color:var(--am)">
+          ⚠ By signing, the public officer declares that the information in this return is true and correct,
+          and that they are authorised to make this declaration on behalf of the company under s.252 of ITAA 1936.
+        </span>
+      </div>
+      <div class="g2" style="padding:14px 16px;gap:16px">
+        <div style="border-right:1px solid var(--border);padding-right:16px">
+          ${field('Public officer\'s full name','Hashim A. Hashim')}
+          ${field('Position / title','Director &amp; Public Officer')}
+          ${field('Phone','+ 61 403 258 683')}
+          ${field('Email','h.hashim@noorenergy.com.au')}
+        </div>
+        <div>
+          ${field('Date of declaration','___ / ___ / ______  (enter when lodging)')}
+          ${field('Signature','___________________________')}
+          ${field('Machine credential password','Enter in FAS 3 portal when lodging')}
+        </div>
+      </div>
     </div>
 
     <!-- ── Calculation Statement ── -->
     <div class="fas-section">
-      <div class="fas-sec-hdr" style="background:#2d5a87"><span>Calculation Statement — all auto-calculated by FAS 3</span></div>
-      ${rC('A','Taxable/net income or loss', taxableInc)}
-      ${rC('T1',`Tax on taxable income — 25% (Base Rate Entity) × ${aud(taxableInc)}`, grossTax)}
+      <div class="fas-sec-hdr" style="background:#2d5a87"><span>Calculation Statement — auto-calculated by FAS 3</span></div>
+      ${rC('A','Taxable income or loss (from Section 7)', sec7Total)}
+      ${rC('T1','Tax on taxable income · 25% BRE rate × ' + aud(taxableInc) + (taxableInc===0?' (nil — losses applied)':''), grossTax)}
       ${rC('B','Gross tax', grossTax)}
-      ${rC('T5','Tax payable', grossTax)}
-      ${r0('K','PAYG instalments raised','Enter if registered for PAYG instalments')}
-      <div class="fas-tot">
-        <span class="fas-lbl">Amount due or refundable &nbsp;<span style="font-weight:400;font-size:11px;opacity:.7">auto-calculated by FAS 3</span></span>
-        <span class="fas-code" style="background:${grossTax>0?'var(--rd)':'var(--gn)'};color:#fff">S</span>
-        <span class="fas-val ${grossTax>0?'loss-v':'nil-v'}">${aud(grossTax)}</span>
+      <div class="fas-sub-hdr">Credits (reduce tax)</div>
+      ${r0('C','Credit for tax withheld where ABN not quoted (from Section 6B income)','Nil')}
+      ${r0('D','Credit for tax withheld — amounts relating to dividends','Nil')}
+      <div class="fas-sub-hdr">Non-refundable Tax Offsets</div>
+      ${r0('E','R&amp;D non-refundable tax offset (Sec 21A)','Nil')}
+      ${r0('F','NRAS tax offset (Sec 13)','Nil')}
+      ${r0('G','ESVCL partnership tax offset (Sec 18)','Nil')}
+      ${r0('H','Other non-refundable tax offsets','Nil')}
+      ${rC('T2','Subtotal (B minus credits C and D)', grossTax)}
+      ${rC('T3','Non-refundable tax offsets applied (E + F + G + H, max = T2)', 0)}
+      ${rC('T4','Refundable tax offset amount (R&amp;D refundable, early stage investor, digital games)', 0)}
+      ${rC('T5','Tax payable (T2 minus T3)', taxPayable)}
+      <div class="fas-sub-hdr">Instalments &amp; Final Amount</div>
+      ${r0('K','PAYG tax instalments raised during the year','Enter if registered — check ATO portal')}
+      ${r0('I','GST instalments raised during the year','Enter if registered for GST instalments')}
+      <div class="fas-tot" style="border-top:2px solid var(--ink)">
+        <span class="fas-lbl">Amount due or (refundable) — T5 minus K minus I &nbsp;<span style="font-weight:400;font-size:11px;opacity:.7">auto-calculated</span></span>
+        <span class="fas-code" style="background:${taxPayable>0?'var(--rd)':'var(--gn)'};color:#fff">T6</span>
+        <span class="fas-val ${taxPayable>0?'loss-v':'nil-v'}">${aud(taxPayable)}</span>
       </div>
-      <div style="padding:10px 16px;font-size:10.5px;line-height:1.7;border-top:1px solid var(--border);background:${grossTax===0?'var(--gn-lt)':'var(--rd-lt)'}; color:${grossTax===0?'var(--gn)':'var(--rd)'}">
-        ${grossTax===0
-          ? `✓ No tax payable for ${FYL[aFY]} — losses fully offset income.${lossCFwd>0?' Tax loss of '+aud(lossCFwd)+' carried forward to next year.':''}`
-          : `Tax payable: ${aud(grossTax)} at 25% BRE rate.`}
-        ${exclExp.length ? ` Future Reimbursement expenses (${aud(exclAUD)}) excluded — deductible when Noor Energy makes payment.` : ''}
+      <div style="padding:10px 16px;font-size:10.5px;line-height:1.7;border-top:1px solid var(--border);background:${taxPayable===0?'var(--gn-lt)':'var(--rd-lt)'};color:${taxPayable===0?'var(--gn)':'var(--rd)'}">
+        ${taxPayable===0
+          ? `✓ No tax payable for ${FYL[aFY]}${lossCFwd>0?' — tax loss of '+aud(lossCFwd)+' carried forward.':' — losses fully offset income.'}`
+          : `Tax payable: ${aud(taxPayable)} at 25% BRE rate. Deduct any PAYG instalments already paid during the year.`}
+        ${exclExp.length ? ` Future Reimbursement expenses (${aud(exclAUD)}) excluded — deductible only when Noor Energy makes payment.` : ''}
       </div>
     </div>
 
     <!-- ── Lodgment ── -->
     <div class="fas-section">
       <div class="fas-sec-hdr" style="background:#555"><span>Lodgment via FAS 3</span></div>
-      <div class="fas-row"><span class="fas-lbl">How to lodge</span><span class="fas-val nz" style="font-size:11px;min-width:unset;text-align:left">FAS 3 → Tax compliance → Tax returns → Lodge</span></div>
-      <div class="fas-row"><span class="fas-lbl">Company tax return due date</span><span class="fas-code" style="display:none"></span><span class="fas-val pos-v">31 October ${yearOfReturn}</span></div>
+      <div class="fas-row"><span class="fas-lbl">How to lodge</span><span class="fas-val nz" style="font-size:11px;min-width:unset;text-align:left;flex:1">FAS 3 → Tax compliance → Tax returns → Company tax return → Lodge</span></div>
+      <div class="fas-row"><span class="fas-lbl">Company tax return due date</span><span class="fas-val pos-v">31 October ${yearOfReturn}</span></div>
+      <div class="fas-row"><span class="fas-lbl">BAS due dates</span><span class="fas-val nz" style="font-size:11px;min-width:unset;text-align:left;flex:1">Q1: 28 Oct · Q2: 28 Feb · Q3: 28 Apr · Q4: 28 Jul</span></div>
       <div class="fas-row" style="background:var(--am-lt)">
-        <span class="fas-lbl" style="color:var(--am);font-size:11px">⚠ FAS 3 charges $33 for business self-lodgment. Verify all figures with a registered tax agent before lodging.</span>
+        <span class="fas-lbl" style="color:var(--am);font-size:11px">⚠ FAS 3 charges $33 for business self-lodgment. Verify all figures with a registered tax agent before lodging. This tool provides estimates only.</span>
       </div>
     </div>`;
 }
@@ -1885,33 +2287,15 @@ function rIS() {
 }
 
 function rBS() {
-  const fyOrder  = ['FY2425','FY2526','FY2627','FY2728'];
-  const activeFYs = fyOrder.slice(0, fyOrder.indexOf(aFY)+1);
-  const s = FYS[aFY];
+  const s    = FYS[aFY];
   const asAt = `30 June ${s+1}`;
 
-  const allBankToDate = DATA.bank.filter(b=>activeFYs.includes(b.fy));
-  const cashBalance = allBankToDate.filter(x=>x.type==='Credit').reduce((a,x)=>a+x.amount,0)
-                    - allBankToDate.filter(x=>x.type==='Debit').reduce((a,x)=>a+x.amount,0);
-
-  const receivables = DATA.invoicesOut.reduce((sum,inv) => {
-    const rcvd = DATA.bank.filter(b=>b.type==='Credit'&&b.src===inv.ref).reduce((a,b)=>a+b.amount,0);
-    return rcvd < inv.amount ? sum+(inv.amount-rcvd) : sum;
-  }, 0);
-
-  const totalCurrentAssets = cashBalance + receivables;
-  const totalAssets = totalCurrentAssets;
-
-  const payables = DATA.invoicesIn.reduce((sum,inv) => {
-    const paid = DATA.bank.filter(b=>b.type==='Debit'&&b.src===inv.ref).reduce((a,b)=>a+b.amount,0);
-    return paid < inv.amount ? sum+(inv.amount-paid) : sum;
-  }, 0);
-
-  const totalLiabilities = payables;
-  const netAssets = totalAssets - totalLiabilities;
-
-  const shareCapital = allBankToDate.filter(x=>x.classification==='Share Capital').reduce((a,x)=>a+x.amount,0);
-  const accumulatedSurplus = netAssets - shareCapital;
+  // Use shared computeBS() so Balance Sheet and Income Tax tab are always consistent
+  const bs = computeBS(aFY);
+  const { cashBalance, tradeDebtors: receivables, tradeCreditors: payables,
+          taxPayable, totalCurrentAssets, totalAssets,
+          totalCurrentLiab, totalLiabilities, netAssets,
+          shareCapital, retainedEarnings: accumulatedSurplus } = bs;
   const totalEquity = shareCapital + accumulatedSurplus;
 
   document.getElementById('fs-bs').innerHTML = `
@@ -1938,8 +2322,9 @@ function rBS() {
         <div class="fs-sub">Current Liabilities</div>
         ${payables > 0
           ? `<div class="fs-row i1"><span>Trade payables (outstanding bills received)</span><span class="fs-mono">${aud(payables)}</span></div>`
-          : `<div class="fs-row i1"><span class="muted">No outstanding payables</span><span class="fs-mono muted">$0.00</span></div>`}
-        <div class="fs-row tot"><span>Total current liabilities</span><span class="fs-mono">${aud(totalLiabilities)}</span></div>
+          : `<div class="fs-row i1"><span class="muted">No outstanding trade payables</span><span class="fs-mono muted">$0.00</span></div>`}
+        ${taxPayable > 0 ? `<div class="fs-row i1"><span>Income tax payable (est. 25% BRE rate — current year)</span><span class="fs-mono">${aud(taxPayable)}</span></div>` : ''}
+        <div class="fs-row tot"><span>Total current liabilities</span><span class="fs-mono">${aud(totalCurrentLiab)}</span></div>
         <div class="fs-row grand" style="border-top:2px solid var(--ink)"><span><strong>Total Liabilities</strong></span><span class="fs-mono"><strong>${aud(totalLiabilities)}</strong></span></div>
 
         <div class="fs-row grand pos" style="border-top:2px solid var(--ink)">

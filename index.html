@@ -922,13 +922,12 @@ function saveData() {
 }
 let DATA = loadData();
 
-// Cleanup: remove Share Capital Credit entries added via UI by mistake
-// Targets any non-base-ID (not /^b\d+$/) Share Capital Credit for Mohammed Magzoub
+// Cleanup: remove all UI-added (non-base-ID) Share Capital entries for Mohammed Magzoub
+// Keeps only base entries b5 ($5,000 Credit) and b17 ($2,500 Debit refund)
 (function() {
   const isWrong = b =>
     !/^b\d+$/.test(b.id) &&
     (b.classification || '').toLowerCase().includes('share capital') &&
-    (b.type || '').toLowerCase() === 'credit' &&
     (b.shareholder || '').toLowerCase().includes('magzoub');
   const before = DATA.bank.length;
   DATA.bank = DATA.bank.filter(b => !isWrong(b));
@@ -1421,28 +1420,23 @@ function rShares() {
     </div>`;
 
   if(document.getElementById('chart-shares-bar')) {
-    const allSC = DATA.bank.filter(b=>b.classification==='Share Capital');
-    const shData = SHAREHOLDERS.map(sh => ({
-      name: sh.name.split(' ')[0],
-      paid: allSC.filter(b=>b.shareholder===sh.name).reduce((s,b)=>s+b.amount,0)
-    }));
     if(CHARTS.sharesBar) CHARTS.sharesBar.destroy();
     CHARTS.sharesBar = new Chart(document.getElementById('chart-shares-bar'), {
       type:'bar',
-      data:{ labels: shData.map(s=>s.name), datasets:[
-        { label:'Paid-up', data: shData.map(s=>s.paid), backgroundColor:'rgba(15,155,142,0.8)' },
-        { label:'Agreed ($'+(AGREED_CONTRIBUTION).toLocaleString()+')', data: shData.map(()=>AGREED_CONTRIBUTION), backgroundColor:'rgba(42,110,232,0.3)', borderColor:'rgba(42,110,232,0.8)', borderWidth:1 }
+      data:{ labels: shData.map(s=>s.name.split(' ')[0]), datasets:[
+        { label:'Paid-up', data: shData.map(s=>Math.max(0,s.total)), backgroundColor:'rgba(15,155,142,0.8)' },
+        { label:'Agreed ($'+AGREED_CONTRIBUTION.toLocaleString()+')', data: shData.map(()=>AGREED_CONTRIBUTION), backgroundColor:'rgba(42,110,232,0.3)', borderColor:'rgba(42,110,232,0.8)', borderWidth:1 }
       ]},
-      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }}, scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
+      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }}, scales:{ y:{ beginAtZero:true, ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
     });
   }
   if(document.getElementById('chart-shares-donut')) {
-    const totalShares = SHAREHOLDERS.reduce((a,s)=>a+s.shares,0);
     if(CHARTS.sharesDonut) CHARTS.sharesDonut.destroy();
     CHARTS.sharesDonut = new Chart(document.getElementById('chart-shares-donut'), {
       type:'doughnut',
-      data:{ labels: SHAREHOLDERS.map(s=>s.name.split(' ')[0]), datasets:[{ data: SHAREHOLDERS.map(s=>s.shares/totalShares*100), backgroundColor:CP }]},
-      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ boxWidth:12 }}, tooltip:{ callbacks:{ label: ctx => ' '+ctx.parsed.toFixed(1)+'%' }}}}
+      data:{ labels: shData.map(s=>s.name.split(' ')[0]),
+             datasets:[{ data: shData.map(s=>+profitPct(s).toFixed(2)), backgroundColor:CP }]},
+      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ boxWidth:12 }}, tooltip:{ callbacks:{ label: ctx=>' '+ctx.parsed.toFixed(1)+'%' }}}}
     });
   }
 }

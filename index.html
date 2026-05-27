@@ -922,17 +922,16 @@ function saveData() {
 }
 let DATA = loadData();
 
-// One-time cleanup: remove the 2 Share Capital Credit entries for Mohammed Magzoub
-// that were accidentally added via the UI on 26 May 2026
+// Cleanup: remove Share Capital Credit entries added via UI by mistake
+// Targets any non-base-ID (not /^b\d+$/) Share Capital Credit for Mohammed Magzoub
 (function() {
+  const isWrong = b =>
+    !/^b\d+$/.test(b.id) &&
+    (b.classification || '').toLowerCase().includes('share capital') &&
+    (b.type || '').toLowerCase() === 'credit' &&
+    (b.shareholder || '').toLowerCase().includes('magzoub');
   const before = DATA.bank.length;
-  DATA.bank = DATA.bank.filter(b =>
-    !(b.classification === 'Share Capital' &&
-      b.shareholder === 'Mohammed Magzoub' &&
-      b.type === 'Credit' &&
-      b.amount === 2500 &&
-      !/^b\d+$/.test(b.id))
-  );
+  DATA.bank = DATA.bank.filter(b => !isWrong(b));
   if (DATA.bank.length !== before) {
     localStorage.setItem('ne_bank', JSON.stringify(DATA.bank));
   }

@@ -418,9 +418,50 @@ Disclosed in the balance sheet note. Confirm the policy with the accountant.
 5. **Sign conventions must agree with the table.** The GST chart used `1B − 1A` while its own
    table used `1A − 1B` — the same quarter appeared as a refund in one and a payable in the other.
 
-Sweep to re-run after touching any chart:
+---
+
+## 16. `verify.js` — run this before every commit
 
 ```bash
-# renders every FY × quarter, asserts legend/bar colour agreement and equal series lengths
-node -e "...H.run(fy,q).charts..."   # see session transcript
+node verify.js     # exits non-zero on any failure
 ```
+
+Loads the HTML, evaluates its script block against a stub DOM, renders every FY × quarter and
+asserts 36 checks: cash vs the CBA statements, Net Assets == Total Equity, the same tax figure
+on the Income Statement / Balance Sheet / Income Tax tab, 6S/6Q vs the Income Statement, Cash
+Flow closing vs Balance Sheet cash, every lodged BAS row vs GST recomputed from the ledger,
+chart legend/bar colour agreement, document references resolving to real files, and ledger
+arithmetic (`total == gst + net`, unique ids, fy tag matching the date).
+
+**When a bug is found, add an assertion.** That is what stops it recurring — every check in
+there exists because something was once wrong.
+
+`STATEMENT_CASH` at the top holds the transcribed CBA closing balances. **Add the new balance
+each quarter** when you file a statement; that check is the one that catches a missing or
+duplicated transaction, and it is the reason the $610.12 gap surfaced.
+
+### Cross-tab drift — the pattern behind almost every bug found
+
+Six of the defects in sessions 3 had the same shape: **one quantity computed independently in
+two or more places, and the copies drifted.** Share capital was summed in six places, the
+prior-year loss loop existed in two, GST net position in three. Fixes were all the same move —
+extract one helper and have every caller use it:
+
+| Helper | Replaces |
+|--------|----------|
+| `scAmt` / `scNet(list)` | six hand-rolled Share Capital reductions |
+| `priorLoss(fy)` / `fyNetPL(fy)` | duplicated carry-forward loops in `computeBS()` and `rTax()` |
+
+Before adding a calculation, grep for the quantity — it probably already exists.
+
+### Income tax must offset carried-forward losses everywhere
+
+`rIS()` charged `ebit * 0.25` with no offset while `rTax()` and `computeBS()` both applied the
+FY2425 loss, so FY2526 reported tax of **$2,394.47** on the Statements tab against **$2,106.56**
+on the other two. All three now call `priorLoss(aFY)`. Verified by the cross-tab check.
+
+### "Net profit" needs a qualifier
+
+The P&L tab is **before tax**; the Statements tab is **after tax**. Same label, two numbers
+($9,577.89 vs $7,471.33 for FY2526). Both are now labelled explicitly. Any new profit figure
+must say which basis it is on.

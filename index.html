@@ -1052,6 +1052,28 @@ const fB = (fy,q) => DATA.bank.filter(b => b.fy===fy && inP(b.date,fy,q));
 const scAmt = b => b.type === 'Credit' ? b.amount : -b.amount;
 const scNet = list => list.filter(b => b.classification === 'Share Capital').reduce((a,b) => a + scAmt(b), 0);
 
+// Prior-year losses still available to offset against `fy`, on the same basis the lodged
+// returns use: Income + Client Funds ex-GST, less Approved/Refund expenses ex-GST.
+// Single source of truth — computeBS(), rTax() and rIS() must all offset identically, or the
+// same company-year gets three different tax figures across the tabs.
+const FY_ORDER = ['FY2425','FY2526','FY2627','FY2728'];
+function fyNetPL(fy) {
+  const inc = DATA.bank.filter(b=>b.fy===fy&&b.type==='Credit'&&(b.classification==='Income'||b.classification==='Client Funds'))
+                       .reduce((a,b)=>a+(b.amount-(b.gst||0)),0);
+  const exp = DATA.expenses.filter(e=>e.fy===fy&&(e.status==='Approved'||e.status==='Refund'))
+                           .reduce((a,e)=>a+(e.net||0),0);
+  return inc - exp;
+}
+function priorLoss(fy) {
+  let loss = 0;
+  for (let i = 0; i < FY_ORDER.indexOf(fy); i++) {
+    const net = fyNetPL(FY_ORDER[i]);
+    if (net < 0) loss += Math.abs(net);
+    else loss = Math.max(0, loss - net);
+  }
+  return loss;
+}
+
 function toast(msg) {
   const el = document.getElementById('toast');
   el.textContent = msg;
@@ -1673,13 +1695,15 @@ function rPL() {
     <div class="dvd"></div>
     <div class="pr st"><span>Total expenses</span><span class="mono"><strong>${aud(tE)}</strong></span></div>
     <div class="dvd"></div>
-    <div class="pr gt"><span>Net ${netPL>=0?'profit':'loss'}</span><span class="mono" style="color:${netPL>=0?'var(--gn)':'var(--rd)'}"><strong>${netPL>=0?aud(netPL):'('+aud(Math.abs(netPL))+')' }</strong></span></div>
+    <div class="pr gt"><span>Net ${netPL>=0?'profit':'loss'} before tax</span><span class="mono" style="color:${netPL>=0?'var(--gn)':'var(--rd)'}"><strong>${netPL>=0?aud(netPL):'('+aud(Math.abs(netPL))+')' }</strong></span></div>
     <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);line-height:1.8">
       <strong style="color:var(--ink)">Notes:</strong>
       ${shareC<0
         ? `A net return of share capital of ${aud(Math.abs(shareC))} was made this period. Capital movements are recorded as equity and never as income or expense.`
         : `Share capital of ${aud(shareC)} is recorded as equity and not included in income.`}
-      GST amounts are excluded from all figures. Verify with a registered accountant before lodging.
+      GST amounts are excluded from all figures. This statement is <strong>before income tax</strong> —
+      the Statements tab shows the after-tax result, net of carried-forward losses.
+      Verify with a registered accountant before lodging.
     </div>
   </div>`;
 
@@ -1997,20 +2021,9 @@ function computeBS(fy) {
   const shareCapitalCash = scNet(allBankToDate);
   const operatingCash    = cashBalance - shareCapitalCash;
 
-  // ── Tax payable: apply prior-year loss offsets (mirrors rTax logic) ───────
-  const fyIdxBS   = fyOrder.indexOf(fy);
-  let priorLossBS = 0;
-  for (let i = 0; i < fyIdxBS; i++) {
-    const prevFy = fyOrder[i];
-    const prevI  = DATA.bank.filter(b=>b.fy===prevFy&&b.type==='Credit'&&(b.classification==='Income'||b.classification==='Client Funds')).reduce((a,b)=>a+(b.amount-(b.gst||0)),0);
-    const prevE  = DATA.expenses.filter(e=>e.fy===prevFy&&(e.status==='Approved'||e.status==='Refund')).reduce((a,e)=>a+(e.net||0),0);
-    const prevNet = prevI - prevE;
-    if (prevNet < 0) priorLossBS += Math.abs(prevNet);
-    else priorLossBS = Math.max(0, priorLossBS - prevNet);
-  }
-  const fyBankInc    = DATA.bank.filter(b=>b.fy===fy&&b.type==='Credit'&&(b.classification==='Income'||b.classification==='Client Funds')).reduce((a,b)=>a+(b.amount-(b.gst||0)),0);
-  const fyExpNet     = DATA.expenses.filter(e=>e.fy===fy&&(e.status==='Approved'||e.status==='Refund')).reduce((a,e)=>a+(e.net||0),0);
-  const fyPL         = fyBankInc - fyExpNet;
+  // ── Tax payable: apply prior-year loss offsets (shared with rTax and rIS) ───────
+  const priorLossBS  = priorLoss(fy);
+  const fyPL         = fyNetPL(fy);
   const fyLossUsed   = fyPL > 0 ? Math.min(priorLossBS, fyPL) : 0;
   const fyTaxableInc = Math.max(0, fyPL - fyLossUsed);
   const taxPayable   = fyTaxableInc * 0.25;
@@ -2069,24 +2082,14 @@ function rTax() {
   const total6Q = exp6A + exp6C + exp6S; // Q — Total expense
   const totalPL = total6S - total6Q;     // T — Total profit or loss
 
-  // ── Prior year losses ────────────────────────────────
-  const fyOrder = ['FY2425','FY2526','FY2627','FY2728'];
-  const fyIdx = fyOrder.indexOf(aFY);
-  let priorLoss = 0;
-  for (let i = 0; i < fyIdx; i++) {
-    const fy = fyOrder[i];
-    const fyI = DATA.bank.filter(b=>b.fy===fy&&b.type==='Credit'&&(b.classification==='Income'||b.classification==='Client Funds')).reduce((a,b)=>a+(b.amount-(b.gst||0)),0);
-    const fyE = DATA.expenses.filter(e=>e.fy===fy&&(e.status==='Approved'||e.status==='Refund')).reduce((a,e)=>a+(e.net||0),0);
-    const fyNet = fyI - fyE;
-    if (fyNet < 0) priorLoss += Math.abs(fyNet);
-    else priorLoss = Math.max(0, priorLoss - fyNet);
-  }
+  // ── Prior year losses (shared helper — see priorLoss()) ─────────────────
+  const priorLossAmt = priorLoss(aFY);
 
   // ── Section 7 ───────────────────────────────────────
-  const sec7R        = totalPL > 0 ? Math.min(priorLoss, totalPL) : 0;
+  const sec7R        = totalPL > 0 ? Math.min(priorLossAmt, totalPL) : 0;
   const sec7Total    = totalPL - sec7R;          // actual taxable income or loss — can be negative
   const taxableInc   = Math.max(0, sec7Total);   // for tax calc only — never negative
-  const lossCFwd     = priorLoss - sec7R + (totalPL < 0 ? Math.abs(totalPL) : 0);
+  const lossCFwd     = priorLossAmt - sec7R + (totalPL < 0 ? Math.abs(totalPL) : 0);
 
   // ── Tax ──────────────────────────────────────────────
   const grossTax   = taxableInc * 0.25;
@@ -2105,8 +2108,8 @@ function rTax() {
   const exclSDG = exclExp.filter(x=>x.total===0).length;
 
   // ── Share capital (NOT assessable income — equity only) ─
-  const fyShareCap  = allBank.filter(b=>b.classification==='Share Capital').reduce((a,b)=>a+b.amount,0);
-  const allShareCap = DATA.bank.filter(b=>b.classification==='Share Capital').reduce((a,b)=>a+b.amount,0);
+  const fyShareCap  = scNet(allBank);      // credit/debit aware — a refund must reduce the total
+  const allShareCap = scNet(DATA.bank);
 
   // ── KPI cards ─────────────────────────────────────────
   document.getElementById('tax-kpi').innerHTML = `
@@ -2154,7 +2157,7 @@ function rTax() {
       <div>
         <div style="font-weight:700;font-size:12.5px;color:var(--gn);margin-bottom:4px">Share capital excluded — not assessable income</div>
         <div style="font-size:11.5px;color:#1a5940;line-height:1.7">
-          <strong>Total share capital received (all time): ${aud(allShareCap)}</strong>${fyShareCap > 0 ? ` &nbsp;·&nbsp; This year (${FYL[aFY]}): ${aud(fyShareCap)}` : ''}<br>
+          <strong>Total share capital held (net of refunds, all time): ${aud(allShareCap)}</strong>${fyShareCap !== 0 ? ` &nbsp;·&nbsp; This year (${FYL[aFY]}): ${fyShareCap < 0 ? `(${aud(Math.abs(fyShareCap))}) return of capital` : aud(fyShareCap)}` : ''}<br>
           Share capital is <strong>equity</strong> — it is not income, not GST-applicable, and is completely excluded from all Section 6 income calculations, Section 7 taxable income, and the tax payable figure below.
           It does appear in the Balance Sheet (Section 8 Total Assets) as part of the cash at bank — this is correct balance sheet treatment only.
         </div>
@@ -2780,8 +2783,12 @@ function rIS() {
   opExp.forEach(x => { cats[x.cat] = (cats[x.cat]||0) + (x.net||0); });
   const totalOpEx = opExp.reduce((a,x)=>a+(x.net||0),0);
   const ebit      = grossProfit - totalOpEx;
-  const taxEst    = ebit > 0 ? ebit * 0.25 : 0;
-  const netProfit = ebit - taxEst;
+  // Offset carried-forward losses before applying the rate — same basis as the Income Tax
+  // tab and computeBS(). Without this the Income Statement overstated tax by 25% of the
+  // prior-year loss and disagreed with both of them.
+  const lossOffset = ebit > 0 ? Math.min(priorLoss(aFY), ebit) : 0;
+  const taxEst     = Math.max(0, ebit - lossOffset) * 0.25;
+  const netProfit  = ebit - taxEst;
 
   const cogsRows = cogsExp.map(x=>`<div class="fs-row i2"><span>${x.desc} (${x.supplier})</span><span class="fs-mono">(${aud(x.net||0)})</span></div>`).join('');
   const catRows = Object.entries(cats).sort((a,b)=>b[1]-a[1])
@@ -2813,7 +2820,7 @@ function rIS() {
         ${catRows}
         <div class="fs-row tot"><span>Total operating expenses</span><span class="fs-mono">(${aud(totalOpEx)})</span></div>
         <div class="fs-row grand ${ebit>=0?'pos':'neg'}"><span><strong>Operating profit / (loss)</strong></span><span class="fs-mono" style="color:${ebit>=0?'var(--gn)':'var(--rd)'}"><strong>${ebit>=0?aud(ebit):'('+aud(Math.abs(ebit))+')'}</strong></span></div>
-        ${taxEst > 0 ? `<div class="fs-row i1"><span>Income tax expense (est. 25% BRE rate)</span><span class="fs-mono">(${aud(taxEst)})</span></div>` : ''}
+        ${taxEst > 0 ? `<div class="fs-row i1"><span>Income tax expense (est. 25% BRE rate${aQ!=='ALL'?' — indicative, assessed annually':''}${lossOffset>0?` · after ${aud(lossOffset)} prior-year loss offset`:''})</span><span class="fs-mono">(${aud(taxEst)})</span></div>` : ''}
         <div class="fs-row grand ${netProfit>=0?'pos':'neg'}" style="border-top:2px solid var(--ink)">
           <span><strong>Net profit / (loss) for the period</strong></span>
           <span class="fs-mono" style="color:${netProfit>=0?'var(--gn)':'var(--rd)'};font-size:15px"><strong>${netProfit>=0?aud(netProfit):'('+aud(Math.abs(netProfit))+')'}</strong></span>

@@ -465,3 +465,68 @@ on the other two. All three now call `priorLoss(aFY)`. Verified by the cross-tab
 The P&L tab is **before tax**; the Statements tab is **after tax**. Same label, two numbers
 ($9,577.89 vs $7,471.33 for FY2526). Both are now labelled explicitly. Any new profit figure
 must say which basis it is on.
+
+---
+
+## 17. ⚠️ This repo is PUBLIC — read before committing
+
+`HAHashim-dev/noorenergy-bizbooks` is a **public** repo with **GitHub Pages enabled**:
+
+> https://hahashim-dev.github.io/noorenergy-bizbooks/
+
+**The password gate is client-side only.** It stops nobody. Anyone can open the page, view
+source, and read every transaction without entering it. Never treat it as access control.
+
+### Never commit these
+
+| Never | Fine |
+|-------|------|
+| Tax file numbers | ABN, ACN (publicly registrable) |
+| Full bank account numbers | BSB alone |
+| Partner/supplier personal account details | Supplier business names |
+| API tokens, card numbers | Masked card refs (`xx9281`) |
+
+Grep before every commit — `verify.js` does **not** check for this:
+
+```bash
+grep -nE "TFN ?[0-9]|Account [Nn]umber'?,? ?'?[0-9]|Smart Access [0-9]|[0-9]{3}-[0-9]{3} [0-9]{4} [0-9]{4}|gho_|ghp_|github_pat_" NoorEnergy_BizBooks.html
+```
+
+Deliberately narrow. A broad `[0-9]{8,}` matches every receipt number, invoice number and
+Bank-of-Khartoum transaction ID in the ledger — all harmless — and the noise trains you to
+ignore it. Match the shapes that actually matter and eyeball the handful of hits.
+
+Current convention: `TFN on file`, account `xxx3737`, `Smart Access acct on file`.
+Receipt numbers, BPAY references, ATO document IDs and masked card refs are fine to keep.
+
+### What happened on 27 Jul 2026
+
+The file had been publishing the company TFN and full CBA account number since the first
+commit. Redacted, then purged from all 28 commits with:
+
+```bash
+git filter-repo --replace-text redactions.txt --force   # 'secret==>replacement' per line
+git remote add origin https://github.com/HAHashim-dev/noorenergy-bizbooks.git  # filter-repo drops the remote
+git push --force origin main
+```
+
+**A history rewrite does not remove the data from GitHub.** Verified afterwards — the old blob
+was still fetchable unauthenticated by SHA:
+
+```bash
+curl https://raw.githubusercontent.com/HAHashim-dev/noorenergy-bizbooks/<old-sha>/NoorEnergy_BizBooks.html
+```
+
+Unreferenced objects survive a force-push and there is no API to garbage-collect them. **Only a
+GitHub Support ticket can purge them.** And once something has been public, treat it as
+disclosed permanently — rewriting history does not un-publish it. The real remedy is the
+out-of-band one: notify the ATO, rotate the credential.
+
+Take a backup before any rewrite (`cp -R . ~/bizbooks-backup-$(date +%F)`); `filter-repo`
+prunes objects irreversibly, and commits that become empty are dropped from the log.
+
+### Token hygiene
+
+The `origin` URL had a `gho_…` token embedded in it, in plaintext in `.git/config` inside an
+OneDrive-synced folder — replicated to Microsoft's cloud and every synced device. Use
+`gh auth setup-git` and a plain remote URL instead of embedding credentials.

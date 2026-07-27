@@ -24,7 +24,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:13.
 a{color:inherit;text-decoration:none}
 
 /* HEADER */
-.hdr{background:var(--coal);padding:0 28px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.4)}
+/* Header, period bar and tabs are pinned together as ONE sticky unit. Sticking them
+   individually would need hard-coded top offsets, which break when .pbar wraps to two
+   rows on a narrow screen. */
+.topbar{position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.28)}
+.hdr{background:var(--coal);padding:0 28px;height:54px;display:flex;align-items:center;justify-content:space-between}
 .hdr-brand{font-family:var(--serif);font-size:20px;color:#fff;letter-spacing:-.3px}
 .hdr-brand em{color:var(--tl);font-style:normal}
 .hdr-right{display:flex;align-items:center;gap:16px}
@@ -291,6 +295,9 @@ tr.frow input::placeholder { color:var(--muted); font-style:italic; }
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- STICKY TOP: header + period bar + tabs stay pinned while the page scrolls -->
+<div class="topbar">
+
 <!-- HEADER -->
 <header class="hdr">
   <div style="display:flex;align-items:center;gap:14px">
@@ -348,6 +355,8 @@ tr.frow input::placeholder { color:var(--muted); font-style:italic; }
   <button class="tab"     onclick="go('ato',this)">🏛 ATO Obligations</button>
   <button class="tab"     onclick="go('add',this)">➕ Add Data</button>
 </nav>
+
+</div><!-- /.topbar -->
 
 <div class="wrap">
 
@@ -412,7 +421,10 @@ tr.frow input::placeholder { color:var(--muted); font-style:italic; }
   <div class="card mb" data-card-key="gst-bar"><div class="ch"><h3>GST Position by Quarter</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap"><canvas id="chart-gst-q"></canvas></div></div>
   <div class="g3 mb" id="gss"></div>
   <div class="g2 mb">
+    <div class="card"><div class="ch"><h3>GST on sales (1A) — breakdown</h3></div><div class="cb" id="ga"></div></div>
     <div class="card"><div class="ch"><h3>GST credits (1B) — breakdown</h3></div><div class="cb" id="gc"></div></div>
+  </div>
+  <div class="g2 mb">
     <div class="card"><div class="ch"><h3>BAS estimate</h3></div><div class="cb" id="bas"></div></div>
   </div>
   <div class="card"><div class="ch"><h3>All quarters — GST summary</h3></div><div id="gsq"></div></div>
@@ -432,7 +444,7 @@ tr.frow input::placeholder { color:var(--muted); font-style:italic; }
   <div class="card mb" data-card-key="ato-bar"><div class="ch"><h3>BAS Net Result by Period</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap-sm"><canvas id="chart-ato-bas"></canvas></div></div>
   <div class="card mb" data-card-key="ato-bas-tbl"><div class="ch"><h3>BAS Lodge Register</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-bas"></div></div>
   <div class="card mb" data-card-key="ato-tax-tbl"><div class="ch"><h3>Income Tax Returns</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-tax"></div></div>
-  <div class="card" data-card-key="ato-act-tbl"><div class="ch"><h3>ATO Activity Statement — Account 002</h3><span class="sm muted" style="margin-left:8px">All transactions processed 08 May 2026</span><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-act"></div></div>
+  <div class="card" data-card-key="ato-act-tbl"><div class="ch"><h3>ATO Activity Statement — Account 002</h3><span class="sm muted" style="margin-left:8px">Lodged transactions processed 08 May 2026 · Q4 FY2526 shown as projected until lodged</span><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-act"></div></div>
 </div>
 
 <!-- ══════ P&L ══════ -->
@@ -797,12 +809,20 @@ const BASE_EX = [
   {id:'e12',date:'2025-08-30',fy:'FY2526',desc:'ASIC Annual Company Registration Renewal — Noor Energy PTY LTD',supplier:'ASIC',cat:'Registration & Licences',total:329,gst:0,net:329,src:'BANK_FY2526_SEP_CBA',status:'Approved',notes:'BPAY Ref 2296789220516 · paid via CommBank app · no GST on government fees'},
   {id:'e13',date:'2026-02-19',fy:'FY2526',desc:'Equipment Procurement — 4× Minelab Gold Monster 2000 (client pass-through for Mogahid Altayeb)',supplier:'Raddock PTY LTD (Reeds Prospecting Supplies)',cat:'Equipment',total:11996,gst:1090.56,net:10905.44,src:'INV-IN_FY2526_FEB_EQUIPMENT PURCHASE-PAID',status:'Approved',notes:'Quote 26-00000789 · Evidence: EQUIPMENT-PURCHASE-EVIDENCE · Mogahid Altayeb engaged Noor Energy · funds received from Abdalkarim AlBorno'},
   {id:'e14',date:'2026-04-27',fy:'FY2526',desc:'Facilitation & Coordination — equipment procurement & shipment to overseas client (INV-001)',supplier:'Yagoub Yousif Yagoub Bala',cat:'Professional Services',total:2000,gst:0,net:2000,src:'INV-IN_FY2526_APR_YAGOUB',status:'Approved',notes:'Invoice INV-001 dated 27 Apr 2026 · No GST (supplier not registered) · Paid $1,500 on 25 Feb + $500 on 06 Mar 2026'},
-  {id:'e15',date:'2026-03-17',fy:'FY2526',desc:'DHL Express Worldwide — Perth to Dubai (4 items, 27.5kg) for Mogahid Altayeb',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:415.25,gst:0,net:415.25,src:'RECEIPT_FY2526_MAR_DHL POSTAGE',status:'Approved',notes:'Invoice PERR000708514 · Air Waybill 7565139610 · Non-taxable international · Consignee: Mogahid Mahdi Alrayeb, Deira, Dubai'},
+  {id:'e15',date:'2026-03-17',fy:'FY2526',desc:'DHL Express Worldwide — Perth to Dubai (4 items, 27.5kg) for Mogahid Altayeb',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:415.25,gst:0,net:415.25,src:'RECEIPT_FY2526_MAR_DHL POSTAGE_PERR000708514',status:'Approved',notes:'Invoice PERR000708514 · Air Waybill 7565139610 · Non-taxable international · Consignee: Mogahid Mahdi Alrayeb, Deira, Dubai'},
   {id:'e16',date:'2026-03-30',fy:'FY2526',desc:'NRMA Business Insurance Renewal — Policy 6807260',supplier:'NRMA Business Insurance',cat:'Insurance',total:671.15,gst:61.01,net:610.14,src:'BANK_FY2526_MAR_CBA',status:'Approved',notes:'BPAY Ref 07940416001 · Renewal BP 6807260 · matched to bank debit 30 Mar 2026'},
   // ── FY2526 · Partner-Paid Expenses — Future Reimbursement ──
   {id:'e17',date:'2026-04-15',fy:'FY2526',desc:'Site Survey Expenses — Halfawi site visit (AUD $500 · 1,000,000 SDG equiv.)',supplier:'Mosab Ahmed Osman Ahmed / M Osman',cat:'Travel',total:500,gst:0,net:500,src:'EXPENSE_FY2526_APR_SITE SURVEY EXPENSES [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid: AUD $500 via PayID (Smart Access acct on file, Receipt N441569044793) · equivalent 1,000,000 SDG via Bank of Khartoum (Trx.ID 20024607574)'},
   // ── FY2526 · Q4 Company Expenses ──
-  {id:'e18',date:'2026-05-14',fy:'FY2526',desc:'Business License Fee — Self-Lodgement of 2025 Income Tax Return',supplier:'Free Accounting Software',cat:'Professional Services',total:33,gst:3,net:30,src:'RECEIPT_FY2526_MAY_INCOME TAX FEE',status:'Approved',notes:'Invoice S9008 · ABN 38 111 951 645 · freeaccountingsoftware.com.au · bank debit pending Q4 FY2526 statement'},
+  {id:'e18',date:'2026-05-14',fy:'FY2526',desc:'Business License Fee — Self-Lodgement of 2025 Income Tax Return',supplier:'Free Accounting Software',cat:'Professional Services',total:33,gst:3,net:30,src:'RECEIPT_FY2526_MAY_INCOME TAX FEE',status:'Approved',notes:'Invoice S9008 · ABN 38 111 951 645 · freeaccountingsoftware.com.au · matched to bank debit 19 May 2026 (value date 15 May)'},
+  {id:'e21',date:'2026-06-02',fy:'FY2526',desc:'Equipment Purchase — 2× Minelab Gold Monster 2000 (S/N 61628099711, 51743003624) for Talia Services order',supplier:'Raddock PTY LTD (Reeds Prospecting Supplies)',cat:'Equipment',total:5998,gst:545.28,net:5452.72,src:'RECEIPT_FY2526_JUN_REEDS PROSPECTING-26-00003114',status:'Approved',notes:'Tax Invoice 26-00003114 · ABN 92 834 205 571 · paid in full 02 Jun 2026 (EFTPOS) · invoice states GST $545.28 · includes $188 discount (training + arm rests)'},
+  {id:'e22',date:'2026-06-10',fy:'FY2526',desc:'Equipment Purchase — 2× Minelab Gold Monster 2000 (S/N 71707005652, 51656093645) for Talia Services order',supplier:'Finders Keepers Gold Prospecting',cat:'Equipment',total:5998,gst:545.27,net:5452.73,src:'RECEIPT_FY2526_JUN_FINDERS KEEPERS-1251',status:'Approved',notes:'Receipt / Tax Invoice #1251 · 10 Jun 2026 · Card xx9281 · invoice states GST $545.27'},
+  {id:'e23',date:'2026-06-20',fy:'FY2526',desc:'Equipment Purchase — 1× Minelab Gold Monster 2000 (S/N 61428098678) for Talia Services order',supplier:'Finders Keepers Gold Prospecting',cat:'Equipment',total:2999,gst:272.64,net:2726.36,src:'RECEIPT_FY2526_JUN_FINDERS KEEPERS-1358',status:'Approved',notes:'Receipt / Tax Invoice #1358 · 20 Jun 2026 · ABN 61 689 771 864 · Card xx9281'},
+  {id:'e24',date:'2026-06-12',fy:'FY2526',desc:'DHL Express Worldwide — Woodbridge to Ajman UAE (2 items, 8.0kg) for Talia Services order',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:322.56,gst:0,net:322.56,src:'INV-IN_FY2526_JUN_DHL POSTAGE_PERR000716038',status:'Approved',notes:'Invoice PERR000716038 · non-taxable international freight · paid 17 Jun 2026 (value date 14 Jun)'},
+  {id:'e25',date:'2026-06-26',fy:'FY2526',desc:'DHL Express Worldwide — Woodbridge to Ferij Murar Deira Dubai (2 items, 9.0kg)',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:331.36,gst:0,net:331.36,src:'RECEIPT_FY2526_JUN_DHL POSTAGE_PERR000717171',status:'Approved',notes:'Invoice PERR000717171 · non-taxable international freight · UNPAID at 30 Jun 2026 · payment due 26 Jul 2026'},
+  // ── FY2627 · Q1 Company Expenses ──
+  {id:'e26',date:'2026-07-09',fy:'FY2627',desc:'ASIC Annual Review Fee — Noor Energy PTY LTD annual company statement',supplier:'ASIC',cat:'Registration & Licences',total:342,gst:0,net:342,src:'INV-IN_FY2627_JUL_ANNUAL COMPANY STATEMENT',status:'Approved',notes:'ACN 678 922 051 · review date 08 Jul 2026 · issued 09 Jul 2026 · UNPAID · due 08 Sep 2026 · no GST (Treasurer’s determination — exempt taxes, fees and charges) · late fees apply after due date'},
+  {id:'e27',date:'2026-07-10',fy:'FY2627',desc:'DHL Express Worldwide — Woodbridge international shipment (1 item, 4.5kg)',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:183.77,gst:0,net:183.77,src:'RECEIPT_FY2627_JUL_DHL POSTAGE_PERR000718305',status:'Approved',notes:'Invoice PERR000718305 · non-taxable international freight · UNPAID · due 09 Aug 2026'},
 ];
 const BASE_BK = [
   // ── FY2425 · Statement 1 (6 Dec 2024 – 31 Mar 2025) ──
@@ -811,8 +831,9 @@ const BASE_BK = [
   {id:'b3',date:'2025-02-18',fy:'FY2425',desc:'NRMA ADELAIDE AU — Card xx9281 (business insurance)',type:'Debit',amount:610.12,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2425_FEB_INSURANCE POLICY',gst:55.47},
   // ── FY2425 · Statement 2 (1 Apr – 17 May 2025) ──
   {id:'b4',date:'2025-05-03',fy:'FY2425',desc:'Transfer from CommBank app — Transfer (share capital injection)',type:'Credit',amount:2000,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
-  {id:'b5',date:'2025-05-03',fy:'FY2425',desc:'Fast Transfer From MOHAMMED MAGZOUB — Noor Energy (share capital)',type:'Credit',amount:5000,classification:'Share Capital',shareholder:'Mohammed Magzoub',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
+  {id:'b5',date:'2025-05-03',fy:'FY2425',desc:'Fast Transfer From MOHAMMED ALBASHIER — Noor Energy (share capital for Mohammed Magzoub)',type:'Credit',amount:5000,classification:'Share Capital',shareholder:'Mohammed Magzoub',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
   {id:'b6',date:'2025-05-16',fy:'FY2425',desc:'Transfer from CommBank app — Noor Energy (share capital injection · $1,200 of $1,810.12 transfer)',type:'Credit',amount:1200,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
+  {id:'b29',date:'2025-05-16',fy:'FY2425',desc:'Transfer from CommBank app — Noor Enegry (remaining $610.12 of $1,810.12 transfer · advance from Hashim Hashim covering the NRMA premium paid by the company)',type:'Credit',amount:610.12,classification:'Other',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2425_MAY_CBA',gst:0},
   // ── FY2526 · Statement 4 (1 Jul – 30 Sep 2025) ──
   {id:'b7',date:'2025-08-07',fy:'FY2526',desc:'LAWPATH — Essentials Plan annual subscription',type:'Debit',amount:468,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_AUG_LAW PATH SUBSCRIPTION',gst:42.54},
   {id:'b8',date:'2025-08-30',fy:'FY2526',desc:'ASIC BPAY — Noor Energy annual company registration renewal',type:'Debit',amount:329,classification:'Expense',shareholder:'',matched:true,src:'BANK_FY2526_SEP_CBA',gst:0},
@@ -823,9 +844,21 @@ const BASE_BK = [
   {id:'b12',date:'2026-02-19',fy:'FY2526',desc:'Transfer To RADDOCK PTY LTD — 4× Minelab Gold Monster 2000 · Q 26-00000789',type:'Debit',amount:11996,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2526_FEB_EQUIPMENT PURCHASE-PAID',gst:1090.56},
   {id:'b13',date:'2026-02-25',fy:'FY2526',desc:'Transfer To YAGOUB YOUSIF YAGOUB BALA — Postage (partial payment INV-001)',type:'Debit',amount:1500,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2526_APR_YAGOUB',gst:0},
   {id:'b14',date:'2026-03-06',fy:'FY2526',desc:'Transfer To YAGOUB YOUSIF YAGOUB BALA — Service (final payment INV-001)',type:'Debit',amount:500,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2526_APR_YAGOUB',gst:0},
-  {id:'b15',date:'2026-03-17',fy:'FY2526',desc:'DHL EXPRESS MYBILL AU — Perth to Dubai shipment · PERR000708514',type:'Debit',amount:415.25,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_MAR_DHL POSTAGE',gst:0},
+  {id:'b15',date:'2026-03-17',fy:'FY2526',desc:'DHL EXPRESS MYBILL AU — Perth to Dubai shipment · PERR000708514',type:'Debit',amount:415.25,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_MAR_DHL POSTAGE_PERR000708514',gst:0},
   {id:'b16',date:'2026-03-30',fy:'FY2526',desc:'NRMA Business Insure BPAY — Renewal Policy 6807260',type:'Debit',amount:671.15,classification:'Expense',shareholder:'',matched:true,src:'BANK_FY2526_MAR_CBA',gst:61.01},
-  {id:'b17',date:'2026-05-27',fy:'FY2526',desc:'Transfer To MOHAMMED MAGZOUB — Share capital refund (return of excess contribution over agreed $2,500)',type:'Debit',amount:2500,classification:'Share Capital',shareholder:'Mohammed Magzoub',matched:false,src:'BANK_FY2526_MAY_CBA',gst:0},
+  {id:'b17',date:'2026-05-26',fy:'FY2526',desc:'Transfer To MOHAMMED MAGZOUB — Share capital refund (return of excess contribution over agreed $2,500)',type:'Debit',amount:2500,classification:'Share Capital',shareholder:'Mohammed Magzoub',matched:true,src:'BANK_FY2526_JUN_CBA',gst:0},
+  // ── FY2526 · Statement 7 (1 Apr – 30 Jun 2026) ──
+  {id:'b18',date:'2026-04-18',fy:'FY2526',desc:'Fast Transfer From YAGOUB YOUSIF YAGOU — Z (test transfer)',type:'Credit',amount:1.30,classification:'Other',shareholder:'',matched:true,src:'BANK_FY2526_JUN_CBA',gst:0},
+  {id:'b19',date:'2026-05-13',fy:'FY2526',desc:'Fast Transfer From TALIA SERVICES PTY LTD — Purchase Mo (instalment 1 of 5 · INV-26-001)',type:'Credit',amount:5000,classification:'Income',shareholder:'',matched:true,src:'INV-OUT_FY2526_JUN_EQUIPMENT PURCHASE-INV-26-001',gst:436.22},
+  {id:'b20',date:'2026-05-14',fy:'FY2526',desc:'Fast Transfer From TALIA SERVICES PTY LTD — Purchase (instalment 2 of 5 · INV-26-001)',type:'Credit',amount:5000,classification:'Income',shareholder:'',matched:true,src:'INV-OUT_FY2526_JUN_EQUIPMENT PURCHASE-INV-26-001',gst:436.22},
+  {id:'b21',date:'2026-05-15',fy:'FY2526',desc:'Fast Transfer From TALIA SERVICES PTY LTD — Purchase (instalment 3 of 5 · INV-26-001)',type:'Credit',amount:5000,classification:'Income',shareholder:'',matched:true,src:'INV-OUT_FY2526_JUN_EQUIPMENT PURCHASE-INV-26-001',gst:436.22},
+  {id:'b22',date:'2026-05-17',fy:'FY2526',desc:'Fast Transfer From TALIA SERVICES PTY LTD — Purchase (instalment 4 of 5 · INV-26-001)',type:'Credit',amount:5000,classification:'Income',shareholder:'',matched:true,src:'INV-OUT_FY2526_JUN_EQUIPMENT PURCHASE-INV-26-001',gst:436.22},
+  {id:'b23',date:'2026-05-21',fy:'FY2526',desc:'Fast Transfer From TALIA SERVICES PTY LTD — Purchase (instalment 5 of 5 · INV-26-001)',type:'Credit',amount:5000,classification:'Income',shareholder:'',matched:true,src:'INV-OUT_FY2526_JUN_EQUIPMENT PURCHASE-INV-26-001',gst:436.21},
+  {id:'b24',date:'2026-05-19',fy:'FY2526',desc:'FREE ACCOUNTING PTY SPRINGFIELD AU — Card xx9281 (value date 15/05/2026)',type:'Debit',amount:33,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_MAY_INCOME TAX FEE',gst:3},
+  {id:'b25',date:'2026-06-03',fy:'FY2526',desc:"REED'S PROSPECTING SUP MIDVALE AU — Card xx9281 · 2× Minelab Gold Monster 2000 (value date 02/06/2026)",type:'Debit',amount:5998,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_JUN_REEDS PROSPECTING-26-00003114',gst:545.28},
+  {id:'b26',date:'2026-06-10',fy:'FY2526',desc:'LS FINDERS KEEPERS GO Daglish AU — Card xx9281 · 2× Gold Monster 2000',type:'Debit',amount:5998,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_JUN_FINDERS KEEPERS-1251',gst:545.27},
+  {id:'b27',date:'2026-06-17',fy:'FY2526',desc:'DHL EXPRESS MYBILL AU Brisbane AU — Card xx9281 · PERR000716038 (value date 14/06/2026)',type:'Debit',amount:322.56,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2526_JUN_DHL POSTAGE_PERR000716038',gst:0},
+  {id:'b28',date:'2026-06-20',fy:'FY2526',desc:'LS FINDERS KEEPERS GO Daglish AU — Card xx9281 · 1× Gold Monster 2000',type:'Debit',amount:2999,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_JUN_FINDERS KEEPERS-1358',gst:272.64},
 ];
 const SHAREHOLDERS = [
   {name: 'Hashim Hashim', shares: 25},
@@ -835,6 +868,13 @@ const SHAREHOLDERS = [
 ];
 const CHARTS = {};
 const CP = ['#0f9b8e','#2a6ee8','#f0b429','#1a7a5e','#c0392b','#d4750a','#6d28d9','#6e7a8a'];
+// Shared chart semantics — same meaning must always use the same colour across every tab.
+// IN  = money in / GST refund due to us    OUT = money out / GST payable to ATO
+// NEU = no data or not applicable          ACC = neutral accent (targets, net lines)
+const C_IN  = 'rgba(15,155,142,0.8)';
+const C_OUT = 'rgba(192,57,43,0.8)';
+const C_NEU = 'rgba(110,122,138,0.45)';
+const C_ACC = 'rgba(42,110,232,0.65)';
 const BASE_INV_IN = [
   {id:'ii1',date:'2026-02-17',fy:'FY2526',ref:'INV-IN_FY2526_FEB_EQUIPMENT PURCHASE-PAID',
    desc:'4× Minelab Gold Monster 2000 (Quote 26-00000789)',
@@ -846,6 +886,26 @@ const BASE_INV_IN = [
    supplier:'Yagoub Yousif Yagoub Bala',
    amount:2000,gst:0,net:2000,
    notes:'Invoice INV-001 · paid $1,500 on 25 Feb 2026 + $500 on 06 Mar 2026'},
+  {id:'ii3',date:'2026-06-12',fy:'FY2526',ref:'INV-IN_FY2526_JUN_DHL POSTAGE_PERR000716038',
+   desc:'DHL Express Worldwide — Woodbridge to Ajman UAE (2 items, 8.0kg)',
+   supplier:'DHL Express (Australia)',
+   amount:322.56,gst:0,net:322.56,
+   notes:'Invoice PERR000716038 · billed to Yagoub Bala (company shipment, paid on company card xx9281) · paid 17 Jun 2026'},
+  {id:'ii4',date:'2026-06-26',fy:'FY2526',ref:'RECEIPT_FY2526_JUN_DHL POSTAGE_PERR000717171',
+   desc:'DHL Express Worldwide — Woodbridge to Ferij Murar Deira Dubai (2 items, 9.0kg)',
+   supplier:'DHL Express (Australia)',
+   amount:331.36,gst:0,net:331.36,
+   notes:'Invoice PERR000717171 · billed to Yagoub Bala (company shipment) · OUTSTANDING at 30 Jun 2026 · payment due 26 Jul 2026'},
+  {id:'ii5',date:'2026-07-09',fy:'FY2627',ref:'INV-IN_FY2627_JUL_ANNUAL COMPANY STATEMENT',
+   desc:'ASIC Annual Review Fee — annual company statement (ACN 678 922 051)',
+   supplier:'ASIC',
+   amount:342,gst:0,net:342,
+   notes:'Review date 08 Jul 2026 · OUTSTANDING · due 08 Sep 2026 · GST-exempt · late fees apply if unpaid'},
+  {id:'ii6',date:'2026-07-10',fy:'FY2627',ref:'RECEIPT_FY2627_JUL_DHL POSTAGE_PERR000718305',
+   desc:'DHL Express Worldwide — Woodbridge international shipment (1 item, 4.5kg)',
+   supplier:'DHL Express (Australia)',
+   amount:183.77,gst:0,net:183.77,
+   notes:'Invoice PERR000718305 · OUTSTANDING · due 09 Aug 2026'},
 ];
 const BASE_INV_OUT = [
   {id:'io1',date:'2026-01-12',fy:'FY2526',ref:'INV-OUT_FY2526_JAN_CONSTRUCTION JOB',
@@ -853,6 +913,11 @@ const BASE_INV_OUT = [
    client:'Hasibullah Noory / 247 Transport',
    amount:1485,gst:135,net:1350,
    notes:'Payment received 13 Jan 2026 · bank ref: Fast Transfer From HASIBULLAH NOORY'},
+  {id:'io2',date:'2026-06-14',fy:'FY2526',ref:'INV-OUT_FY2526_JUN_EQUIPMENT PURCHASE-INV-26-001',
+   desc:'Procurement, supply & export — 8× Minelab Gold Monster 2000 + DHL freight (INV-26-001)',
+   client:'Talia Services Pty Ltd (ABN 72 677 512 088)',
+   amount:25000,gst:2181.09,net:22818.91,
+   notes:'Shipped to Jamal Ahmed Serag Ahmed, Ajman UAE · paid in five $5,000 instalments 13–21 May 2026 (invoice raised after payment) · GST charged on equipment only; DHL freight lines ($322.56 + $685.47) are GST-free, so GST is not 1/11 of the total'},
 ];
 
 // ═══════════════════════════════════════════════════════
@@ -866,7 +931,8 @@ const ATO_BAS_DATA = [
   {fy:'FY2526',period:'Q1',label:'Jul–Sep 2025',docId:'58433653513',gstToATO:0,gstByATO:43,sales:0,net:43,result:'credit',dueDate:'11 Nov 2025',lodged:true,lodgedDate:'07 May 2026',notes:'GST refund — input credits (Lawpath subscription) · 1B $43'},
   {fy:'FY2526',period:'Q2',label:'Oct–Dec 2025',docId:'58675768425',gstToATO:0,gstByATO:0,sales:0,net:0,result:'nil',dueDate:'03 Mar 2026',lodged:true,lodgedDate:'07 May 2026',notes:'No GST activity · No amount payable'},
   {fy:'FY2526',period:'Q3',label:'Jan–Mar 2026',docId:'59719991714',gstToATO:135,gstByATO:1152,sales:1485,net:1017,result:'credit',dueDate:'12 May 2026',lodged:true,lodgedDate:'07 May 2026',notes:'GST refund — 1A $135 (income GST) vs 1B $1,152 (input credits) · net $1,017 CR · Refundable'},
-  {fy:'FY2526',period:'Q4',label:'Apr–Jun 2026',docId:'—',  gstToATO:0,   gstByATO:0,    sales:0,    net:0,    result:'pending', dueDate:'28 Jul 2026',  lodged:false, lodgedDate:'',            notes:'Not yet due — period ends 30 Jun 2026'},
+  {fy:'FY2526',period:'Q4',label:'Apr–Jun 2026',docId:'—',  gstToATO:2181,gstByATO:1366, sales:25000,net:815,  result:'ready',   dueDate:'28 Jul 2026',  lodged:false, lodgedDate:'',            notes:'Prepared from Statement 7 · 1A $2,181.09 (Talia sale INV-26-001) vs 1B $1,366.19 (input credits) · net $814.90 PAYABLE · lodge by 28 Jul 2026'},
+  {fy:'FY2627',period:'Q1',label:'Jul–Sep 2026',docId:'—',  gstToATO:0,   gstByATO:0,    sales:0,    net:0,    result:'pending', dueDate:'28 Oct 2026',  lodged:false, lodgedDate:'',            notes:'Not yet due — period ends 30 Sep 2026'},
 ];
 const ATO_TAX_DATA = [
   {fy:'FY2425',label:'FY 2024–25',lodged:true, lodgedDate:'15 May 2026',totalIncome:0,totalExpenses:1152,netPL:-1152,taxableIncome:0,taxPayable:0,amountDue:0,lossCfwd:1152,docId:'TFN on file',notes:'Net loss $1,152 carried forward · No tax payable · Signed by Hashim Hashim 15 May 2026'},
@@ -875,10 +941,11 @@ const ATO_TAX_DATA = [
 const ATO_ACT_DATA = {
   account:'Activity statement 002',
   entity:'NOOR ENERGY PTY LTD',
-  asOf:'27 May 2026',
+  asOf:'27 Jul 2026',
   balance:1115,
   balanceType:'CR',
   transactions:[
+    {effective:'28 Jul 2026',desc:'BAS period ending 30 Jun 2026 (FY2526 Q4) — prepared, not yet lodged (projected)',debit:815,credit:0,balance:300,balType:'CR',projected:true},
     {effective:'12 May 2026',desc:'BAS period ending 31 Mar 2026 (FY2526 Q3)',debit:0,credit:1017,balance:1115,balType:'CR'},
     {effective:'11 Nov 2025',desc:'BAS period ending 30 Sep 2025 (FY2526 Q1)',debit:0,credit:43, balance:98,  balType:'CR'},
     {effective:'03 Mar 2026',desc:'BAS period ending 31 Dec 2025 (FY2526 Q2)',debit:0,credit:0,  balance:98,  balType:'CR'},
@@ -980,6 +1047,11 @@ function inP(d, fy, q) {
 const fE = (fy,q) => DATA.expenses.filter(e => e.fy===fy && inP(e.date,fy,q));
 const fB = (fy,q) => DATA.bank.filter(b => b.fy===fy && inP(b.date,fy,q));
 
+// Share capital is credit/debit aware: a return of capital is a Debit and must REDUCE the total.
+// Always use these — a plain .reduce((a,b)=>a+b.amount) silently double-counts refunds as raises.
+const scAmt = b => b.type === 'Credit' ? b.amount : -b.amount;
+const scNet = list => list.filter(b => b.classification === 'Share Capital').reduce((a,b) => a + scAmt(b), 0);
+
 function toast(msg) {
   const el = document.getElementById('toast');
   el.textContent = msg;
@@ -1063,7 +1135,7 @@ function rDash() {
   const tE = ap.reduce((s,x) => s+x.total, 0);
   const gC = ap.reduce((s,x) => s+(x.gst||0), 0);
   const cr = b.filter(x => x.type==='Credit').reduce((s,x) => s+x.amount, 0);
-  const sc = b.filter(x => x.classification==='Share Capital').reduce((s,x) => s+x.amount, 0);
+  const sc = scNet(b);
   const qL = aQ==='ALL' ? 'Full Year' : QD[aQ].l;
   const hasData = e.length > 0 || b.length > 0;
 
@@ -1076,7 +1148,7 @@ function rDash() {
     <div class="sc tl"><div class="lb">Bank credits (in)</div><div class="vl">${aud(cr)}</div><div class="sb">${b.filter(x=>x.type==='Credit').length} transactions</div></div>
     <div class="sc rd"><div class="lb">Total expenses</div><div class="vl">${aud(tE)}</div><div class="sb">${ap.length} approved items</div></div>
     <div class="sc gn"><div class="lb">GST credits</div><div class="vl">${aud(gC)}</div><div class="sb">Claimable this period</div></div>
-    <div class="sc bl"><div class="lb">Share capital</div><div class="vl">${aud(sc)}</div><div class="sb">Not taxable income</div></div>`;
+    <div class="sc bl"><div class="lb">Share capital</div><div class="vl">${sc<0?'('+aud(Math.abs(sc))+')':aud(sc)}</div><div class="sb">${sc<0?'Net refund of capital · not taxable':'Not taxable income'}</div></div>`;
 
   // Reimbursements & outstanding bills summary for dashboard
   const reimbAll = DATA.expenses.filter(x=>x.status==='Future Reimbursement');
@@ -1108,45 +1180,54 @@ function rDash() {
        <tbody>${b.map(x=>`<tr><td>${fd(x.date)}</td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${x.desc}</td><td class="nr" style="color:${x.type==='Credit'?'var(--tl)':'var(--rd)'}">${x.type==='Credit'?'+':'−'}${aud(x.amount)}</td><td><span class="b ${x.type==='Credit'?'btl':'brd'}">${x.type}</span></td></tr>`).join('')}</tbody></table>`
     : `<div class="empty">No bank activity this period</div>`;
 
+  // Net GST = 1A (GST collected on Income sales) − 1B (GST paid on purchases).
+  // Positive = payable to the ATO; negative = refund due to us.
+  const gS  = b.filter(x=>x.type==='Credit'&&x.classification==='Income').reduce((s,x)=>s+(x.gst||0),0);
+  const net = gS - gC;
   document.getElementById('dg').innerHTML = `
     <div class="g2">
       <div>
-        <div class="pr"><span>GST on sales (1A)</span><span class="mono">$0.00</span></div>
+        <div class="pr"><span>GST on sales (1A)</span><span class="mono" style="color:${gS>0?'var(--rd)':'inherit'}">${aud(gS)}</span></div>
         <div class="pr"><span>GST credits — purchases (1B)</span><span class="mono" style="color:var(--gn)">${aud(gC)}</span></div>
         <div class="dvd"></div>
-        <div class="pr st"><span>Net GST position</span><span class="mono" style="color:${gC>0?'var(--gn)':'var(--muted)'}">${gC>0?'('+aud(gC)+') REFUND':'$0.00'}</span></div>
+        <div class="pr st"><span>Net GST position</span><span class="mono" style="color:${net>0?'var(--rd)':net<0?'var(--gn)':'var(--muted)'}">${net>0?aud(net)+' PAYABLE':net<0?'('+aud(-net)+') REFUND':'$0.00'}</span></div>
       </div>
       <div>
-        <div class="al ${gC>0?'al-g':'al-t'}" style="margin-bottom:0">
-          ${gC>0
-            ? `<strong>ATO owes you ${aud(gC)}</strong>. Lodge BAS by <strong>${GD[aQ]}</strong>.`
-            : `No GST credits or taxable sales recorded for this period.`}
+        <div class="al ${net>0?'al-a':net<0?'al-g':'al-t'}" style="margin-bottom:0">
+          ${net>0
+            ? `<strong>You owe the ATO ${aud(net)}</strong>. Lodge and pay BAS by <strong>${GD[aQ]}</strong>.`
+            : net<0
+              ? `<strong>ATO owes you ${aud(-net)}</strong>. Lodge BAS by <strong>${GD[aQ]}</strong>.`
+              : `No GST credits or taxable sales recorded for this period.`}
         </div>
       </div>
     </div>`;
 
   // Dashboard charts
   if(document.getElementById('chart-dash-donut')) {
-    const fyExp = DATA.expenses.filter(e => e.fy === aFY && e.status !== 'Future Reimbursement');
-    const fyInc = DATA.bank.filter(b => b.fy === aFY && b.classification === 'Income').reduce((s,b)=>s+b.amount,0);
-    const fyExpTot = fyExp.reduce((s,e)=>s+e.total,0);
+    // Ex-GST and on the same basis as the P&L, so this donut agrees with every other tab.
+    const fyInc    = DATA.bank.filter(b => b.fy===aFY && b.type==='Credit' && (b.classification==='Income'||b.classification==='Client Funds')).reduce((s,b)=>s+(b.amount-(b.gst||0)),0);
+    const fyExpTot = DATA.expenses.filter(e => e.fy===aFY && (e.status==='Approved'||e.status==='Refund')).reduce((s,e)=>s+(e.net||0),0);
     if(CHARTS.dashDonut) CHARTS.dashDonut.destroy();
     CHARTS.dashDonut = new Chart(document.getElementById('chart-dash-donut'), {
       type:'doughnut',
-      data:{ labels:['Income','Expenses'], datasets:[{ data:[fyInc, fyExpTot], backgroundColor:['#0f9b8e','#c0392b'], hoverOffset:4 }]},
+      data:{ labels:['Income (ex-GST)','Expenses (ex-GST)'], datasets:[{ data:[fyInc, fyExpTot], backgroundColor:[C_IN, C_OUT], hoverOffset:4 }]},
       options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }, tooltip:{ callbacks:{ label: ctx => ' $' + ctx.parsed.toLocaleString('en-AU',{minimumFractionDigits:2}) }}}}
     });
   }
   if(document.getElementById('chart-dash-bar')) {
     const quarters = ['Q1','Q2','Q3','Q4'];
-    const qCredits = quarters.map(q => DATA.bank.filter(b=>b.fy===aFY&&b.type==='Credit'&&b.classification!=='Client Funds'&&QD[q].m.includes(gm(b.date))).reduce((s,b)=>s+b.amount,0));
+    // Both series must cover the same population, or the bars aren't comparable.
+    // This is a cash-movement chart, so it shows ALL credits and ALL debits — including
+    // client funds, which previously inflated debits while being excluded from credits.
+    const qCredits = quarters.map(q => DATA.bank.filter(b=>b.fy===aFY&&b.type==='Credit'&&QD[q].m.includes(gm(b.date))).reduce((s,b)=>s+b.amount,0));
     const qDebits  = quarters.map(q => DATA.bank.filter(b=>b.fy===aFY&&b.type==='Debit'&&QD[q].m.includes(gm(b.date))).reduce((s,b)=>s+b.amount,0));
     if(CHARTS.dashBar) CHARTS.dashBar.destroy();
     CHARTS.dashBar = new Chart(document.getElementById('chart-dash-bar'), {
       type:'bar',
       data:{ labels: quarters.map(q=>QD[q].l), datasets:[
-        { label:'Credits', data:qCredits, backgroundColor:'#0f9b8e' },
-        { label:'Debits',  data:qDebits,  backgroundColor:'#c0392b' }
+        { label:'Credits (money in)', data:qCredits, backgroundColor:C_IN },
+        { label:'Debits (money out)', data:qDebits,  backgroundColor:C_OUT }
       ]},
       options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }}, scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
     });
@@ -1184,14 +1265,15 @@ function rBank() {
 
   if(document.getElementById('chart-bank-bar')) {
     const quarters = ['Q1','Q2','Q3','Q4'];
-    const qCr = quarters.map(q => DATA.bank.filter(b=>b.fy===aFY&&b.type==='Credit'&&b.classification!=='Client Funds'&&QD[q].m.includes(gm(b.date))).reduce((s,b)=>s+b.amount,0));
+    // All credits vs all debits — same population on both sides (see dashboard chart note).
+    const qCr = quarters.map(q => DATA.bank.filter(b=>b.fy===aFY&&b.type==='Credit'&&QD[q].m.includes(gm(b.date))).reduce((s,b)=>s+b.amount,0));
     const qDr = quarters.map(q => DATA.bank.filter(b=>b.fy===aFY&&b.type==='Debit'&&QD[q].m.includes(gm(b.date))).reduce((s,b)=>s+b.amount,0));
     if(CHARTS.bankBar) CHARTS.bankBar.destroy();
     CHARTS.bankBar = new Chart(document.getElementById('chart-bank-bar'), {
       type:'bar',
       data:{ labels: quarters.map(q=>QD[q].l), datasets:[
-        { label:'Credits', data:qCr, backgroundColor:'rgba(15,155,142,0.8)' },
-        { label:'Debits',  data:qDr, backgroundColor:'rgba(192,57,43,0.8)' }
+        { label:'Credits (money in)', data:qCr, backgroundColor:C_IN },
+        { label:'Debits (money out)', data:qDr, backgroundColor:C_OUT }
       ]},
       options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }}, scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
     });
@@ -1231,7 +1313,8 @@ function rExp() {
     : `<div class="empty">No expenses for this period. Use <strong>Add Data</strong> to record expenses.</div>`;
 
   if(document.getElementById('chart-exp-cat')) {
-    const fyEx = DATA.expenses.filter(e=>e.fy===aFY&&e.total>0);
+    // Approved only — same basis as the KPI tiles and table above, so the totals agree.
+    const fyEx = DATA.expenses.filter(e=>e.fy===aFY&&e.total>0&&e.status==='Approved');
     const catMap = {};
     fyEx.forEach(e=>{ catMap[e.cat]=(catMap[e.cat]||0)+e.total; });
     const cats = Object.keys(catMap).sort((a,b)=>catMap[b]-catMap[a]);
@@ -1244,11 +1327,13 @@ function rExp() {
   }
   if(document.getElementById('chart-exp-q')) {
     const quarters = ['Q1','Q2','Q3','Q4'];
-    const qTotals = quarters.map(q => DATA.expenses.filter(e=>e.fy===aFY&&e.total>0&&QD[q].m.includes(gm(e.date))).reduce((s,e)=>s+e.total,0));
+    const qTotals = quarters.map(q => DATA.expenses.filter(e=>e.fy===aFY&&e.total>0&&e.status==='Approved'&&QD[q].m.includes(gm(e.date))).reduce((s,e)=>s+e.total,0));
     if(CHARTS.expQ) CHARTS.expQ.destroy();
     CHARTS.expQ = new Chart(document.getElementById('chart-exp-q'), {
       type:'bar',
-      data:{ labels: quarters.map(q=>QD[q].l), datasets:[{ label:'Expenses', data:qTotals, backgroundColor:CP.slice(0,4) }]},
+      // One series, one colour — the quarter is already named on the axis, so varying the
+      // colour per bar would imply a distinction that doesn't exist.
+      data:{ labels: quarters.map(q=>QD[q].l), datasets:[{ label:'Expenses', data:qTotals, backgroundColor:C_OUT }]},
       options:{ indexAxis:'y', maintainAspectRatio:false, plugins:{ legend:{ display:false }}, scales:{ x:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
     });
   }
@@ -1261,8 +1346,7 @@ const AGREED_CONTRIBUTION = 2500;
 function rShares() {
   const allSC      = DATA.bank.filter(b => b.classification === 'Share Capital');
   const fySC       = DATA.bank.filter(b => b.fy === aFY && b.classification === 'Share Capital');
-  const scAmt = b => b.type === 'Credit' ? b.amount : -b.amount;
-  const tot        = allSC.reduce((a,b) => a+scAmt(b), 0);
+  const tot        = allSC.reduce((a,b) => a+scAmt(b), 0);   // scAmt is shared — see constants
   const fyTot      = fySC.reduce((a,b) => a+scAmt(b), 0);
   const totalShares = SHAREHOLDERS.reduce((a,s) => a+s.shares, 0);
   const agreedTotal = SHAREHOLDERS.length * AGREED_CONTRIBUTION;  // 10,000
@@ -1424,8 +1508,8 @@ function rShares() {
     CHARTS.sharesBar = new Chart(document.getElementById('chart-shares-bar'), {
       type:'bar',
       data:{ labels: shData.map(s=>s.name.split(' ')[0]), datasets:[
-        { label:'Paid-up', data: shData.map(s=>Math.max(0,s.total)), backgroundColor:'rgba(15,155,142,0.8)' },
-        { label:'Agreed ($'+AGREED_CONTRIBUTION.toLocaleString()+')', data: shData.map(()=>AGREED_CONTRIBUTION), backgroundColor:'rgba(42,110,232,0.3)', borderColor:'rgba(42,110,232,0.8)', borderWidth:1 }
+        { label:'Paid-up (net of refunds)', data: shData.map(s=>Math.max(0,s.total)), backgroundColor:C_IN },
+        { label:'Agreed ($'+AGREED_CONTRIBUTION.toLocaleString()+')', data: shData.map(()=>AGREED_CONTRIBUTION), backgroundColor:'rgba(42,110,232,0.3)', borderColor:C_ACC, borderWidth:1 }
       ]},
       options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }}, scales:{ y:{ beginAtZero:true, ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
     });
@@ -1454,6 +1538,25 @@ function rGST() {
     <div class="sc am"><div class="lb">GST on sales (1A)</div><div class="vl">${aud(gS)}</div><div class="sb">${inc.length} taxable sale${inc.length!==1?'s':''} this period</div></div>
     <div class="sc gn"><div class="lb">GST credits (1B)</div><div class="vl">${aud(gC)}</div><div class="sb">From purchases this period</div></div>
     <div class="sc tl"><div class="lb">Net GST ${netGST>=0?'refund':'payable'}</div><div class="vl">${aud(Math.abs(netGST))}</div><div class="sb">Lodge by ${GD[aQ]}</div></div>`;
+  // 1A breakdown — taxable sales, grouped by invoice reference so an invoice paid in
+  // instalments reads as one sale rather than five bank lines.
+  const saleGrp = {};
+  inc.forEach(x => {
+    const k = x.src || x.desc;
+    if(!saleGrp[k]) saleGrp[k] = { key:k, amount:0, gst:0, n:0, date:x.date };
+    saleGrp[k].amount += x.amount;
+    saleGrp[k].gst    += (x.gst||0);
+    saleGrp[k].n++;
+    if(x.date < saleGrp[k].date) saleGrp[k].date = x.date;
+  });
+  const sales = Object.values(saleGrp).sort((a,b)=>a.date.localeCompare(b.date));
+  document.getElementById('ga').innerHTML = sales.length
+    ? sales.map(s=>`<div class="pr"><span>${s.key}<br><span class="sm muted">${fd(s.date)} · ${aud(s.amount)} incl. GST${s.n>1?` · ${s.n} instalments`:''}${s.gst===0?' · GST-free':''}</span></span><span class="mono" style="color:${s.gst>0?'var(--rd)':'var(--muted)'}">${aud(s.gst)}</span></div>`).join('')
+      + `<div class="dvd"></div>`
+      + `<div class="pr"><span class="sm muted">Total sales (G1, incl. GST)</span><span class="mono sm muted">${aud(tI)}</span></div>`
+      + `<div class="pr st"><span>Total GST on sales</span><span class="mono" style="color:${gS>0?'var(--rd)':'var(--muted)'}"><strong>${aud(gS)}</strong></span></div>`
+    : `<div class="empty" style="border:none">No taxable sales this period</div>`;
+
   const ge = e.filter(x=>(x.gst||0)>0);
   document.getElementById('gc').innerHTML = ge.length
     ? ge.map(x=>`<div class="pr"><span>${x.supplier}<br><span class="sm muted">${x.desc}</span></span><span class="mono" style="color:var(--gn)">${aud(x.gst)}</span></div>`).join('')
@@ -1472,40 +1575,52 @@ function rGST() {
     <div class="al al-g" style="margin-top:12px;margin-bottom:0;font-size:11.5px">Lodge BAS by <strong>${GD[aQ]}</strong>. Verify all figures with your tax agent before lodging.</div>`;
   const s = FYS[aFY];
   const dm = {Q1:`Jul–Sep ${s}`,Q2:`Oct–Dec ${s}`,Q3:`Jan–Mar ${s+1}`,Q4:`Apr–Jun ${s+1}`};
+  // Net position per quarter: 1A (GST on Income credits) − 1B (GST on approved purchases).
+  // Positive net = payable to ATO; negative net = refund due.
+  const qSales = q => DATA.bank.filter(b=>b.fy===aFY&&b.type==='Credit'&&b.classification==='Income'&&QD[q].m.includes(gm(b.date)));
   const qr = ['Q1','Q2','Q3','Q4'].map(q => {
     const qe = fE(aFY,q).filter(x=>x.total>0&&x.status==='Approved');
     const gc = qe.reduce((a,x)=>a+(x.gst||0),0), tp = qe.reduce((a,x)=>a+x.total,0);
+    const gs = qSales(q).reduce((a,b)=>a+(b.gst||0),0);
+    const net = gs - gc;
     return `<tr class="${aQ===q?'rb':''}">
       <td><strong>${q}</strong></td><td class="sm muted">${dm[q]}</td><td class="sm muted">${GD[q]}</td>
-      <td class="nr">$0.00</td>
+      <td class="nr" style="color:${gs>0?'var(--rd)':'inherit'}">${aud(gs)}</td>
       <td class="nr" style="color:var(--gn)">${aud(gc)}</td>
       <td class="nr">${aud(tp)}</td>
-      <td class="nr" style="color:${gc>0?'var(--gn)':'var(--muted)'}"><strong>${gc>0?'('+aud(gc)+') Refund':'$0.00'}</strong></td>
-      <td><span class="b ${gc>0?'bgn':'bgy'}">${gc>0?'Refund due':'Nil'}</span></td>
+      <td class="nr" style="color:${net>0?'var(--rd)':net<0?'var(--gn)':'var(--muted)'}"><strong>${net>0?aud(net)+' Payable':net<0?'('+aud(-net)+') Refund':'$0.00'}</strong></td>
+      <td><span class="b ${net>0?'bam':net<0?'bgn':'bgy'}">${net>0?'Payable':net<0?'Refund due':'Nil'}</span></td>
     </tr>`;
   }).join('');
   const ae = DATA.expenses.filter(x=>x.fy===aFY&&x.total>0&&x.status==='Approved');
   const fyG = ae.reduce((a,x)=>a+(x.gst||0),0), fyP = ae.reduce((a,x)=>a+x.total,0);
+  const fyS = DATA.bank.filter(b=>b.fy===aFY&&b.type==='Credit'&&b.classification==='Income').reduce((a,b)=>a+(b.gst||0),0);
+  const fyN = fyS - fyG;
   document.getElementById('gsq').innerHTML = `
     <table><thead><tr><th>Quarter</th><th>Period</th><th>BAS due</th><th class="thr">GST sales</th><th class="thr">GST credits</th><th class="thr">Purchases</th><th class="thr">Net position</th><th>Status</th></tr>
     ${fRow(['quarter','','','','','','','status'])}</thead>
     <tbody>${qr}</tbody>
-    <tfoot><tr><td colspan="3"><strong>Full year ${FYL[aFY]}</strong></td><td class="nr">$0.00</td><td class="nr" style="color:var(--gn)">${aud(fyG)}</td><td class="nr">${aud(fyP)}</td><td class="nr" style="color:var(--gn)"><strong>${fyG>0?'('+aud(fyG)+') Refund':'$0.00'}</strong></td><td></td></tr></tfoot></table>`;
+    <tfoot><tr><td colspan="3"><strong>Full year ${FYL[aFY]}</strong></td><td class="nr" style="color:${fyS>0?'var(--rd)':'inherit'}">${aud(fyS)}</td><td class="nr" style="color:var(--gn)">${aud(fyG)}</td><td class="nr">${aud(fyP)}</td><td class="nr" style="color:${fyN>0?'var(--rd)':fyN<0?'var(--gn)':'var(--muted)'}"><strong>${fyN>0?aud(fyN)+' Payable':fyN<0?'('+aud(-fyN)+') Refund':'$0.00'}</strong></td><td></td></tr></tfoot></table>`;
 
   if(document.getElementById('chart-gst-q')) {
     const quarters = ['Q1','Q2','Q3','Q4'];
+    // Same basis and sign convention as the quarterly table above: net = 1A − 1B.
+    // Positive = payable to ATO, negative = refund due. 1B counts Approved expenses only,
+    // matching the tiles and the table (an unapproved item is not a claimable credit).
     const q1A = quarters.map(q => DATA.bank.filter(b=>b.fy===aFY&&b.type==='Credit'&&b.classification==='Income'&&QD[q].m.includes(gm(b.date))).reduce((s,b)=>s+(b.gst||0),0));
-    const q1B = quarters.map(q => DATA.expenses.filter(e=>e.fy===aFY&&e.gst>0&&QD[q].m.includes(gm(e.date))).reduce((s,e)=>s+e.gst,0));
-    const qNet = quarters.map((_,i)=>q1B[i]-q1A[i]);
+    const q1B = quarters.map(q => DATA.expenses.filter(e=>e.fy===aFY&&e.gst>0&&e.status==='Approved'&&QD[q].m.includes(gm(e.date))).reduce((s,e)=>s+e.gst,0));
+    const qNet = quarters.map((_,i)=>q1A[i]-q1B[i]);
     if(CHARTS.gstQ) CHARTS.gstQ.destroy();
     CHARTS.gstQ = new Chart(document.getElementById('chart-gst-q'), {
       type:'bar',
       data:{ labels: quarters.map(q=>QD[q].l), datasets:[
-        { label:'1A GST on Sales', data:q1A, backgroundColor:'rgba(192,57,43,0.7)' },
-        { label:'1B Input Credits', data:q1B, backgroundColor:'rgba(15,155,142,0.7)' },
-        { label:'Net (CR=refund)', data:qNet, backgroundColor: qNet.map(v=>v>=0?'rgba(26,122,94,0.7)':'rgba(240,180,41,0.7)'), type:'bar' }
+        { label:'1A GST on sales (owed to ATO)', data:q1A, backgroundColor:C_OUT },
+        { label:'1B Input credits (owed to us)', data:q1B, backgroundColor:C_IN },
+        { label:'Net (+ payable / − refund)',    data:qNet, backgroundColor:C_ACC }
       ]},
-      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }}, scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
+      options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' },
+        tooltip:{ callbacks:{ label: c => ' '+c.dataset.label+': $'+Math.abs(c.parsed.y).toLocaleString('en-AU',{minimumFractionDigits:2}) + (c.datasetIndex===2 ? (c.parsed.y>0?' payable':c.parsed.y<0?' refund':'') : '') }}},
+        scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
     });
   }
 }
@@ -1534,7 +1649,7 @@ function rPL() {
   const netPL  = totalInc - tE;
   const s = FYS[aFY];
   const per = aQ==='ALL' ? `1 Jul ${s} – 30 Jun ${s+1}` : `${QD[aQ].d} ${(aQ==='Q1'||aQ==='Q2')?s:s+1}`;
-  const shareC = DATA.bank.filter(b=>b.fy===aFY&&b.classification==='Share Capital').reduce((a,b)=>a+b.amount,0);
+  const shareC = scNet(DATA.bank.filter(b=>b.fy===aFY));
 
   const incRows = [
     bSales.length ? `<div class="pr i1"><span>Sales revenue</span><span class="mono">${aud(netSales)}</span></div>` : '',
@@ -1561,22 +1676,28 @@ function rPL() {
     <div class="pr gt"><span>Net ${netPL>=0?'profit':'loss'}</span><span class="mono" style="color:${netPL>=0?'var(--gn)':'var(--rd)'}"><strong>${netPL>=0?aud(netPL):'('+aud(Math.abs(netPL))+')' }</strong></span></div>
     <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);line-height:1.8">
       <strong style="color:var(--ink)">Notes:</strong>
-      Share capital of ${aud(shareC)} is recorded as equity and not included in income.
+      ${shareC<0
+        ? `A net return of share capital of ${aud(Math.abs(shareC))} was made this period. Capital movements are recorded as equity and never as income or expense.`
+        : `Share capital of ${aud(shareC)} is recorded as equity and not included in income.`}
       GST amounts are excluded from all figures. Verify with a registered accountant before lodging.
     </div>
   </div>`;
 
   if(document.getElementById('chart-pl-bar')) {
+    // Must match the P&L statement above: ex-GST, income = Income + Client Funds,
+    // expenses = Approved/Refund net. Previously this used GST-inclusive amounts and
+    // dropped client funds while keeping the client-funded purchases, so the chart
+    // contradicted the statement printed directly above it.
     const fys = ['FY2425','FY2526'];
     const fyLabels = fys.map(f=>FYL[f]||f);
-    const incomes  = fys.map(f => DATA.bank.filter(b=>b.fy===f&&b.classification==='Income').reduce((s,b)=>s+b.amount,0));
-    const expenses = fys.map(f => DATA.expenses.filter(e=>e.fy===f&&e.total>0&&e.status!=='Future Reimbursement').reduce((s,e)=>s+e.total,0));
+    const incomes  = fys.map(f => DATA.bank.filter(b=>b.fy===f&&b.type==='Credit'&&(b.classification==='Income'||b.classification==='Client Funds')).reduce((s,b)=>s+(b.amount-(b.gst||0)),0));
+    const expenses = fys.map(f => DATA.expenses.filter(e=>e.fy===f&&(e.status==='Approved'||e.status==='Refund')).reduce((s,e)=>s+(e.net||0),0));
     if(CHARTS.plBar) CHARTS.plBar.destroy();
     CHARTS.plBar = new Chart(document.getElementById('chart-pl-bar'), {
       type:'bar',
       data:{ labels:fyLabels, datasets:[
-        { label:'Income',   data:incomes,  backgroundColor:'rgba(15,155,142,0.8)' },
-        { label:'Expenses', data:expenses, backgroundColor:'rgba(192,57,43,0.8)' }
+        { label:'Income (ex-GST)',   data:incomes,  backgroundColor:C_IN },
+        { label:'Expenses (ex-GST)', data:expenses, backgroundColor:C_OUT }
       ]},
       options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' }}, scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
     });
@@ -1873,7 +1994,7 @@ function computeBS(fy) {
     return paid < inv.amount ? sum+(inv.amount-paid) : sum;
   }, 0);
 
-  const shareCapitalCash = allBankToDate.filter(x=>x.classification==='Share Capital').reduce((a,x)=>a+x.amount,0);
+  const shareCapitalCash = scNet(allBankToDate);
   const operatingCash    = cashBalance - shareCapitalCash;
 
   // ── Tax payable: apply prior-year loss offsets (mirrors rTax logic) ───────
@@ -1894,15 +2015,22 @@ function computeBS(fy) {
   const fyTaxableInc = Math.max(0, fyPL - fyLossUsed);
   const taxPayable   = fyTaxableInc * 0.25;
 
+  // Amounts the company owes partners/directors for expenses they paid on its behalf,
+  // plus advances they put into the bank account. These are real obligations, so omitting
+  // them overstates equity — FY2425 read "retained earnings $0.00" against a lodged $1,152 loss.
+  const partnerPayable = DATA.expenses
+    .filter(e => activeFYs.includes(e.fy) && e.status === 'Future Reimbursement' && e.total > 0)
+    .reduce((a,e) => a + e.total, 0);
+
   const totalCurrentAssets = cashBalance + tradeDebtors;
   const totalAssets        = totalCurrentAssets;
-  const totalCurrentLiab   = tradeCreditors + taxPayable;
+  const totalCurrentLiab   = tradeCreditors + partnerPayable + taxPayable;
   const totalLiabilities   = totalCurrentLiab;
   const netAssets          = totalAssets - totalLiabilities;
   const shareCapital       = shareCapitalCash;
   const retainedEarnings   = netAssets - shareCapital;
 
-  return { cashBalance, operatingCash, shareCapitalCash, tradeDebtors, tradeCreditors, taxPayable,
+  return { cashBalance, operatingCash, shareCapitalCash, tradeDebtors, tradeCreditors, partnerPayable, taxPayable,
            totalCurrentAssets, totalAssets, totalCurrentLiab, totalLiabilities,
            netAssets, shareCapital, retainedEarnings };
 }
@@ -2450,8 +2578,8 @@ function rFS() {
 function rATO() {
   // ── KPI cards ──────────────────────────────────────────
   const lodgedBAS  = ATO_BAS_DATA.filter(r => r.lodged).length;
-  const totalBAS   = ATO_BAS_DATA.filter(r => r.result !== 'pending').length;
-  const pendingBAS = ATO_BAS_DATA.filter(r => r.result === 'pending');
+  const totalBAS   = ATO_BAS_DATA.filter(r => r.result !== 'pending' && r.result !== 'ready').length;
+  const pendingBAS = ATO_BAS_DATA.filter(r => r.result === 'ready' || r.result === 'pending');
   const nextAction = pendingBAS.length ? pendingBAS[0].label + ' BAS due ' + pendingBAS[0].dueDate : 'All current BAS lodged';
   const taxLodged  = ATO_TAX_DATA.filter(r => r.lodged).length;
   const bal        = ATO_ACT_DATA.balance;
@@ -2466,7 +2594,7 @@ function rATO() {
     <div class="sc bl">
       <div class="lb">BAS Lodged</div>
       <div class="vl">${lodgedBAS} / ${totalBAS}</div>
-      <div class="sb">Periods with a lodged statement · 1 not on file (Q1 FY2425)</div>
+      <div class="sb">Periods with a lodged statement · 1 not on file (Q1 FY2425) · Q4 FY2526 ready to lodge</div>
     </div>
     <div class="sc tl">
       <div class="lb">Income Tax Returns</div>
@@ -2482,17 +2610,20 @@ function rATO() {
   // ── BAS table ──────────────────────────────────────────
   const resultBadge = r => {
     if(r.result==='credit')  return `<span class="b btl">$${r.net.toFixed(2)} CR</span>`;
+    if(r.result==='ready')   return `<span class="b" style="background:#fdf1f0;color:var(--rd)">$${r.net.toFixed(2)} DR</span>`;
     if(r.result==='nil')     return `<span class="b bgy">$0.00 nil</span>`;
     if(r.result==='pending') return `<span class="b bam">Pending</span>`;
     return `<span class="b" style="background:var(--muted);color:#fff">Not on file</span>`;
   };
   const lodgeBadge = r => {
     if(r.lodged) return `<span class="b bgl" style="background:var(--gn-lt);color:var(--gn)">✓ Lodged ${r.lodgedDate}</span>`;
+    if(r.result==='ready')   return `<span class="b bam">Ready to lodge</span>`;
     if(r.result==='pending') return `<span class="b bam">Not yet due</span>`;
     return `<span class="b" style="background:#fdf1f0;color:var(--rd)">No file</span>`;
   };
   const rowClass = r => {
     if(r.result==='credit')  return 'rb';
+    if(r.result==='ready')   return 'ra';
     if(r.result==='pending') return 'ra';
     if(r.result==='nofile')  return 'rg';
     return '';
@@ -2586,9 +2717,9 @@ function rATO() {
       ${fRow(['date','description','','',''])}</thead>
       <tbody>
         ${ATO_ACT_DATA.transactions.map(t=>`
-        <tr class="${t.credit>0?'rb':''}">
+        <tr class="${t.projected?'ra':t.credit>0?'rb':''}">
           <td>${t.effective}</td>
-          <td>${t.desc}</td>
+          <td>${t.desc}${t.projected?' <span class="b bam" style="margin-left:6px">Projected</span>':''}</td>
           <td class="nr muted">${t.debit>0?'$'+t.debit.toFixed(2):'—'}</td>
           <td class="nr" style="${t.credit>0?'color:var(--gn);font-weight:600':''}">
             ${t.credit>0?'$'+t.credit.toFixed(2):'$0.00'}
@@ -2602,21 +2733,26 @@ function rATO() {
       </tbody>
       <tfoot><tr>
         <td colspan="4"><strong>Current account balance (as at ${ATO_ACT_DATA.asOf})</strong></td>
-        <td class="nr"><strong style="color:var(--gn)">$${ATO_ACT_DATA.balance.toLocaleString('en-AU',{minimumFractionDigits:2})} CR</strong></td>
+        <td class="nr"><strong style="color:${ATO_ACT_DATA.balanceType==='DR'?'var(--rd)':ATO_ACT_DATA.balanceType==='CR'?'var(--gn)':'var(--muted)'}">$${ATO_ACT_DATA.balance.toLocaleString('en-AU',{minimumFractionDigits:2})} ${ATO_ACT_DATA.balanceType==='nil'?'':ATO_ACT_DATA.balanceType}</strong></td>
       </tr></tfoot>
     </table>`;
 
   if(document.getElementById('chart-ato-bas')) {
+    // Refunds plot positive (money toward us), amounts payable plot negative — so the
+    // sign and the colour agree, and both agree with the GST tab. Green = in, red = out.
     const lodged = ATO_BAS_DATA.filter(r=>r.result!=='pending');
+    const signed = lodged.map(r => r.result==='ready' ? -r.net : r.net);
     if(CHARTS.atoBar) CHARTS.atoBar.destroy();
     CHARTS.atoBar = new Chart(document.getElementById('chart-ato-bas'), {
       type:'bar',
       data:{ labels: lodged.map(r=>r.label), datasets:[{
-        label:'Net GST (CR = refund to Noor Energy)',
-        data: lodged.map(r=>r.net),
-        backgroundColor: lodged.map(r=>r.net>0?'rgba(15,155,142,0.8)':r.result==='nofile'?'rgba(110,122,138,0.4)':'rgba(42,110,232,0.4)')
+        label:'Net GST (+ refund to Noor Energy / − payable to ATO)',
+        data: signed,
+        backgroundColor: signed.map((v,i)=> lodged[i].result==='nofile' ? C_NEU : v>0 ? C_IN : v<0 ? C_OUT : C_NEU)
       }]},
-      options:{ maintainAspectRatio:false, plugins:{ legend:{ display:false }}, scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
+      options:{ maintainAspectRatio:false, plugins:{ legend:{ display:false },
+        tooltip:{ callbacks:{ label: c => ' $'+Math.abs(c.parsed.y).toLocaleString('en-AU',{minimumFractionDigits:2}) + (c.parsed.y>0?' refund':c.parsed.y<0?' payable':' nil') }}},
+        scales:{ y:{ ticks:{ callback: v=>'$'+v.toLocaleString() }}}}
     });
   }
 }
@@ -2693,7 +2829,7 @@ function rBS() {
 
   // Use shared computeBS() so Balance Sheet and Income Tax tab are always consistent
   const bs = computeBS(aFY);
-  const { cashBalance, tradeDebtors: receivables, tradeCreditors: payables,
+  const { cashBalance, tradeDebtors: receivables, tradeCreditors: payables, partnerPayable,
           taxPayable, totalCurrentAssets, totalAssets,
           totalCurrentLiab, totalLiabilities, netAssets,
           shareCapital, retainedEarnings: accumulatedSurplus } = bs;
@@ -2724,6 +2860,7 @@ function rBS() {
         ${payables > 0
           ? `<div class="fs-row i1"><span>Trade payables (outstanding bills received)</span><span class="fs-mono">${aud(payables)}</span></div>`
           : `<div class="fs-row i1"><span class="muted">No outstanding trade payables</span><span class="fs-mono muted">$0.00</span></div>`}
+        ${partnerPayable > 0 ? `<div class="fs-row i1"><span>Partner &amp; director reimbursements payable</span><span class="fs-mono">${aud(partnerPayable)}</span></div>` : ''}
         ${taxPayable > 0 ? `<div class="fs-row i1"><span>Income tax payable (est. 25% BRE rate — current year)</span><span class="fs-mono">${aud(taxPayable)}</span></div>` : ''}
         <div class="fs-row tot"><span>Total current liabilities</span><span class="fs-mono">${aud(totalCurrentLiab)}</span></div>
         <div class="fs-row grand" style="border-top:2px solid var(--ink)"><span><strong>Total Liabilities</strong></span><span class="fs-mono"><strong>${aud(totalLiabilities)}</strong></span></div>
@@ -2746,7 +2883,7 @@ function rBS() {
         <div class="fs-row" style="background:var(--gn-lt)">
           <span style="color:var(--gn);font-size:11px">✓ Net Assets = Total Equity (internally consistent from recorded bank data)</span>
         </div>
-        <div class="fs-note">Cash reflects the net of all recorded CBA bank transactions up to ${asAt}, inclusive of GST. Retained earnings is derived as Net Assets minus Share Capital. Non-current assets and off-balance-sheet items not tracked. Verify with a registered accountant.</div>
+        <div class="fs-note">Cash reflects the net of all recorded CBA bank transactions up to ${asAt}, inclusive of GST, and agrees to the CBA closing balance. Share capital is net of any return of capital. Partner &amp; director reimbursements payable are amounts owed for expenses paid personally on the company's behalf; those expenses are <strong>not</strong> recognised in the P&amp;L until reimbursed, so retained earnings — derived as Net Assets minus Share Capital — will not equal the taxable profit or loss in the lodged return. Non-current assets and off-balance-sheet items not tracked. Verify with a registered accountant.</div>
       </div>
     </div>`;
 }
@@ -2760,14 +2897,16 @@ function rCF() {
   const clientFundsIn = bAll.filter(x=>x.type==='Credit'&&x.classification==='Client Funds');
   const expPaid       = bAll.filter(x=>x.type==='Debit'&&x.classification==='Expense');
   const scRcvd        = bAll.filter(x=>x.type==='Credit'&&x.classification==='Share Capital');
+  const scRepaid      = bAll.filter(x=>x.type==='Debit' &&x.classification==='Share Capital');
 
   const cashIncRcvd   = incomeRcvd.reduce((a,x)=>a+x.amount,0);
   const cashCFIn      = clientFundsIn.reduce((a,x)=>a+x.amount,0);
   const cashExpPaid   = expPaid.reduce((a,x)=>a+x.amount,0);
   const cashSCRcvd    = scRcvd.reduce((a,x)=>a+x.amount,0);
+  const cashSCRepaid  = scRepaid.reduce((a,x)=>a+x.amount,0);
 
   const netOperating  = cashIncRcvd + cashCFIn - cashExpPaid;
-  const netFinancing  = cashSCRcvd;
+  const netFinancing  = cashSCRcvd - cashSCRepaid;   // return of capital is a financing OUTflow
 
   // Reconcile: total period bank movement (catches any Transfer/Other transactions)
   const periodCr = bAll.filter(x=>x.type==='Credit').reduce((a,x)=>a+x.amount,0);
@@ -2813,8 +2952,9 @@ function rCF() {
         <div class="fs-row tot"><span>Net cash from / (used in) investing activities</span><span class="fs-mono muted">$0.00</span></div>
 
         <div class="fs-row sh">Cash flows from financing activities</div>
-        ${cashSCRcvd > 0
+        ${(cashSCRcvd > 0 || cashSCRepaid > 0)
           ? scRcvd.map(x=>`<div class="fs-row i1"><span>Proceeds from share capital — ${x.shareholder||'shareholder'}</span><span class="fs-mono" style="color:var(--tl)">${aud(x.amount)}</span></div>`).join('')
+            + scRepaid.map(x=>`<div class="fs-row i1"><span>Return of share capital — ${x.shareholder||'shareholder'}</span><span class="fs-mono" style="color:var(--rd)">(${aud(x.amount)})</span></div>`).join('')
           : `<div class="fs-row i1"><span class="muted">No financing activities this period</span><span class="fs-mono muted">—</span></div>`}
         <div class="fs-row tot"><span><strong>Net cash from / (used in) financing activities</strong></span><span class="fs-mono" style="color:${netFinancing>=0?'var(--tl)':'var(--rd)'};font-weight:700">${netFinancing>=0?aud(netFinancing):'('+aud(Math.abs(netFinancing))+')'}</span></div>
 

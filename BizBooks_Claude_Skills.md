@@ -1,6 +1,6 @@
 # BizBooks × Claude — Skills & Lessons Learned
 
-> Last updated: 27 May 2026
+> Last updated: 27 Jul 2026
 > Purpose: Reference guide for working with Claude Code on the NoorEnergy BizBooks HTML file
 
 ---
@@ -262,3 +262,165 @@ function mergeBase(base, stored) {
 
 ### CSS classes added
 `.ch`, `.collapse-btn`, `.card.collapsed > :not(.ch)`, `tr.frow`, `tr.frow input`, `.chart-wrap` (240px), `.chart-wrap-sm` (180px)
+
+---
+
+## 14. Q4 FY2526 GST Lodgement (Session 3)
+
+### Verified Q4 figures (Apr–Jun 2026, Statement 7)
+
+Opening $10,015.60 → closing **$17,166.34 CR** · credits $25,001.30 · debits $17,850.56 · 12 lines.
+
+| Label | Amount |
+|-------|--------|
+| G1 — Total sales (incl. GST) | $25,000.00 |
+| G11 — Purchases (incl. GST) | $17,681.92 |
+| 1A — GST on sales | $2,181.09 |
+| 1B — GST credits | $1,366.19 |
+| **Net — PAYABLE to ATO** | **$814.90** |
+
+1B components: Free Accounting $3.00 · Reeds $545.28 · Finders Keepers #1251 $545.27 ·
+Finders Keepers #1358 $272.64 · DHL $0 (international, GST-free).
+
+G11 is larger than the Q4 cash outflow because it is date-based, not payment-based: it picks up
+the Yagoub invoice ($2,000, dated 27 Apr 2026 but paid Feb/Mar) and the unpaid DHL PERR000717171
+($331.36, dated 26 Jun, due 26 Jul). Neither carries GST, so 1B is unaffected.
+
+### Classification rule — this one silently loses GST
+
+`rGST()` computes 1A from `DATA.bank` credits where `classification === 'Income'` **only**.
+A taxable sale booked as `'Client Funds'` (the pass-through classification used for the Feb
+equipment deal) contributes **$0 to 1A** with no warning. Rule:
+
+| Situation | Classification | GST on bank entry |
+|-----------|----------------|-------------------|
+| Money received against a tax invoice we issued | `Income` | apportion the invoice GST |
+| Client money held / passed straight through | `Client Funds` | 0 |
+
+When one invoice is paid in instalments, split the invoice's stated GST across the entries so
+the total is exact. Talia's $2,181.09 across five $5,000 credits → `436.22 × 4 + 436.21`.
+Don't use `amount/11` per entry: INV-26-001's GST is not 1/11 of $25,000 because the two DHL
+freight lines are GST-free.
+
+### `'ready'` BAS result type
+
+Added to `ATO_BAS_DATA.result` for "figures prepared, not yet lodged". Requires four touch
+points in `rATO()` — miss any one and the row renders wrong:
+1. `resultBadge` → `$815.00 DR` in red
+2. `lodgeBadge` → amber "Ready to lodge"
+3. `rowClass` → `'ra'`
+4. `pendingBAS` / `totalBAS` filters → include `'ready'` in pending, exclude from the lodged
+   denominator, or the "Next Action" KPI falsely reads "All current BAS lodged"
+
+### Bug fixed — quarterly GST table assumed refunds forever
+
+The `rGST()` quarterly summary hardcoded GST-on-sales as `$0.00` and rendered the net position
+as `(x) Refund` whenever input credits existed. Correct through FY2425–Q3 FY2526 (all refunds),
+wrong from Q4 FY2526 (first payable quarter). Now computes `net = 1A − 1B` per quarter and
+renders Payable / Refund / Nil. The `chart-gst-q` block directly below already did this
+correctly — reuse its `q1A` pattern rather than inventing a new one.
+
+### GST amounts confirmed this session
+
+| Entry | Total | GST | Net | Source |
+|-------|-------|-----|-----|--------|
+| Reeds Prospecting 26-00003114 | $5,998.00 | $545.28 | $5,452.72 | invoice states $545.28 |
+| Finders Keepers #1251 | $5,998.00 | $545.27 | $5,452.73 | receipt states $545.27 |
+| Finders Keepers #1358 | $2,999.00 | $272.64 | $2,726.36 | receipt states $272.64 |
+| Talia INV-26-001 | $25,000.00 | $2,181.09 | $22,818.91 | invoice states $2,181.09 |
+
+Reeds and Finders Keepers charge the same $2,999 unit price but round per-unit GST in opposite
+directions ($545.28 vs $545.27 on identical $5,998 totals) — further proof of §3's rule.
+
+### Open reconciliation items
+
+- INV-26-001 bills Talia for **8×** Gold Monster 2000; only **5** appear in FY2526 purchases
+  (2 Reeds + 2 FK + 1 FK = $14,995). Gross margin is overstated until the other 3 are located.
+- INV-26-001 bills freight of $322.56 (2pcs) and **$685.47 (6pcs)**; only $322.56 and $331.36
+  exist as DHL invoices. Nothing matches $685.47.
+- `b17`: statement narration reads "Transfer To Moahmmed Albashier", booked as Mohammed
+  Magzoub's share-capital refund per director instruction. File note recommended.
+- DHL invoices are addressed to **Yagoub Bala**, not Noor Energy, though paid on company card
+  xx9281. GST is $0 on both so there's no input-credit exposure, but future DHL accounts should
+  be opened in the company name.
+
+---
+
+## 15. Full-Ledger Audit (Session 3)
+
+### The single most important check: cash must tie to the statement
+
+```js
+computeBS(fy).cashBalance   // must equal the CBA closing balance for that FY
+```
+
+FY2425 was $610.12 short and nobody noticed for two years, because `retainedEarnings` is a
+**derived plug** (`netAssets − shareCapital`) — it silently absorbs any missing transaction
+instead of producing an imbalance. The balance sheet always "balances", so balancing proves
+nothing. Reconcile cash to the statement directly, every quarter.
+
+Verified: FY2425 = $10,000.00 · FY2526 = $17,166.34. Both agree to the CBA closing balance.
+
+### Missing entry found — 16 May 2025
+
+The statement shows a **single $1,810.12 credit**; the book recorded only the $1,200 share
+capital portion (`b6`). Added `b29` for the remaining $610.12 (advance from Hashim covering the
+NRMA premium the company had already paid). Lesson: when one bank line is split across two
+accounting purposes, record **both** halves — a split entry is where money goes missing.
+
+### The credit/debit share capital bug was in four places, not one
+
+§11 documented `rShares()` but three other call sites still did a plain
+`.reduce((a,b) => a+b.amount)`, so the $2,500 refund was **added** instead of subtracted:
+
+| Site | Symptom |
+|------|---------|
+| `rDash()` | Share capital tile read +$2,500 for a quarter whose only movement was a refund |
+| `computeBS()` | Balance sheet share capital $12,500 instead of $7,500 — **$5,000 overstated** |
+| `rPL()` | P&L note misstated capital movements |
+| `rCF()` | Refund fell into "other" instead of financing outflow |
+
+Now centralised — use these and never re-derive:
+
+```js
+const scAmt = b => b.type === 'Credit' ? b.amount : -b.amount;
+const scNet = list => list.filter(b => b.classification === 'Share Capital')
+                          .reduce((a,b) => a + scAmt(b), 0);
+```
+
+### Dashboard repeated the GST tab's refund-only bug
+
+`rDash()` hardcoded 1A as `$0.00` and always rendered "ATO owes you". For Q4 it announced a
+**$1,366.19 refund when $814.90 was payable**. Same root cause as §14 — anywhere GST is
+summarised, compute `1A − 1B` and branch on the sign. Both are fixed; check any new summary.
+
+### Partner reimbursements are now a balance sheet liability
+
+Amounts partners paid personally were owed but appeared nowhere in liabilities, overstating
+equity (FY2425 showed retained earnings $0.00 against a lodged $1,152 loss). `computeBS()` now
+returns `partnerPayable`. **Note the deliberate inconsistency:** those expenses are still
+excluded from the P&L until reimbursed — matching the lodged FY2425 return, which claimed only
+Approved items ($1,151.65 ≈ $1,152). So retained earnings will not equal the taxable result.
+Disclosed in the balance sheet note. Confirm the policy with the accountant.
+
+### Chart rules (enforced by the audit sweep)
+
+1. **Shared colour constants** — `C_IN` green (money in / refund), `C_OUT` red (money out /
+   payable), `C_NEU` grey, `C_ACC` blue. Never inline an rgba string; three tabs previously used
+   different alphas of the same hue for the same meaning.
+2. **Never give a multi-series dataset a per-bar colour array.** Chart.js draws the legend swatch
+   from the *first* element, so every other bar's colour contradicts the legend. This is why the
+   GST "Net" series is one colour and the sign carries the meaning.
+3. **A chart must use the same basis as the statement above it.** `chart-pl-bar` plotted
+   GST-inclusive income excluding client funds while the P&L above it was ex-GST including them.
+4. **Both series must cover the same population.** The credits/debits bars excluded client funds
+   from credits but not debits, inflating every quarter's apparent loss.
+5. **Sign conventions must agree with the table.** The GST chart used `1B − 1A` while its own
+   table used `1A − 1B` — the same quarter appeared as a refund in one and a payable in the other.
+
+Sweep to re-run after touching any chart:
+
+```bash
+# renders every FY × quarter, asserts legend/bar colour agreement and equal series lengths
+node -e "...H.run(fy,q).charts..."   # see session transcript
+```

@@ -444,7 +444,7 @@ tr.frow input::placeholder { color:var(--muted); font-style:italic; }
   <div class="card mb" data-card-key="ato-bar"><div class="ch"><h3>BAS Net Result by Period</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap-sm"><canvas id="chart-ato-bas"></canvas></div></div>
   <div class="card mb" data-card-key="ato-bas-tbl"><div class="ch"><h3>BAS Lodge Register</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-bas"></div></div>
   <div class="card mb" data-card-key="ato-tax-tbl"><div class="ch"><h3>Income Tax Returns</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-tax"></div></div>
-  <div class="card" data-card-key="ato-act-tbl"><div class="ch"><h3>ATO Activity Statement — Account 002</h3><span class="sm muted" style="margin-left:8px">Lodged transactions to Q4 FY2526 (lodged 11 Aug 2026) · balance $300.00 CR confirmed in ATO portal 25 Nov 2026</span><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-act"></div></div>
+  <div class="card" data-card-key="ato-act-tbl"><div class="ch"><h3>ATO Activity Statement — Account 002</h3><span class="sm muted" style="margin-left:8px">Lodged transactions to Q4 FY2526 (lodged 11 Aug 2026) · Q1 FY2627 lodged 25 Nov 2026 · balance $436.00 CR per ATO transaction list 25 Nov 2026</span><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-act"></div></div>
 </div>
 
 <!-- ══════ P&L ══════ -->
@@ -977,7 +977,7 @@ const ATO_BAS_DATA = [
   {fy:'FY2526',period:'Q2',label:'Oct–Dec 2025',docId:'58675768425',gstToATO:0,gstByATO:0,sales:0,net:0,result:'nil',dueDate:'03 Mar 2026',lodged:true,lodgedDate:'07 May 2026',notes:'No GST activity · No amount payable'},
   {fy:'FY2526',period:'Q3',label:'Jan–Mar 2026',docId:'59719991714',gstToATO:135,gstByATO:1152,sales:1485,net:1017,result:'credit',dueDate:'12 May 2026',lodged:true,lodgedDate:'07 May 2026',notes:'GST refund — 1A $135 (income GST) vs 1B $1,152 (input credits) · net $1,017 CR · Refundable'},
   {fy:'FY2526',period:'Q4',label:'Apr–Jun 2026',docId:'59969050760',gstToATO:2181,gstByATO:1366,sales:25000,net:815,result:'payable',dueDate:'11 Aug 2026',lodged:true,lodgedDate:'11 Aug 2026',notes:'1A $2,181 (Talia sale INV-26-001) vs 1B $1,366 · $815 OWING · receipt 7543296151 · GST cash basis · offset against the $1,115 ATO account credit → no bank payment needed (none on Statement 8)'},
-  {fy:'FY2627',period:'Q1',label:'Jul–Sep 2026',docId:'—',  gstToATO:0,   gstByATO:136,  sales:0,    net:136,  result:'ready',   dueDate:'11 Nov 2026',  lodged:false, lodgedDate:'',            notes:'Prepared from Statement 8 · 1A $0 (no sales) vs 1B $136.70 (SwitchDin tax invoice INV-0692 on file) · lodge as G1 $0 · 1A $0 · 1B $136 (whole dollars, cents dropped as on Q4) → $136 REFUND · cash basis: SwitchDin paid 05 Jul, in this quarter · OVERDUE per ATO portal (due 11 Nov 2026) · once lodged, ATO account ≈ $436 CR'},
+  {fy:'FY2627',period:'Q1',label:'Jul–Sep 2026',docId:'60641508884', gstToATO:0,   gstByATO:136,  sales:0,    net:136,  result:'credit',  dueDate:'11 Nov 2026',  lodged:true,  lodgedDate:'25 Nov 2026', notes:'GST refund — 1B $136 (SwitchDin INV-0692, GST $136.70) · 1A $0 · lodged 25 Nov 2026 (14 days late; no penalty shown) · processed 25 Nov, effective 11 Nov 2026 · ATO account now $436 CR · receipt 1940176303 · GST cash basis · BAS: BAS/FY2627/BAS_FY2627_JUL-SEP_ATO'},
 ];
 const ATO_TAX_DATA = [
   {fy:'FY2425',label:'FY 2024–25',lodged:true, lodgedDate:'15 May 2026',totalIncome:0,totalExpenses:1152,netPL:-1152,taxableIncome:0,taxPayable:0,amountDue:0,lossCfwd:1152,docId:'TFN on file',notes:'Net loss $1,152 carried forward · No tax payable · Signed by Hashim Hashim 15 May 2026'},
@@ -986,10 +986,11 @@ const ATO_TAX_DATA = [
 const ATO_ACT_DATA = {
   account:'Activity statement 002',
   entity:'NOOR ENERGY PTY LTD',
-  asOf:'25 Nov 2026 (confirmed in ATO portal — nothing overdue, income tax account $0.00)',
-  balance:300,
+  asOf:'25 Nov 2026 (ATO activity statement 002 transactions, generated 25 Nov 2026 — nothing overdue)',
+  balance:436,
   balanceType:'CR',
   transactions:[
+    {effective:'11 Nov 2026',desc:'BAS period ending 30 Sep 2026 (FY2627 Q1) — lodged/processed 25 Nov 2026',debit:0,credit:136,balance:436,balType:'CR'},
     {effective:'11 Aug 2026',desc:'BAS period ending 30 Jun 2026 (FY2526 Q4) — lodged 11 Aug 2026 · offset against credit',debit:815,credit:0,balance:300,balType:'CR'},
     {effective:'12 May 2026',desc:'BAS period ending 31 Mar 2026 (FY2526 Q3)',debit:0,credit:1017,balance:1115,balType:'CR'},
     {effective:'11 Nov 2025',desc:'BAS period ending 30 Sep 2025 (FY2526 Q1)',debit:0,credit:43, balance:98,  balType:'CR'},
@@ -2658,7 +2659,7 @@ function rATO() {
     <div class="sc bl">
       <div class="lb">BAS Lodged</div>
       <div class="vl">${lodgedBAS} / ${totalBAS}</div>
-      <div class="sb">Periods with a lodged statement · Q1 FY2425 not required · ${ATO_BAS_DATA.filter(r=>r.result==='ready').map(r=>r.period+' '+r.fy).join(' & ')} ready to lodge</div>
+      <div class="sb">Periods with a lodged statement · Q1 FY2425 not required${(()=>{const r=ATO_BAS_DATA.filter(r=>r.result==='ready').map(r=>r.period+' '+r.fy);return r.length?' · '+r.join(' & ')+' ready to lodge':' · all current BAS lodged';})()}</div>
     </div>
     <div class="sc tl">
       <div class="lb">Income Tax Returns</div>

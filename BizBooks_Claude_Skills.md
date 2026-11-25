@@ -659,3 +659,12 @@ Lesson: grep for the **value** you are redacting, not just the label shape.
   without the bank line would drop the liability while cash still holds the $500.
 - `e5`/`e6` website design ($676.20) were paid by Mohammed Albashier (Magzoub).
 - `e20` notarisation $219.12: paid by Merghani, known to all partners; no signed note.
+
+### Q1 FY2627 BAS lodged (25 Nov 2026)
+
+Source: `3. Tax & Activity Statement/Activity Statements/Activity statement 002 transactions -
+25 Nov 2026.pdf`. Q1 FY2627 processed 25 Nov (effective 11 Nov), **$136 CR** → account
+**$436.00 CR**, nothing overdue. Every earlier line on the ATO list matches `ATO_ACT_DATA`.
+Document ID **60641508884**, receipt 1940176303 — from the BAS print
+(`BAS/FY2627/BAS_FY2627_JUL-SEP_ATO`). With no BAS outstanding the $436 credit can be
+requested as a refund, or left to offset the FY2526 income tax.

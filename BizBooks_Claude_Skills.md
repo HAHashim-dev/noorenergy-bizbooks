@@ -1,6 +1,6 @@
 # BizBooks × Claude — Skills & Lessons Learned
 
-> Last updated: 27 Jul 2026
+> Last updated: 24 Nov 2026
 > Purpose: Reference guide for working with Claude Code on the NoorEnergy BizBooks HTML file
 
 ---
@@ -530,3 +530,132 @@ prunes objects irreversibly, and commits that become empty are dropped from the 
 The `origin` URL had a `gho_…` token embedded in it, in plaintext in `.git/config` inside an
 OneDrive-synced folder — replicated to Microsoft's cloud and every synced device. Use
 `gh auth setup-git` and a plain remote URL instead of embedding credentials.
+
+---
+
+## 18. Q1 FY2627 — Statement 8 (Session 4, 24 Nov 2026)
+
+Opening $17,166.34 → closing **$2,730.16 CR** · debits $14,623.18 · credits $187.00 · 10 lines →
+11 bank entries (`b30`–`b39`, one split) + expenses `e28`–`e32`. `STATEMENT_CASH.FY2627` added.
+
+### Matching tricks that worked
+
+- **Card surcharge:** DHL debit $185.79 vs invoice $183.77 — difference is exactly 1.1%
+  ($183.77 × 0.011 = $2.02), which the DHL invoice footer discloses. Book the bank line against
+  the invoice ref (clears the creditor) and the surcharge as its own `Bank Charges` expense,
+  or P&L and cash drift by $2.02.
+- **Split again:** "Refund HH share" $3,110.12 = $2,500 share capital refund + $610.12 repayment
+  of the May 2025 advance (`b29`/`e19`). Same lesson as §15 — one bank line, two purposes.
+
+### Repaid partner advances — `reimbursedFy`
+
+A `Future Reimbursement` item stays that status forever (the P&L / lodged FY2425 return must
+not change). Repayment is recorded with `reimbursedFy` / `reimbursedDate`, and every "owed to
+partner" figure goes through `owedToPartner(e, asOfFYs)`, so it is still a liability on the
+FY2425/FY2526 balance sheets and gone from FY2627 on. verify.js asserts this.
+
+### `mergeBase` now refreshes base entries
+
+Previously a stored copy of a base id always won, so any correction to an existing hardcoded
+entry (notes, new fields) never reached a browser that already had localStorage. Base entries
+now replace their stored copies; user-added (uid) entries are untouched. Safe only because the
+UI has no in-place edit — if an edit feature is ever added, revisit this.
+
+### `'ready'` BAS can now be a refund
+
+`basPayable(r)` (1A > 1B) decides DR vs CR in the badge and the chart sign. Q4 FY2526 is a
+payable, Q1 FY2627 a refund. verify.js asserts the direction and `net == |1A − 1B|`.
+
+### Talia order INV-26-001 — 8 units now accounted for
+
+Units 6–8 were bought by partner Yagoub Bala (company paid him $9,000 on 08 Jul 2026, ref
+"Refund"). Booked as an FY2627 `Equipment` expense (`e29`), GST $0 until his retail tax
+invoices are filed. The FY2627 DHL charges were first assumed to be the freight for those units
+(the $685.47 freight line on INV-26-001), but the invoices filed 25 Nov 2026 show otherwise; see
+"DHL invoices filed" below. Timing: the revenue sits in FY2526 and this cost in
+FY2627 — ask the accountant whether to accrue it into FY2526 before that return is lodged.
+
+### Open items after Statement 8
+
+- Yagoub — receipts/serials for the 3 units; $3 difference vs 3 × $2,999.
+- FY2526 income tax unpaid / not lodged; `computeBS` does not carry prior-year tax or GST payable forward.
+- ASIC company statement (09 Jul 2026): 4 shares, $4,000 paid (Hashim 2, Yagoub 1, Magzoub 1)
+  — disagrees with the books ($5,000 share capital, 4 × 25% incl. Merghani).
+
+### DHL invoices filed (25 Nov 2026)
+
+| Invoice | Date | Amount | Shipment | Paid |
+|---|---|---|---|---|
+| PERIR00307492 | 23 Jul | $35.09 | UAE duty $30 + taxes $5.09 on AWB 4256417185 | b37, 28 Jul |
+| PERR000720101 | 31 Jul | $115.12 | AWB 4256417185, 2kg, Hashim → Al Qusais, Dubai | b38, 04 Sep (5 days late) |
+| PERR000723189 | 04 Sep | $186.79 | 4.5kg, Yagoub → Eithar Services, Dubai | unpaid at 30 Sep (`ii9`) |
+| PERR000725885 | 09 Oct | $345.42 | 14kg, Yagoub → Eithar Services, Dubai | Q2 — check Oct–Dec stmt (`ii10`) |
+
+- AWB 4256417185 (2kg, consignee Mohamedelmustafa Ahmed Albashir) does not look like a Gold
+  Monster shipment — those run ~4–4.5kg per unit. Confirm its business purpose.
+- The Eithar Services 4.5kg shipments (PERR000718305 in Jul, PERR000723189 in Aug) fit one unit
+  each — likely the Talia units 6–8 freight. Confirm with Yagoub.
+- `b39` $187.00 from Yagoub on 07 Sep came 3 days after PERR000723189 ($186.79). Possibly funding
+  that bill, but unconfirmed — still booked as `Other`.
+- Duty invoices start `PERIR`, not `PERR` — easy to mistype when matching.
+
+### Resolved 25 Nov 2026
+
+- SwitchDin INV-0692 filed: split into device + shipping (`e28`, Equipment, GST $96.70) and the
+  annual Droplet licence (`e35`, Software & Subscriptions, GST $40). 1B unchanged at $136.70.
+- `b39` $187 = Yagoub funding DHL PERR000723189 → recorded as a partner advance (`e36`,
+  `Future Reimbursement`), so it is a liability, not a retained-earnings plug.
+- 3 Gold Monsters (`e29`): no retail receipts. Plan: signed purchase declaration from Yagoub +
+  his card/bank lines + serials/DHL airway bills + Talia's confirmation of receipt, filed under
+  `FY2627/Other/`. GST credit (~$818) deliberately NOT claimed; income-tax deduction relies on
+  the evidence chain. Main risk if undocumented: a $9,000 "Refund" to a shareholder could be
+  read as a Division 7A deemed dividend.
+
+### Q4 FY2526 BAS lodged (filed 25 Nov 2026)
+
+`BAS_FY2526_APR-JUN_ATO` — lodged **11 Aug 2026**, doc 59969050760, receipt 7543296151, 1A $2,181,
+1B $1,366, **$815 owing**, payment due 11 Aug 2026. Matched the prepared figures to the dollar.
+
+- **Why no bank payment:** the ATO account already held $1,115 CR (Q3 FY2526 $1,017 + earlier
+  refunds never paid out to CBA). The $815 offsets → **$300 CR**. The ATO usually withholds
+  refunds while any lodgement is outstanding (Q1 FY2425 "not on file", Q1 FY2627).
+- **New BAS result type `'payable'`** = lodged with an amount owing (`'ready'` is unlodged).
+  `basPayable(r)` drives badge colour and chart sign for both; the table footer is now the net of
+  all lodged statements and ties to `ATO_ACT_DATA.balance` (verify.js asserts this).
+- **GST accounting method is CASH** (stated on the BAS). 1A/1B belong to the quarter the money
+  moves, not the invoice date. The app's GST tab is date-based; so far every GST-bearing item was
+  paid in the same quarter it was dated, so no difference yet — check this whenever a GST-bearing
+  bill is unpaid at quarter end.
+- **Saving ATO PDFs:** Safari "Print" from the ATO portal first produced a blank 902-byte PDF.
+  Check the file size (~90–260 KB is normal) before reading.
+
+### Director answers & portal check (25 Nov 2026)
+
+- ATO portal: activity statement 002 **$300.00 CR** (matches derived figure), income tax 001 $0.00.
+  Overdue: Q1 FY2627 BAS (portal due **11 Nov 2026**) and FY2526 return (portal due **02 Nov 2026**).
+- Q1 FY2425 BAS: **not required** → new BAS result `'notreq'` (grey, excluded from lodged count).
+- Q1 FY2627 BAS to lodge: G1 $0 · 1A $0 · 1B **$136** (cents dropped, as the ATO did on Q4).
+- Gold Monster units 6–8 bought **after 30 Jun 2026** → `e29` stays in FY2627. FY2526 return
+  lodges on current figures: 6S $38,578.91 · 6Q $29,001.02 · taxable $8,426.24 · tax $2,106.56.
+- Talia freight: INV-26-001 freight lines are fixed prices to the client — no reconciliation.
+- "Moahmmed Albashier" on `b17` = Mohammed Magzoub (ASIC full name Mohammed Ahmed Magzoub
+  Albashier). Same person also appears as "Mohammed Albashier" on `e9`/`e10`.
+
+### ⚠️ TFN was still public until 25 Nov 2026
+
+The July redaction (§17) missed `field('Business Entity TFN', …)` on the Income Tax FAS form —
+added by commit 172ba33 — so the company TFN stayed in HEAD and on GitHub Pages. Fixed
+locally; verify.js now fails on nine digits next to "TFN". §17's grep only matched
+`TFN ?[0-9]`, which cannot see `'TFN','661…` — the label and value are separate arguments.
+Lesson: grep for the **value** you are redacting, not just the label shape.
+
+### Follow-ups confirmed (25 Nov 2026)
+
+- AWB 4256417185 ($115.12 freight + $35.09 UAE duty) shipped the SwitchDin Droplet PLUS to
+  Mohamedelmustafa Ahmed Albashir in Dubai — business freight (`e31`/`e32`).
+- `e17` $500 site survey: refunded to Magzoub from the company account in **Oct 2026**. When the
+  Oct–Dec statement (BANK_FY2627_DEC_CBA) arrives: add the bank debit (`Other`, shareholder
+  Magzoub) and set `reimbursedFy:'FY2627'` on `e17` **in the same change** — setting the flag
+  without the bank line would drop the liability while cash still holds the $500.
+- `e5`/`e6` website design ($676.20) were paid by Mohammed Albashier (Magzoub).
+- `e20` notarisation $219.12: paid by Merghani, known to all partners; no signed note.

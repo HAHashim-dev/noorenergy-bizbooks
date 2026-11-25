@@ -22,7 +22,7 @@ const DOCS  = path.resolve(__dirname, '../../2. Expenses And Receipts');
 // important check in this file: if book cash drifts from these, a transaction is
 // missing or duplicated. Retained earnings is a derived plug and will silently
 // absorb such an error, so the balance sheet still balancing proves nothing.
-const STATEMENT_CASH = { FY2425: 10000.00, FY2526: 17166.34 };
+const STATEMENT_CASH = { FY2425: 10000.00, FY2526: 17166.34, FY2627: 2730.16 };  // FY2627 = Statement 8, 30 Sep 2026
 
 let failures = 0, checks = 0;
 const money = n => '$' + Number(n).toLocaleString('en-AU', { minimumFractionDigits: 2 });
@@ -112,6 +112,19 @@ for (const fy of FYS) {
   const bs = evalIn(`computeBS(${JSON.stringify(fy)})`);
   eq(`${fy} Net Assets == Total Equity`, bs.netAssets, bs.shareCapital + bs.retainedEarnings);
 }
+// A repaid partner advance must leave the balance sheet in the FY it is repaid, and only then.
+// Bug pattern: repayment booked in the bank but the liability still carried, overstating
+// liabilities and understating equity by the repaid amount.
+const repaidLeak = evalIn(`(() => {
+  const order = ['FY2425','FY2526','FY2627','FY2728'];
+  return DATA.expenses.filter(e => e.reimbursedFy).flatMap(e => order.map(fy => {
+    const asOf = order.slice(0, order.indexOf(fy)+1);
+    if (!asOf.includes(e.fy)) return null;
+    const shouldOwe = !asOf.includes(e.reimbursedFy);
+    return owedToPartner(e, asOf) === shouldOwe ? null : e.id+' wrong as at '+fy;
+  })).filter(Boolean);
+})()`);
+ok('repaid partner advances drop off the balance sheet in their repayment FY only', repaidLeak.length === 0, repaidLeak.join(', '));
 
 // ── 3. The same figure across tabs ────────────────────────────────────────────
 console.log('\nCross-tab agreement (full year)');
@@ -146,6 +159,26 @@ for (const r of bas) {
   ok(`${r.p}  1A ${r.l1A}/${r.c1A.toFixed(2)}  1B ${r.l1B}/${r.c1B.toFixed(2)}`,
      Math.abs(r.l1A - r.c1A) < 1 && Math.abs(r.l1B - r.c1B) < 1);
 }
+// A prepared or lodged-payable BAS must show the direction its own 1A/1B imply — 'ready' once meant payable only.
+const readyDir = evalIn(`ATO_BAS_DATA.filter(r=>r.result==='ready'||r.result==='payable').map(r=>({p:r.fy+' '+r.period,
+  net:r.net, calc:Math.abs(r.gstToATO-r.gstByATO), payable:basPayable(r), want:r.gstToATO>r.gstByATO}))`);
+for (const r of readyDir)
+  ok(`${r.p} prepared BAS reads ${r.payable ? 'payable' : 'refund'} and net == |1A − 1B|`,
+     r.payable === r.want && Math.abs(r.net - r.calc) < 1);
+
+// The ATO account balance must equal the net of every lodged BAS (refunds − payables),
+// unless refunds were actually paid out. Catches a lodged BAS whose figures were never keyed
+// into ATO_BAS_DATA, and an account balance left stale after a lodgement.
+const atoNet = evalIn(`ATO_BAS_DATA.filter(r=>r.lodged).reduce((s,r)=>s+(basPayable(r)?-r.net:r.net),0)`);
+const atoBal = evalIn(`ATO_ACT_DATA.balanceType==='DR' ? -ATO_ACT_DATA.balance : ATO_ACT_DATA.balance`);
+eq('ATO account balance == net of lodged BAS', atoBal, atoNet);
+
+// The repo is PUBLIC. A TFN slipped through the July 2026 redaction inside a field() call on
+// the Income Tax form and stayed live on GitHub Pages until Nov 2026. ACNs share the
+// "ddd ddd ddd" shape but are public, so only flag nine digits sitting next to "TFN".
+const tfnHits = html.split('\n').map((l, i) => [i + 1, l])
+  .filter(([, l]) => /TFN[^\n]{0,40}?\b\d{3}[ -]?\d{3}[ -]?\d{3}\b/.test(l)).map(([n]) => 'line ' + n);
+ok('no tax file number in the published HTML', tfnHits.length === 0, tfnHits.join(', '));
 
 // ── 5. Charts ─────────────────────────────────────────────────────────────────
 console.log('\nCharts');

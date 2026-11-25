@@ -444,7 +444,7 @@ tr.frow input::placeholder { color:var(--muted); font-style:italic; }
   <div class="card mb" data-card-key="ato-bar"><div class="ch"><h3>BAS Net Result by Period</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div class="chart-wrap-sm"><canvas id="chart-ato-bas"></canvas></div></div>
   <div class="card mb" data-card-key="ato-bas-tbl"><div class="ch"><h3>BAS Lodge Register</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-bas"></div></div>
   <div class="card mb" data-card-key="ato-tax-tbl"><div class="ch"><h3>Income Tax Returns</h3><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-tax"></div></div>
-  <div class="card" data-card-key="ato-act-tbl"><div class="ch"><h3>ATO Activity Statement — Account 002</h3><span class="sm muted" style="margin-left:8px">Lodged transactions processed 08 May 2026 · Q4 FY2526 shown as projected until lodged</span><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-act"></div></div>
+  <div class="card" data-card-key="ato-act-tbl"><div class="ch"><h3>ATO Activity Statement — Account 002</h3><span class="sm muted" style="margin-left:8px">Lodged transactions to Q4 FY2526 (lodged 11 Aug 2026) · balance $300.00 CR confirmed in ATO portal 25 Nov 2026</span><button class="collapse-btn" onclick="toggleCard(this)">▲ Hide</button></div><div id="ato-act"></div></div>
 </div>
 
 <!-- ══════ P&L ══════ -->
@@ -796,14 +796,14 @@ const BASE_EX = [
   {id:'e3',date:'2024-10-21',fy:'FY2425',desc:'ASIC Refund — Business Name fee returned',supplier:'ASIC',cat:'Registration & Licences',total:-102,gst:0,net:-102,src:'RECEIPT_FY2425_OCT_ASIC REFUND',status:'Refund',notes:'Receipt H238303181389 · Card xx5566'},
   {id:'e4',date:'2025-02-13',fy:'FY2425',desc:'NRMA Business Insurance — Policy 6807260 (effective 1 Mar 2025)',supplier:'NRMA Insurance',cat:'Insurance',total:610.12,gst:55.47,net:554.65,src:'RECEIPT_FY2425_FEB_INSURANCE POLICY',status:'Approved',notes:'Receipt #74549585 · Card xx9281 · matched to bank 18 Feb 2025'},
   // ── FY2425 · Partner-Paid Expenses — Future Reimbursement ──
-  {id:'e5',date:'2024-07-08',fy:'FY2425',desc:'Website Design — noorenergy.com.au development (500,000 SDG · AUD $443.70 equiv.)',supplier:'Mustafa Anwer Mohammed Hussien',cat:'Marketing & Website',total:443.70,gst:0,net:443.70,src:'EXPENSE_FY2425_JUL_WEBSITE DESIGN TRANSFER [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid via Bank of Khartoum · Trx.ID 20012470002 · 500,000 SDG · AUD $443.70 equiv. per Excel expense log'},
-  {id:'e6',date:'2024-08-02',fy:'FY2425',desc:'Logo & Website Design — additional payment (290,000 SDG · AUD $232.50 equiv.)',supplier:'Mustafa Anwer Mohammed Hussien',cat:'Marketing & Website',total:232.50,gst:0,net:232.50,src:'EXPENSE_FY2425_AUG_LOGO DESIGN TRANSFER [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid via Bank of Khartoum · Trx.ID 20012890191 · 290,000 SDG = AUD $232.50 equiv. per Excel expense log'},
+  {id:'e5',date:'2024-07-08',fy:'FY2425',desc:'Website Design — noorenergy.com.au development (500,000 SDG · AUD $443.70 equiv.)',supplier:'Mustafa Anwer Mohammed Hussien',cat:'Marketing & Website',total:443.70,gst:0,net:443.70,src:'EXPENSE_FY2425_JUL_WEBSITE DESIGN TRANSFER [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Mohammed Albashier (Magzoub) via Bank of Khartoum (confirmed by director 25 Nov 2026) · Trx.ID 20012470002 · 500,000 SDG · AUD $443.70 equiv. per Excel expense log'},
+  {id:'e6',date:'2024-08-02',fy:'FY2425',desc:'Logo & Website Design — additional payment (290,000 SDG · AUD $232.50 equiv.)',supplier:'Mustafa Anwer Mohammed Hussien',cat:'Marketing & Website',total:232.50,gst:0,net:232.50,src:'EXPENSE_FY2425_AUG_LOGO DESIGN TRANSFER [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Mohammed Albashier (Magzoub) via Bank of Khartoum (confirmed by director 25 Nov 2026) · Trx.ID 20012890191 · 290,000 SDG = AUD $232.50 equiv. per Excel expense log'},
   {id:'e7',date:'2024-08-31',fy:'FY2425',desc:'Document Postage to ATO — Canada Post international express (CAD $120.35 · AUD $131.85 equiv.)',supplier:'Canada Post',cat:'Postage & Freight',total:131.85,gst:0,net:131.85,src:'EXPENSE_FY2425_SEP_DOCS POSTAGE [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Merghani Ahmed · Receipt CC104632 · Destination: Australian Taxation Office · No AU GST (foreign purchase) · AUD $131.85 per Excel expense log'},
-  {id:'e20',date:'2024-08-31',fy:'FY2425',desc:'Documents Notarization — company and bank registration paperwork (CAD $200 · AUD $219.12 equiv.)',supplier:'Rajvir Sindhu Notary Public',cat:'Professional Services',total:219.12,gst:0,net:219.12,src:'EXPENSE_FY2425_AUG_DOCS NOTARIZATION [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Merghani Ahmed · CAD $200 = AUD $219.12 equiv. · cash payment · no receipt (vendor requested cash)'},
+  {id:'e20',date:'2024-08-31',fy:'FY2425',desc:'Documents Notarization — company and bank registration paperwork (CAD $200 · AUD $219.12 equiv.)',supplier:'Rajvir Sindhu Notary Public',cat:'Professional Services',total:219.12,gst:0,net:219.12,src:'EXPENSE_FY2425_AUG_DOCS NOTARIZATION [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Merghani Ahmed · CAD $200 = AUD $219.12 equiv. · cash payment · no receipt (vendor requested cash) · payment by Merghani confirmed by director 25 Nov 2026 and known to all partners'},
   {id:'e8',date:'2025-01-02',fy:'FY2425',desc:'Business Card Printing — 100 standard cards (Vistaprint)',supplier:'Vistaprint Australia',cat:'Office Supplies',total:44.98,gst:4.09,net:40.89,src:'EXPENSE-FY2425_JAN_BUSINESS CARD PRINTING [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Yagoub Bala · Invoice #0223975009 · delivered to 428B Great Eastern Hwy Woodbridge'},
   {id:'e9',date:'2024-07-08',fy:'FY2425',desc:'Domain Registration noorenergy.com.au + Microsoft 365 Email Essentials 1yr (actual payment 26 May 2024)',supplier:'GoDaddy',cat:'Software & Subscriptions',total:142.10,gst:12.92,net:129.18,src:'EXPENSE_FY2425_MAY_DOMAIN EXPENSES [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Mohammed Albashier · Receipt #3098273852 · emails: jacob@, hashim@, mo@noorenergy.com.au'},
   {id:'e10',date:'2025-05-15',fy:'FY2425',desc:'Domain Renewal noorenergy.com.au + Ownership Protection (1yr)',supplier:'GoDaddy',cat:'Software & Subscriptions',total:42.59,gst:3.87,net:38.72,src:'EXPENSE_FY2425_MAY_DOMAIN RENEWAL [FUTURE]',status:'Future Reimbursement',notes:'Partner-paid by Mohammed Albashier · Receipt #3747492349'},
-  {id:'e19',date:'2025-05-16',fy:'FY2425',desc:'Partner Capital Advance — excess over agreed $5,000 share contribution (general business expenses)',supplier:'Hashim Hashim',cat:'Other',total:610.12,gst:0,net:610.12,src:'BANK_FY2425_MAY_CBA',status:'Future Reimbursement',notes:'Part of $1,810.12 bank transfer on 16 May 2025 · $1,200 allocated to share capital · remaining $610.12 owed back to Hashim as a business expense advance'},
+  {id:'e19',date:'2025-05-16',fy:'FY2425',desc:'Partner Capital Advance — excess over agreed $5,000 share contribution (general business expenses)',supplier:'Hashim Hashim',cat:'Other',total:610.12,gst:0,net:610.12,src:'BANK_FY2425_MAY_CBA',status:'Future Reimbursement',reimbursedFy:'FY2627',reimbursedDate:'2026-07-15',notes:'Part of $1,810.12 bank transfer on 16 May 2025 · $1,200 allocated to share capital · remaining $610.12 owed back to Hashim as a business expense advance · REPAID 15 Jul 2026 (bank b34, part of $3,110.12 "Refund HH share")'},
   // ── FY2526 · Company Expenses ──
   {id:'e11',date:'2025-08-07',fy:'FY2526',desc:'Lawpath Essentials Plan — legal & compliance subscription',supplier:'Lawpath',cat:'Software & Subscriptions',total:468,gst:42.54,net:425.46,src:'RECEIPT_FY2526_AUG_LAW PATH SUBSCRIPTION',status:'Approved',notes:'Invoice #77PB4EC8-0002 · matched to bank debit 07 Aug 2025'},
   {id:'e12',date:'2025-08-30',fy:'FY2526',desc:'ASIC Annual Company Registration Renewal — Noor Energy PTY LTD',supplier:'ASIC',cat:'Registration & Licences',total:329,gst:0,net:329,src:'BANK_FY2526_SEP_CBA',status:'Approved',notes:'BPAY Ref 2296789220516 · paid via CommBank app · no GST on government fees'},
@@ -812,7 +812,7 @@ const BASE_EX = [
   {id:'e15',date:'2026-03-17',fy:'FY2526',desc:'DHL Express Worldwide — Perth to Dubai (4 items, 27.5kg) for Mogahid Altayeb',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:415.25,gst:0,net:415.25,src:'RECEIPT_FY2526_MAR_DHL POSTAGE_PERR000708514',status:'Approved',notes:'Invoice PERR000708514 · Air Waybill 7565139610 · Non-taxable international · Consignee: Mogahid Mahdi Alrayeb, Deira, Dubai'},
   {id:'e16',date:'2026-03-30',fy:'FY2526',desc:'NRMA Business Insurance Renewal — Policy 6807260',supplier:'NRMA Business Insurance',cat:'Insurance',total:671.15,gst:61.01,net:610.14,src:'BANK_FY2526_MAR_CBA',status:'Approved',notes:'BPAY Ref 07940416001 · Renewal BP 6807260 · matched to bank debit 30 Mar 2026'},
   // ── FY2526 · Partner-Paid Expenses — Future Reimbursement ──
-  {id:'e17',date:'2026-04-15',fy:'FY2526',desc:'Site Survey Expenses — Halfawi site visit (AUD $500 · 1,000,000 SDG equiv.)',supplier:'Mosab Ahmed Osman Ahmed / M Osman',cat:'Travel',total:500,gst:0,net:500,src:'EXPENSE_FY2526_APR_SITE SURVEY EXPENSES [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid: AUD $500 via PayID (Smart Access acct on file, Receipt N441569044793) · equivalent 1,000,000 SDG via Bank of Khartoum (Trx.ID 20024607574)'},
+  {id:'e17',date:'2026-04-15',fy:'FY2526',desc:'Site Survey Expenses — Halfawi site visit (AUD $500 · 1,000,000 SDG equiv.)',supplier:'Mosab Ahmed Osman Ahmed / M Osman',cat:'Travel',total:500,gst:0,net:500,src:'EXPENSE_FY2526_APR_SITE SURVEY EXPENSES [FUTURE][',status:'Future Reimbursement',notes:'Partner-paid by Mohammed Magzoub (Albashier) from his personal account · REFUNDED from the company account in Oct 2026 (director, 25 Nov 2026) — still shown as owed until the Oct–Dec statement is filed; then book the bank debit and set reimbursedFy:\'FY2627\' · AUD $500 via PayID (Smart Access acct on file, Receipt N441569044793) · equivalent 1,000,000 SDG via Bank of Khartoum (Trx.ID 20024607574)'},
   // ── FY2526 · Q4 Company Expenses ──
   {id:'e18',date:'2026-05-14',fy:'FY2526',desc:'Business License Fee — Self-Lodgement of 2025 Income Tax Return',supplier:'Free Accounting Software',cat:'Professional Services',total:33,gst:3,net:30,src:'RECEIPT_FY2526_MAY_INCOME TAX FEE',status:'Approved',notes:'Invoice S9008 · ABN 38 111 951 645 · freeaccountingsoftware.com.au · matched to bank debit 19 May 2026 (value date 15 May)'},
   {id:'e21',date:'2026-06-02',fy:'FY2526',desc:'Equipment Purchase — 2× Minelab Gold Monster 2000 (S/N 61628099711, 51743003624) for Talia Services order',supplier:'Raddock PTY LTD (Reeds Prospecting Supplies)',cat:'Equipment',total:5998,gst:545.28,net:5452.72,src:'RECEIPT_FY2526_JUN_REEDS PROSPECTING-26-00003114',status:'Approved',notes:'Tax Invoice 26-00003114 · ABN 92 834 205 571 · paid in full 02 Jun 2026 (EFTPOS) · invoice states GST $545.28 · includes $188 discount (training + arm rests)'},
@@ -821,8 +821,17 @@ const BASE_EX = [
   {id:'e24',date:'2026-06-12',fy:'FY2526',desc:'DHL Express Worldwide — Woodbridge to Ajman UAE (2 items, 8.0kg) for Talia Services order',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:322.56,gst:0,net:322.56,src:'INV-IN_FY2526_JUN_DHL POSTAGE_PERR000716038',status:'Approved',notes:'Invoice PERR000716038 · non-taxable international freight · paid 17 Jun 2026 (value date 14 Jun)'},
   {id:'e25',date:'2026-06-26',fy:'FY2526',desc:'DHL Express Worldwide — Woodbridge to Ferij Murar Deira Dubai (2 items, 9.0kg)',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:331.36,gst:0,net:331.36,src:'RECEIPT_FY2526_JUN_DHL POSTAGE_PERR000717171',status:'Approved',notes:'Invoice PERR000717171 · non-taxable international freight · UNPAID at 30 Jun 2026 · payment due 26 Jul 2026'},
   // ── FY2627 · Q1 Company Expenses ──
-  {id:'e26',date:'2026-07-09',fy:'FY2627',desc:'ASIC Annual Review Fee — Noor Energy PTY LTD annual company statement',supplier:'ASIC',cat:'Registration & Licences',total:342,gst:0,net:342,src:'INV-IN_FY2627_JUL_ANNUAL COMPANY STATEMENT',status:'Approved',notes:'ACN 678 922 051 · review date 08 Jul 2026 · issued 09 Jul 2026 · UNPAID · due 08 Sep 2026 · no GST (Treasurer’s determination — exempt taxes, fees and charges) · late fees apply after due date'},
-  {id:'e27',date:'2026-07-10',fy:'FY2627',desc:'DHL Express Worldwide — Woodbridge international shipment (1 item, 4.5kg)',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:183.77,gst:0,net:183.77,src:'RECEIPT_FY2627_JUL_DHL POSTAGE_PERR000718305',status:'Approved',notes:'Invoice PERR000718305 · non-taxable international freight · UNPAID · due 09 Aug 2026'},
+  {id:'e26',date:'2026-07-09',fy:'FY2627',desc:'ASIC Annual Review Fee — Noor Energy PTY LTD annual company statement',supplier:'ASIC',cat:'Registration & Licences',total:342,gst:0,net:342,src:'INV-IN_FY2627_JUL_ANNUAL COMPANY STATEMENT',status:'Approved',notes:'ACN 678 922 051 · review date 08 Jul 2026 · issued 09 Jul 2026 · paid 18 Jul 2026 via BPAY (ref 2296789220516) · no GST (Treasurer’s determination — exempt taxes, fees and charges)'},
+  {id:'e27',date:'2026-07-10',fy:'FY2627',desc:'DHL Express Worldwide — Perth to Ferij Murar Deira Dubai (1 item, 4.5kg · AWB 4610453175)',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:183.77,gst:0,net:183.77,src:'RECEIPT_FY2627_JUL_DHL POSTAGE_PERR000718305',status:'Approved',notes:'Invoice PERR000718305 · non-taxable international freight · paid 21 Jul 2026 (value date 18 Jul) by card xx9281 — $185.79 incl. 1.1% card surcharge (see e30)'},
+  {id:'e28',date:'2026-07-03',fy:'FY2627',desc:'SwitchDin Droplet PLUS energy management device + shipping Newcastle → WA',supplier:'SwitchDin Pty Ltd',cat:'Equipment',total:1063.70,gst:96.70,net:967.00,src:'INV-IN_FY2627_JUL_DROPLET PURCHASE_0692',status:'Approved',notes:'Tax Invoice INV-0692 · 3 Jul 2026 · PO-26-0001 · ABN 29 154 893 857 · Droplet PLUS $900 + shipping $67 ex GST · paid 05 Jul 2026 (bank b31, $1,503.70 incl. licence e35) · under $1,000 — immediately deductible'},
+  {id:'e35',date:'2026-07-03',fy:'FY2627',desc:'SwitchDin Droplet PLUS licence — Energy Management Smart, annual (1 Aug 2026 – 31 Jul 2027)',supplier:'SwitchDin Pty Ltd',cat:'Software & Subscriptions',total:440,gst:40,net:400,src:'INV-IN_FY2627_JUL_DROPLET PURCHASE_0692',status:'Approved',notes:'Tax Invoice INV-0692 · $400 ex GST · 12-month prepayment ending within the next income year — deductible in full in FY2627 under the small-business prepayment rule · paid 05 Jul 2026 (bank b31)'},
+  {id:'e36',date:'2026-09-07',fy:'FY2627',desc:'Partner advance — Yagoub Bala funding DHL invoice PERR000723189',supplier:'Yagoub Yousif Yagoub Bala',cat:'Other',total:187,gst:0,net:187,src:'BANK_FY2627_SEP_CBA',status:'Future Reimbursement',notes:'Fast transfer 07 Sep 2026 (bank b39) · paid in by Yagoub to cover DHL PERR000723189 ($186.79) · owed back to Yagoub — a liability, not income, so excluded from P&L (same treatment as e19) · $0.21 over the invoice'},
+  {id:'e29',date:'2026-07-08',fy:'FY2627',desc:'Equipment — 3× Minelab Gold Monster 2000 purchased by partner to complete Talia order INV-26-001 (units 6–8 of 8)',supplier:'Yagoub Yousif Yagoub Bala (partner, purchasing agent)',cat:'Equipment',total:9000,gst:0,net:9000,src:'BANK_FY2627_SEP_CBA',status:'Approved',notes:'Paid to Yagoub 08 Jul 2026 (ref "Refund") · funds were originally to be refunded to the client for the 3 undelivered units; Yagoub instead bought the units and shipped them to the client · 3 × $2,999 = $8,997 — $3 unexplained · GST $0 until the retail tax invoices are on file (would add ~$817.91 credit) · units bought AFTER 30 Jun 2026 (director, 25 Nov 2026) → cost correctly in FY2627, not FY2526 · receipts requested from Yagoub'},
+  {id:'e30',date:'2026-07-18',fy:'FY2627',desc:'DHL MyBill card payment surcharge (1.1%) on PERR000718305',supplier:'DHL Express (Australia)',cat:'Bank Charges',total:2.02,gst:0,net:2.02,src:'BANK_FY2627_SEP_CBA',status:'Approved',notes:'$183.77 × 1.1% = $2.02 · bank debit $185.79 on 21 Jul 2026 · surcharge on a GST-free supply carries no GST'},
+  {id:'e31',date:'2026-07-23',fy:'FY2627',desc:'DHL Express — UAE import duty & taxes on AWB 4256417185 (Perth to Al Qusais, Dubai · 2kg)',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:35.09,gst:0,net:35.09,src:'RECEIPT_FY2627_JUL_DHL POSTAGE_PERIR00307492',status:'Approved',notes:'Invoice PERIR00307492 · 23 Jul 2026 · duty $30.00 (non-taxable) + import/export taxes $5.09 (duty & tax) · GST $0 · paid 28 Jul 2026 by card xx9281 (value date 25 Jul, bank b37) · shipment 20 Jul 2026, shipper Hashim Hashim, consignee Mohamedelmustafa Ahmed Albashir (Noor Energy, Dubai) · shipment of the SwitchDin Droplet PLUS (e28) — business freight'},
+  {id:'e32',date:'2026-07-31',fy:'FY2627',desc:'DHL Express Worldwide — Perth to Al Qusais, Dubai (1 item, 2.0kg · AWB 4256417185)',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:115.12,gst:0,net:115.12,src:'RECEIPT_FY2627_JUL_DHL POSTAGE_PERR000720101',status:'Approved',notes:'Invoice PERR000720101 · 31 Jul 2026 · non-taxable international freight · paid by direct debit 04 Sep 2026 (bank b38) · freight for the same shipment as the duties on PERIR00307492 · ships the SwitchDin Droplet PLUS (e28) to Mohamedelmustafa Ahmed Albashir, Dubai — business freight'},
+  {id:'e33',date:'2026-09-04',fy:'FY2627',desc:'DHL Express Worldwide — Perth to Eithar Services, Ferij Murar Deira Dubai (1 item, 4.5kg · AWB 6007246350)',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:186.79,gst:0,net:186.79,src:'RECEIPT_FY2627_SEP_DHL POSTAGE_PERR000723189',status:'Approved',notes:'Invoice PERR000723189 · 04 Sep 2026 · shipped 31 Aug 2026 by Yagoub Bala · non-taxable international freight · UNPAID at 30 Sep 2026 · due 04 Oct 2026'},
+  {id:'e34',date:'2026-10-09',fy:'FY2627',desc:'DHL Express Worldwide — Perth to Eithar Services, Dubai (1 item, 14.0kg · AWB 3627149013)',supplier:'DHL Express (Australia)',cat:'Postage & Freight',total:345.42,gst:0,net:345.42,src:'RECEIPT_FY2627_OCT_DHL POSTAGE_PERR000725885',status:'Approved',notes:'Invoice PERR000725885 · 09 Oct 2026 · shipped 01 Oct 2026 by Yagoub Bala · non-taxable international freight (incl. $26.60 demand surcharge) · due 08 Nov 2026 · payment to be confirmed on Oct–Dec statement'},
 ];
 const BASE_BK = [
   // ── FY2425 · Statement 1 (6 Dec 2024 – 31 Mar 2025) ──
@@ -846,7 +855,7 @@ const BASE_BK = [
   {id:'b14',date:'2026-03-06',fy:'FY2526',desc:'Transfer To YAGOUB YOUSIF YAGOUB BALA — Service (final payment INV-001)',type:'Debit',amount:500,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2526_APR_YAGOUB',gst:0},
   {id:'b15',date:'2026-03-17',fy:'FY2526',desc:'DHL EXPRESS MYBILL AU — Perth to Dubai shipment · PERR000708514',type:'Debit',amount:415.25,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_MAR_DHL POSTAGE_PERR000708514',gst:0},
   {id:'b16',date:'2026-03-30',fy:'FY2526',desc:'NRMA Business Insure BPAY — Renewal Policy 6807260',type:'Debit',amount:671.15,classification:'Expense',shareholder:'',matched:true,src:'BANK_FY2526_MAR_CBA',gst:61.01},
-  {id:'b17',date:'2026-05-26',fy:'FY2526',desc:'Transfer To MOHAMMED MAGZOUB — Share capital refund (return of excess contribution over agreed $2,500)',type:'Debit',amount:2500,classification:'Share Capital',shareholder:'Mohammed Magzoub',matched:true,src:'BANK_FY2526_JUN_CBA',gst:0},
+  {id:'b17',date:'2026-05-26',fy:'FY2526',desc:'Transfer To MOHAMMED MAGZOUB — Share capital refund (return of excess contribution over agreed $2,500) · statement narration "Moahmmed Albashier" = same person (ASIC: Mohammed Ahmed Magzoub Albashier)',type:'Debit',amount:2500,classification:'Share Capital',shareholder:'Mohammed Magzoub',matched:true,src:'BANK_FY2526_JUN_CBA',gst:0},
   // ── FY2526 · Statement 7 (1 Apr – 30 Jun 2026) ──
   {id:'b18',date:'2026-04-18',fy:'FY2526',desc:'Fast Transfer From YAGOUB YOUSIF YAGOU — Z (test transfer)',type:'Credit',amount:1.30,classification:'Other',shareholder:'',matched:true,src:'BANK_FY2526_JUN_CBA',gst:0},
   {id:'b19',date:'2026-05-13',fy:'FY2526',desc:'Fast Transfer From TALIA SERVICES PTY LTD — Purchase Mo (instalment 1 of 5 · INV-26-001)',type:'Credit',amount:5000,classification:'Income',shareholder:'',matched:true,src:'INV-OUT_FY2526_JUN_EQUIPMENT PURCHASE-INV-26-001',gst:436.22},
@@ -859,6 +868,17 @@ const BASE_BK = [
   {id:'b26',date:'2026-06-10',fy:'FY2526',desc:'LS FINDERS KEEPERS GO Daglish AU — Card xx9281 · 2× Gold Monster 2000',type:'Debit',amount:5998,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_JUN_FINDERS KEEPERS-1251',gst:545.27},
   {id:'b27',date:'2026-06-17',fy:'FY2526',desc:'DHL EXPRESS MYBILL AU Brisbane AU — Card xx9281 · PERR000716038 (value date 14/06/2026)',type:'Debit',amount:322.56,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2526_JUN_DHL POSTAGE_PERR000716038',gst:0},
   {id:'b28',date:'2026-06-20',fy:'FY2526',desc:'LS FINDERS KEEPERS GO Daglish AU — Card xx9281 · 1× Gold Monster 2000',type:'Debit',amount:2999,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_JUN_FINDERS KEEPERS-1358',gst:272.64},
+  // ── FY2627 · Statement 8 (1 Jul – 30 Sep 2026) · opening $17,166.34 → closing $2,730.16 ──
+  {id:'b30',date:'2026-07-04',fy:'FY2627',desc:'DHL EXPRESS MYBILL AU — PERR000717171 (Woodbridge to Deira Dubai)',type:'Debit',amount:331.36,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2526_JUN_DHL POSTAGE_PERR000717171',gst:0},
+  {id:'b31',date:'2026-07-05',fy:'FY2627',desc:'SWITCHDIN PTY LTD — INV-0692 Droplet PLUS device, licence & shipping',type:'Debit',amount:1503.70,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2627_JUL_DROPLET PURCHASE_0692',gst:136.70},
+  {id:'b32',date:'2026-07-08',fy:'FY2627',desc:'Transfer To YAGOUB YOUSIF YAGOUB BALA — "Refund" · 3× Gold Monster 2000 bought by partner to complete Talia INV-26-001',type:'Debit',amount:9000,classification:'Expense',shareholder:'',matched:true,src:'BANK_FY2627_SEP_CBA',gst:0},
+  {id:'b33',date:'2026-07-15',fy:'FY2627',desc:'Transfer to xx2460 — Refund HH share ($2,500 of $3,110.12 · share capital refund to agreed $2,500)',type:'Debit',amount:2500,classification:'Share Capital',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2627_SEP_CBA',gst:0},
+  {id:'b34',date:'2026-07-15',fy:'FY2627',desc:'Transfer to xx2460 — Refund HH share ($610.12 of $3,110.12 · repayment of May 2025 advance, see b29 / e19)',type:'Debit',amount:610.12,classification:'Other',shareholder:'Hashim Hashim',matched:true,src:'BANK_FY2627_SEP_CBA',gst:0},
+  {id:'b35',date:'2026-07-18',fy:'FY2627',desc:'ASIC BPAY 2296789220516 — Annual review fee (annual company statement)',type:'Debit',amount:342,classification:'Expense',shareholder:'',matched:true,src:'INV-IN_FY2627_JUL_ANNUAL COMPANY STATEMENT',gst:0},
+  {id:'b36',date:'2026-07-21',fy:'FY2627',desc:'DHL EXPRESS MYBILL AU Brisbane AU — Card xx9281 · PERR000718305 $183.77 + $2.02 card surcharge (value date 18/07/2026)',type:'Debit',amount:185.79,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2627_JUL_DHL POSTAGE_PERR000718305',gst:0},
+  {id:'b37',date:'2026-07-28',fy:'FY2627',desc:'DHL EXPRESS MYBILL AU Brisbane AU — Card xx9281 · PERIR00307492 UAE duties & taxes (value date 25/07/2026)',type:'Debit',amount:35.09,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2627_JUL_DHL POSTAGE_PERIR00307492',gst:0},
+  {id:'b38',date:'2026-09-04',fy:'FY2627',desc:'Direct Debit 073966 DHL Express Aus — 2300521085 · PERR000720101 (Perth to Al Qusais, Dubai)',type:'Debit',amount:115.12,classification:'Expense',shareholder:'',matched:true,src:'RECEIPT_FY2627_JUL_DHL POSTAGE_PERR000720101',gst:0},
+  {id:'b39',date:'2026-09-07',fy:'FY2627',desc:'Fast Transfer From YAGOUB YOUSIF YAGOU — advance to fund DHL PERR000723189 ($186.79) · owed back to Yagoub (e36)',type:'Credit',amount:187,classification:'Other',shareholder:'Yagoub Yagoub',matched:true,src:'BANK_FY2627_SEP_CBA',gst:0},
 ];
 const SHAREHOLDERS = [
   {name: 'Hashim Hashim', shares: 25},
@@ -895,17 +915,42 @@ const BASE_INV_IN = [
    desc:'DHL Express Worldwide — Woodbridge to Ferij Murar Deira Dubai (2 items, 9.0kg)',
    supplier:'DHL Express (Australia)',
    amount:331.36,gst:0,net:331.36,
-   notes:'Invoice PERR000717171 · billed to Yagoub Bala (company shipment) · OUTSTANDING at 30 Jun 2026 · payment due 26 Jul 2026'},
+   notes:'Invoice PERR000717171 · billed to Yagoub Bala (company shipment) · outstanding at 30 Jun 2026 · PAID 04 Jul 2026 (bank b30)'},
   {id:'ii5',date:'2026-07-09',fy:'FY2627',ref:'INV-IN_FY2627_JUL_ANNUAL COMPANY STATEMENT',
    desc:'ASIC Annual Review Fee — annual company statement (ACN 678 922 051)',
    supplier:'ASIC',
    amount:342,gst:0,net:342,
-   notes:'Review date 08 Jul 2026 · OUTSTANDING · due 08 Sep 2026 · GST-exempt · late fees apply if unpaid'},
+   notes:'Review date 08 Jul 2026 · due 08 Sep 2026 · GST-exempt · PAID 18 Jul 2026 via BPAY (bank b35)'},
   {id:'ii6',date:'2026-07-10',fy:'FY2627',ref:'RECEIPT_FY2627_JUL_DHL POSTAGE_PERR000718305',
    desc:'DHL Express Worldwide — Woodbridge international shipment (1 item, 4.5kg)',
    supplier:'DHL Express (Australia)',
    amount:183.77,gst:0,net:183.77,
-   notes:'Invoice PERR000718305 · OUTSTANDING · due 09 Aug 2026'},
+   notes:'Invoice PERR000718305 · due 09 Aug 2026 · PAID 21 Jul 2026 by card xx9281 — $185.79 incl. $2.02 (1.1%) card surcharge (bank b36)'},
+  {id:'ii7',date:'2026-07-23',fy:'FY2627',ref:'RECEIPT_FY2627_JUL_DHL POSTAGE_PERIR00307492',
+   desc:'DHL Express — UAE import duty & taxes on AWB 4256417185',
+   supplier:'DHL Express (Australia)',
+   amount:35.09,gst:0,net:35.09,
+   notes:'Invoice PERIR00307492 · due 30 Jul 2026 · PAID 28 Jul 2026 by card xx9281 (bank b37)'},
+  {id:'ii8',date:'2026-07-31',fy:'FY2627',ref:'RECEIPT_FY2627_JUL_DHL POSTAGE_PERR000720101',
+   desc:'DHL Express Worldwide — Perth to Al Qusais, Dubai (1 item, 2.0kg)',
+   supplier:'DHL Express (Australia)',
+   amount:115.12,gst:0,net:115.12,
+   notes:'Invoice PERR000720101 · due 30 Aug 2026 · PAID 04 Sep 2026 by direct debit (bank b38) — 5 days late'},
+  {id:'ii9',date:'2026-09-04',fy:'FY2627',ref:'RECEIPT_FY2627_SEP_DHL POSTAGE_PERR000723189',
+   desc:'DHL Express Worldwide — Perth to Eithar Services, Dubai (1 item, 4.5kg)',
+   supplier:'DHL Express (Australia)',
+   amount:186.79,gst:0,net:186.79,
+   notes:'Invoice PERR000723189 · due 04 Oct 2026 · Yagoub transferred $187 to the company on 07 Sep to cover it (b39 / e36) · OUTSTANDING to DHL at 30 Sep 2026 — confirm payment on Oct–Dec statement'},
+  {id:'ii11',date:'2026-07-03',fy:'FY2627',ref:'INV-IN_FY2627_JUL_DROPLET PURCHASE_0692',
+   desc:'Droplet PLUS device + annual licence + shipping (INV-0692 · PO-26-0001)',
+   supplier:'SwitchDin Pty Ltd',
+   amount:1503.70,gst:136.70,net:1367.00,
+   notes:'Due 02 Aug 2026 · PAID 05 Jul 2026 (bank b31)'},
+  {id:'ii10',date:'2026-10-09',fy:'FY2627',ref:'RECEIPT_FY2627_OCT_DHL POSTAGE_PERR000725885',
+   desc:'DHL Express Worldwide — Perth to Eithar Services, Dubai (1 item, 14.0kg)',
+   supplier:'DHL Express (Australia)',
+   amount:345.42,gst:0,net:345.42,
+   notes:'Invoice PERR000725885 · due 08 Nov 2026 · OUTSTANDING — confirm payment on Oct–Dec statement'},
 ];
 const BASE_INV_OUT = [
   {id:'io1',date:'2026-01-12',fy:'FY2526',ref:'INV-OUT_FY2526_JAN_CONSTRUCTION JOB',
@@ -917,35 +962,35 @@ const BASE_INV_OUT = [
    desc:'Procurement, supply & export — 8× Minelab Gold Monster 2000 + DHL freight (INV-26-001)',
    client:'Talia Services Pty Ltd (ABN 72 677 512 088)',
    amount:25000,gst:2181.09,net:22818.91,
-   notes:'Shipped to Jamal Ahmed Serag Ahmed, Ajman UAE · paid in five $5,000 instalments 13–21 May 2026 (invoice raised after payment) · GST charged on equipment only; DHL freight lines ($322.56 + $685.47) are GST-free, so GST is not 1/11 of the total'},
+   notes:'Shipped to Jamal Ahmed Serag Ahmed, Ajman UAE · paid in five $5,000 instalments 13–21 May 2026 (invoice raised after payment) · GST charged on equipment only; DHL freight lines ($322.56 + $685.47) are GST-free, so GST is not 1/11 of the total · units 1–5 bought Jun 2026 (Reeds ×2, Finders Keepers ×3); units 6–8 bought by partner Yagoub Bala, reimbursed $9,000 on 08 Jul 2026 (e29) and shipped Jul–Oct 2026 · freight lines are fixed prices billed to Talia (2pcs + 6pcs = all 8 units); actual DHL cost is the company\'s own expense, so no reconciliation needed'},
 ];
 
 // ═══════════════════════════════════════════════════════
 // ATO OBLIGATIONS — STATIC (sourced from lodged ATO docs)
 // ═══════════════════════════════════════════════════════
 const ATO_BAS_DATA = [
-  {fy:'FY2425',period:'Q1',label:'Jul–Sep 2024',docId:'—',  gstToATO:0,   gstByATO:0,    sales:0,    net:0,    result:'nofile',  dueDate:'28 Oct 2024',  lodged:false, lodgedDate:'',            notes:'Not on file — no GST activity recorded for this period'},
+  {fy:'FY2425',period:'Q1',label:'Jul–Sep 2024',docId:'—',  gstToATO:0,   gstByATO:0,    sales:0,    net:0,    result:'notreq',  dueDate:'—',            lodged:false, lodgedDate:'',            notes:'Not required — confirmed 25 Nov 2026 (no lodgment obligation for this period; not listed in ATO portal)'},
   {fy:'FY2425',period:'Q2',label:'Oct–Dec 2024',docId:'54921324596',gstToATO:0,gstByATO:0,sales:0,net:0,result:'nil',dueDate:'28 Feb 2025',lodged:true,lodgedDate:'07 May 2026',notes:'No GST activity · No amount payable'},
   {fy:'FY2425',period:'Q3',label:'Jan–Mar 2025',docId:'55148270477',gstToATO:0,gstByATO:55,sales:0,net:55,result:'credit',dueDate:'12 May 2025',lodged:true,lodgedDate:'07 May 2026',notes:'GST refund on insurance premium (1B $55) · Refundable'},
   {fy:'FY2425',period:'Q4',label:'Apr–Jun 2025',docId:'57379384084',gstToATO:0,gstByATO:0,sales:0,net:0,result:'nil',dueDate:'11 Aug 2025',lodged:true,lodgedDate:'07 May 2026',notes:'No GST activity · No amount payable'},
   {fy:'FY2526',period:'Q1',label:'Jul–Sep 2025',docId:'58433653513',gstToATO:0,gstByATO:43,sales:0,net:43,result:'credit',dueDate:'11 Nov 2025',lodged:true,lodgedDate:'07 May 2026',notes:'GST refund — input credits (Lawpath subscription) · 1B $43'},
   {fy:'FY2526',period:'Q2',label:'Oct–Dec 2025',docId:'58675768425',gstToATO:0,gstByATO:0,sales:0,net:0,result:'nil',dueDate:'03 Mar 2026',lodged:true,lodgedDate:'07 May 2026',notes:'No GST activity · No amount payable'},
   {fy:'FY2526',period:'Q3',label:'Jan–Mar 2026',docId:'59719991714',gstToATO:135,gstByATO:1152,sales:1485,net:1017,result:'credit',dueDate:'12 May 2026',lodged:true,lodgedDate:'07 May 2026',notes:'GST refund — 1A $135 (income GST) vs 1B $1,152 (input credits) · net $1,017 CR · Refundable'},
-  {fy:'FY2526',period:'Q4',label:'Apr–Jun 2026',docId:'—',  gstToATO:2181,gstByATO:1366, sales:25000,net:815,  result:'ready',   dueDate:'28 Jul 2026',  lodged:false, lodgedDate:'',            notes:'Prepared from Statement 7 · 1A $2,181.09 (Talia sale INV-26-001) vs 1B $1,366.19 (input credits) · net $814.90 PAYABLE · lodge by 28 Jul 2026'},
-  {fy:'FY2627',period:'Q1',label:'Jul–Sep 2026',docId:'—',  gstToATO:0,   gstByATO:0,    sales:0,    net:0,    result:'pending', dueDate:'28 Oct 2026',  lodged:false, lodgedDate:'',            notes:'Not yet due — period ends 30 Sep 2026'},
+  {fy:'FY2526',period:'Q4',label:'Apr–Jun 2026',docId:'59969050760',gstToATO:2181,gstByATO:1366,sales:25000,net:815,result:'payable',dueDate:'11 Aug 2026',lodged:true,lodgedDate:'11 Aug 2026',notes:'1A $2,181 (Talia sale INV-26-001) vs 1B $1,366 · $815 OWING · receipt 7543296151 · GST cash basis · offset against the $1,115 ATO account credit → no bank payment needed (none on Statement 8)'},
+  {fy:'FY2627',period:'Q1',label:'Jul–Sep 2026',docId:'—',  gstToATO:0,   gstByATO:136,  sales:0,    net:136,  result:'ready',   dueDate:'11 Nov 2026',  lodged:false, lodgedDate:'',            notes:'Prepared from Statement 8 · 1A $0 (no sales) vs 1B $136.70 (SwitchDin tax invoice INV-0692 on file) · lodge as G1 $0 · 1A $0 · 1B $136 (whole dollars, cents dropped as on Q4) → $136 REFUND · cash basis: SwitchDin paid 05 Jul, in this quarter · OVERDUE per ATO portal (due 11 Nov 2026) · once lodged, ATO account ≈ $436 CR'},
 ];
 const ATO_TAX_DATA = [
   {fy:'FY2425',label:'FY 2024–25',lodged:true, lodgedDate:'15 May 2026',totalIncome:0,totalExpenses:1152,netPL:-1152,taxableIncome:0,taxPayable:0,amountDue:0,lossCfwd:1152,docId:'TFN on file',notes:'Net loss $1,152 carried forward · No tax payable · Signed by Hashim Hashim 15 May 2026'},
-  {fy:'FY2526',label:'FY 2025–26',lodged:false,lodgedDate:'',           totalIncome:null,totalExpenses:null,netPL:null,taxableIncome:null,taxPayable:null,amountDue:null,lossCfwd:null,docId:'',notes:'Not yet due — FY ends 30 Jun 2026 · due by 31 Oct 2026'},
+  {fy:'FY2526',label:'FY 2025–26',lodged:false,lodgedDate:'',           totalIncome:null,totalExpenses:null,netPL:null,taxableIncome:null,taxPayable:null,amountDue:null,lossCfwd:null,docId:'',notes:'OVERDUE per ATO portal — due 02 Nov 2026 · est. taxable income $8,426.24 after $1,151.65 loss c/fwd · tax $2,106.56'},
 ];
 const ATO_ACT_DATA = {
   account:'Activity statement 002',
   entity:'NOOR ENERGY PTY LTD',
-  asOf:'27 Jul 2026',
-  balance:1115,
+  asOf:'25 Nov 2026 (confirmed in ATO portal — nothing overdue, income tax account $0.00)',
+  balance:300,
   balanceType:'CR',
   transactions:[
-    {effective:'28 Jul 2026',desc:'BAS period ending 30 Jun 2026 (FY2526 Q4) — prepared, not yet lodged (projected)',debit:815,credit:0,balance:300,balType:'CR',projected:true},
+    {effective:'11 Aug 2026',desc:'BAS period ending 30 Jun 2026 (FY2526 Q4) — lodged 11 Aug 2026 · offset against credit',debit:815,credit:0,balance:300,balType:'CR'},
     {effective:'12 May 2026',desc:'BAS period ending 31 Mar 2026 (FY2526 Q3)',debit:0,credit:1017,balance:1115,balType:'CR'},
     {effective:'11 Nov 2025',desc:'BAS period ending 30 Sep 2025 (FY2526 Q1)',debit:0,credit:43, balance:98,  balType:'CR'},
     {effective:'03 Mar 2026',desc:'BAS period ending 31 Dec 2025 (FY2526 Q2)',debit:0,credit:0,  balance:98,  balType:'CR'},
@@ -958,11 +1003,16 @@ const ATO_ACT_DATA = {
 // ═══════════════════════════════════════════════════════
 // LOCALSTORAGE DATA STORE
 // ═══════════════════════════════════════════════════════
+// Hardcoded base entries are the source of truth: a stored copy of a base id is replaced by the
+// current base version, so corrections to existing entries (notes, reimbursedFy, amounts) reach
+// browsers that already have localStorage. User-added entries (uid ids) are kept untouched.
+// Safe because the UI only adds/deletes entries — it never edits one in place.
 function mergeBase(base, stored) {
   if (!stored) return [...base];
+  const baseById  = new Map(base.map(e => [e.id, e]));
   const storedIds = new Set(stored.map(e => e.id));
-  const newBase = base.filter(e => !storedIds.has(e.id));
-  return [...stored, ...newBase];
+  const newBase   = base.filter(e => !storedIds.has(e.id));
+  return [...stored.map(e => baseById.get(e.id) || e), ...newBase];
 }
 function loadData() {
   try {
@@ -1051,6 +1101,13 @@ const fB = (fy,q) => DATA.bank.filter(b => b.fy===fy && inP(b.date,fy,q));
 // Always use these — a plain .reduce((a,b)=>a+b.amount) silently double-counts refunds as raises.
 const scAmt = b => b.type === 'Credit' ? b.amount : -b.amount;
 const scNet = list => list.filter(b => b.classification === 'Share Capital').reduce((a,b) => a + scAmt(b), 0);
+
+// A partner-paid expense / advance is owed until the FY in which it is repaid (`reimbursedFy`).
+// Pass `asOfFYs` (the FYs up to a balance-sheet date) to ask "was it still owed then?";
+// omit it for "is it owed today?". Status stays 'Future Reimbursement' so the P&L and the
+// lodged FY2425 return are unaffected — repayment is a balance-sheet movement only.
+const owedToPartner = (e, asOfFYs) => e.status === 'Future Reimbursement' &&
+  !(e.reimbursedFy && (!asOfFYs || asOfFYs.includes(e.reimbursedFy)));
 
 // Prior-year losses still available to offset against `fy`, on the same basis the lodged
 // returns use: Income + Client Funds ex-GST, less Approved/Refund expenses ex-GST.
@@ -1173,7 +1230,7 @@ function rDash() {
     <div class="sc bl"><div class="lb">Share capital</div><div class="vl">${sc<0?'('+aud(Math.abs(sc))+')':aud(sc)}</div><div class="sb">${sc<0?'Net refund of capital · not taxable':'Not taxable income'}</div></div>`;
 
   // Reimbursements & outstanding bills summary for dashboard
-  const reimbAll = DATA.expenses.filter(x=>x.status==='Future Reimbursement');
+  const reimbAll = DATA.expenses.filter(x=>owedToPartner(x));
   const reimbAUD = reimbAll.filter(x=>x.total>0).reduce((s,x)=>s+x.total,0);
   const fYinvIn = DATA.invoicesIn.filter(x=>x.fy===aFY);
   const outBillsAmt = fYinvIn.reduce((s,inv)=>{
@@ -1935,7 +1992,7 @@ function rInv() {
     : `<div class="empty">No invoices sent recorded for ${FYL[aFY]}. Click <strong>+ Add Invoice</strong> to record an outgoing invoice.</div>`;
 
   // ── Reimbursements ──
-  const reimb    = DATA.expenses.filter(x=>x.status==='Future Reimbursement');
+  const reimb    = DATA.expenses.filter(x=>owedToPartner(x));
   const reimbAUD = reimb.filter(x=>x.total>0).reduce((s,x)=>s+x.total,0);
   const reimbSDG = reimb.filter(x=>x.total===0).length;
   document.getElementById('reimb-kpi').innerHTML = `
@@ -2032,7 +2089,7 @@ function computeBS(fy) {
   // plus advances they put into the bank account. These are real obligations, so omitting
   // them overstates equity — FY2425 read "retained earnings $0.00" against a lodged $1,152 loss.
   const partnerPayable = DATA.expenses
-    .filter(e => activeFYs.includes(e.fy) && e.status === 'Future Reimbursement' && e.total > 0)
+    .filter(e => activeFYs.includes(e.fy) && owedToPartner(e, activeFYs) && e.total > 0)
     .reduce((a,e) => a + e.total, 0);
 
   const totalCurrentAssets = cashBalance + tradeDebtors;
@@ -2188,7 +2245,7 @@ function rTax() {
           ${field('End date', `30 Jun ${s+1}`)}
         </div>
         <div>
-          ${field('Business Entity TFN','661 230 492')}
+          ${field('Business Entity TFN','On file — not stored here (public repo)')}
           ${field('ABN','24 678 922 051')}
           ${field('Current name','Noor Energy Pty Ltd')}
           ${field('Final tax return','No')}
@@ -2578,10 +2635,14 @@ function rFS() {
 // ═══════════════════════════════════════════════════════
 // ATO OBLIGATIONS TAB
 // ═══════════════════════════════════════════════════════
+// A prepared ('ready') BAS can go either way — Q4 FY2526 is payable, Q1 FY2627 a refund.
+// `net` is stored unsigned, so the direction comes from 1A vs 1B.
+const basPayable = r => r.gstToATO > r.gstByATO;
+
 function rATO() {
   // ── KPI cards ──────────────────────────────────────────
   const lodgedBAS  = ATO_BAS_DATA.filter(r => r.lodged).length;
-  const totalBAS   = ATO_BAS_DATA.filter(r => r.result !== 'pending' && r.result !== 'ready').length;
+  const totalBAS   = ATO_BAS_DATA.filter(r => !['pending','ready','notreq'].includes(r.result)).length;
   const pendingBAS = ATO_BAS_DATA.filter(r => r.result === 'ready' || r.result === 'pending');
   const nextAction = pendingBAS.length ? pendingBAS[0].label + ' BAS due ' + pendingBAS[0].dueDate : 'All current BAS lodged';
   const taxLodged  = ATO_TAX_DATA.filter(r => r.lodged).length;
@@ -2597,24 +2658,28 @@ function rATO() {
     <div class="sc bl">
       <div class="lb">BAS Lodged</div>
       <div class="vl">${lodgedBAS} / ${totalBAS}</div>
-      <div class="sb">Periods with a lodged statement · 1 not on file (Q1 FY2425) · Q4 FY2526 ready to lodge</div>
+      <div class="sb">Periods with a lodged statement · Q1 FY2425 not required · ${ATO_BAS_DATA.filter(r=>r.result==='ready').map(r=>r.period+' '+r.fy).join(' & ')} ready to lodge</div>
     </div>
     <div class="sc tl">
       <div class="lb">Income Tax Returns</div>
       <div class="vl">${taxLodged} lodged</div>
-      <div class="sb">FY2425 lodged 15 May 2026 · FY2526 due Oct 2026 · Loss c/fwd $1,152</div>
+      <div class="sb">FY2425 lodged 15 May 2026 · FY2526 OVERDUE (due 02 Nov 2026) · Loss c/fwd $1,152</div>
     </div>
     <div class="sc am">
       <div class="lb">Next Action</div>
       <div class="vl" style="font-size:14px;line-height:1.3">${pendingBAS.length ? pendingBAS[0].label+' BAS' : 'FY2526 Tax Return'}</div>
-      <div class="sb">Due ${pendingBAS.length ? pendingBAS[0].dueDate : '31 Oct 2026'}</div>
+      <div class="sb">Due ${pendingBAS.length ? pendingBAS[0].dueDate : '02 Nov 2026'}</div>
     </div>`;
 
   // ── BAS table ──────────────────────────────────────────
   const resultBadge = r => {
     if(r.result==='credit')  return `<span class="b btl">$${r.net.toFixed(2)} CR</span>`;
-    if(r.result==='ready')   return `<span class="b" style="background:#fdf1f0;color:var(--rd)">$${r.net.toFixed(2)} DR</span>`;
+    if(r.result==='ready')   return basPayable(r)
+      ? `<span class="b" style="background:#fdf1f0;color:var(--rd)">$${r.net.toFixed(2)} DR</span>`
+      : `<span class="b btl">$${r.net.toFixed(2)} CR</span>`;
+    if(r.result==='payable') return `<span class="b" style="background:#fdf1f0;color:var(--rd)">$${r.net.toFixed(2)} DR</span>`;
     if(r.result==='nil')     return `<span class="b bgy">$0.00 nil</span>`;
+    if(r.result==='notreq')  return `<span class="b bgy">—</span>`;
     if(r.result==='pending') return `<span class="b bam">Pending</span>`;
     return `<span class="b" style="background:var(--muted);color:#fff">Not on file</span>`;
   };
@@ -2622,6 +2687,7 @@ function rATO() {
     if(r.lodged) return `<span class="b bgl" style="background:var(--gn-lt);color:var(--gn)">✓ Lodged ${r.lodgedDate}</span>`;
     if(r.result==='ready')   return `<span class="b bam">Ready to lodge</span>`;
     if(r.result==='pending') return `<span class="b bam">Not yet due</span>`;
+    if(r.result==='notreq')  return `<span class="b bgy">Not required</span>`;
     return `<span class="b" style="background:#fdf1f0;color:var(--rd)">No file</span>`;
   };
   const rowClass = r => {
@@ -2651,9 +2717,9 @@ function rATO() {
           <td style="font-weight:600">${r.label}</td>
           <td><span class="sm muted">${r.fy}</span></td>
           <td><span style="font-family:var(--mono);font-size:11px">${r.docId}</span></td>
-          <td class="nr">${r.result==='nofile'||r.result==='pending'?'—':'$'+r.sales.toFixed(2)}</td>
-          <td class="nr">${r.result==='nofile'||r.result==='pending'?'—':'$'+r.gstToATO.toFixed(2)}</td>
-          <td class="nr">${r.result==='nofile'||r.result==='pending'?'—':'$'+r.gstByATO.toFixed(2)}</td>
+          <td class="nr">${r.result==='nofile'||r.result==='notreq'||r.result==='pending'?'—':'$'+r.sales.toFixed(2)}</td>
+          <td class="nr">${r.result==='nofile'||r.result==='notreq'||r.result==='pending'?'—':'$'+r.gstToATO.toFixed(2)}</td>
+          <td class="nr">${r.result==='nofile'||r.result==='notreq'||r.result==='pending'?'—':'$'+r.gstByATO.toFixed(2)}</td>
           <td class="nr">${resultBadge(r)}</td>
           <td class="sm">${r.dueDate}</td>
           <td>${lodgeBadge(r)}</td>
@@ -2661,8 +2727,9 @@ function rATO() {
         </tr>`).join('')}
       </tbody>
       <tfoot><tr>
-        <td colspan="6"><strong>Total GST refunds (credits)</strong></td>
-        <td class="nr"><strong>$${ATO_BAS_DATA.filter(r=>r.result==='credit').reduce((s,r)=>s+r.net,0).toFixed(2)} CR</strong></td>
+        <td colspan="6"><strong>Net GST position — lodged statements (refunds − amounts payable)</strong></td>
+        <td class="nr"><strong>${(() => { const n = ATO_BAS_DATA.filter(r=>r.lodged).reduce((s,r)=>s+(basPayable(r)?-r.net:r.net),0);
+          return '$'+Math.abs(n).toFixed(2)+(n>=0?' CR':' DR'); })()}</strong></td>
         <td colspan="3"></td>
       </tr></tfoot>
     </table>`;
@@ -2744,14 +2811,14 @@ function rATO() {
     // Refunds plot positive (money toward us), amounts payable plot negative — so the
     // sign and the colour agree, and both agree with the GST tab. Green = in, red = out.
     const lodged = ATO_BAS_DATA.filter(r=>r.result!=='pending');
-    const signed = lodged.map(r => r.result==='ready' ? -r.net : r.net);
+    const signed = lodged.map(r => basPayable(r) ? -r.net : r.net);
     if(CHARTS.atoBar) CHARTS.atoBar.destroy();
     CHARTS.atoBar = new Chart(document.getElementById('chart-ato-bas'), {
       type:'bar',
       data:{ labels: lodged.map(r=>r.label), datasets:[{
         label:'Net GST (+ refund to Noor Energy / − payable to ATO)',
         data: signed,
-        backgroundColor: signed.map((v,i)=> lodged[i].result==='nofile' ? C_NEU : v>0 ? C_IN : v<0 ? C_OUT : C_NEU)
+        backgroundColor: signed.map((v,i)=> (lodged[i].result==='nofile'||lodged[i].result==='notreq') ? C_NEU : v>0 ? C_IN : v<0 ? C_OUT : C_NEU)
       }]},
       options:{ maintainAspectRatio:false, plugins:{ legend:{ display:false },
         tooltip:{ callbacks:{ label: c => ' $'+Math.abs(c.parsed.y).toLocaleString('en-AU',{minimumFractionDigits:2}) + (c.parsed.y>0?' refund':c.parsed.y<0?' payable':' nil') }}},
